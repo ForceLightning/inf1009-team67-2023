@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,6 +20,7 @@ public abstract class EntityBase extends Actor {
     private Vector2 acceleration;
     private Rectangle boundingBox;
     private Circle interactionCircle;
+    private Circle hitBox;
     private TextureRegion region;
     private float angularVelocity;
     private float angularAcceleration;
@@ -46,18 +46,25 @@ public abstract class EntityBase extends Actor {
         this.setAngularAcceleration(0);
         this.alpha = alpha;
         this.boundingBox = new Rectangle(x, y, width, height);
-        this.interactionCircle = new Circle(getCentreX(), getCentreY(), Math.max(height/2, width/2));
+        this.setInteractionCircle(new Circle(getCentreX(), getCentreY(), Math.max(width, height)/2));
+        this.setHitBox(new Circle(
+            getCentreX(),
+            getCentreY(),
+            (float) Math.sqrt(Math.pow(width/2, 2) + Math.pow(height/2, 2))
+        ));
     }
 
     public EntityBase() {
         super();
     }
 
+    public Vector2 getPosition() {
+        return new Vector2(getX(), getY());
+    }
+
     @Override
     public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        this.boundingBox.setPosition(x, y);
-        this.interactionCircle.setPosition(getCentreX(), getCentreY());
+        setPosition(x, y, Align.bottomLeft);
     }
 
     @Override
@@ -93,6 +100,11 @@ public abstract class EntityBase extends Actor {
                 break;
         }
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
+        this.hitBox.setPosition(getCentreX(), getCentreY());
+    }
+
+    public void setPosition(Vector2 position) {
+        setPosition(position.x, position.y);
     }
 
     @Override
@@ -100,6 +112,7 @@ public abstract class EntityBase extends Actor {
         super.setX(x);
         this.boundingBox.setX(x);
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
+        this.hitBox.setPosition(getCentreX(), getCentreY());
     }
 
     @Override
@@ -107,6 +120,7 @@ public abstract class EntityBase extends Actor {
         super.setY(y);
         this.boundingBox.setY(y);
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
+        this.hitBox.setPosition(getCentreX(), getCentreY());
     }
 
     @Override
@@ -264,11 +278,35 @@ public abstract class EntityBase extends Actor {
     }
 
     public void setInteractionCircle(float x, float y) {
-        interactionCircle = new Circle(x, y, interactionCircle.radius);
+        interactionCircle = new Circle(x, y, Math.max(getWidth(), getHeight()));
     }
 
     public Circle getInteractionCircle() {
         return interactionCircle;
+    }
+
+    public void setHitBox(Circle circle) {
+        hitBox = circle;
+    }
+
+    public void setHitBox(float x, float y, float radius) {
+        hitBox = new Circle(x, y, radius);
+    }
+
+    public void setHitBox(float radius) {
+        hitBox = new Circle(getCentreX(), getCentreY(), radius);
+    }
+
+    public void setHitBox(float x, float y) {
+        hitBox = new Circle(
+            x,
+            y,
+            (float) Math.sqrt(Math.pow(getWidth()/2, 2) + Math.pow(getHeight()/2, 2))
+        );
+    }
+
+    public Circle getHitBox() {
+        return hitBox;
     }
 
     public boolean isInteractingWith(EntityBase other) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.inf1009.team67.game.CollisionManagement.DynamicBody;
 import com.inf1009.team67.game.EntityManagement.EntityBase;
 import com.inf1009.team67.game.EntityManagement.Interactable;
 import com.inf1009.team67.game.EntityManagement.InteractableEntity;
@@ -37,7 +38,7 @@ public class Game extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		updateInteractions();
+		updateCollisions();
 		update();
 		batch.begin();
 		for (Integer z : entityCollection.keySet()) {
@@ -69,21 +70,40 @@ public class Game extends ApplicationAdapter {
 		}
 	}
 
-	public void updateInteractions() {
+	public void updateCollisions() {
+		// first, reset the accumulators
+		for (Integer z : entityCollection.keySet()) {
+			for (EntityBase entity : entityCollection.get(z)) {
+				if (entity instanceof DynamicBody) {
+					DynamicBody dynamicBody = (DynamicBody) entity;
+					dynamicBody.resetAccumulator();
+				}
+			}
+		}
+		// update the accumulators
 		for (Integer z : entityCollection.keySet()) {
 			for (int i = 0; i < entityCollection.get(z).size() - 1; i++) {
 				EntityBase entity = entityCollection.get(z).get(i);
-				if (entity instanceof InteractableEntity) {
+				if (entity instanceof DynamicBody) {
 					for (int j = i + 1; j < entityCollection.get(z).size(); j++) {
 						EntityBase otherEntity = entityCollection.get(z).get(j);
-						if (otherEntity instanceof InteractableEntity) {
-							Interactable thisInteractable = (Interactable) entity;
-							Interactable otherInteractable = (Interactable) otherEntity;
-							if (thisInteractable.isInteractingWith(otherInteractable)) {
-								thisInteractable.handleInteraction(otherInteractable);
+						if (otherEntity instanceof DynamicBody) {
+							DynamicBody thisInteractable = (DynamicBody) entity;
+							DynamicBody otherInteractable = (DynamicBody) otherEntity;
+							if (thisInteractable.isCollidingWith(otherInteractable)) {
+								thisInteractable.handleCollision(otherInteractable);
 							}
 						}
 					}
+				}
+			}
+		}
+		// apply the accumulators
+		for (Integer z : entityCollection.keySet()) {
+			for (EntityBase entity : entityCollection.get(z)) {
+				if (entity instanceof DynamicBody) {
+					DynamicBody dynamicBody = (DynamicBody) entity;
+					dynamicBody.applyFromAccumulator();
 				}
 			}
 		}
