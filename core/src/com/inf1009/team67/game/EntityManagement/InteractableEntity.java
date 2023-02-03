@@ -1,11 +1,10 @@
 package com.inf1009.team67.game.EntityManagement;
 
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.inf1009.team67.game.CollisionManagement.DynamicBody;
 
-public class InteractableEntity extends EntityBase implements Interactable, DynamicBody {
+public class InteractableEntity extends EntityBase implements Interactable, DynamicBody<InteractableEntity> {
     private Accumulator accumulator;
 
     public InteractableEntity() {
@@ -32,11 +31,11 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
         return super.getHitBox();
     }
 
-    public boolean isCollidingWith(DynamicBody other) {
+    public boolean isCollidingWith(DynamicBody<InteractableEntity> other) {
         return this.getHitBox().overlaps(other.getHitBox());
     }
 
-    public void handleCollision(DynamicBody other) {
+    public void handleCollision(DynamicBody<InteractableEntity> other) {
         // TODO Auto-generated method stub
     }
 
@@ -59,5 +58,9 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
         setRotation(getRotation() + accumulator.deltaAngle);
         setAngularVelocity(getAngularVelocity() + accumulator.deltaAngularVelocity);
         setAngularAcceleration(getAngularAcceleration() + accumulator.deltaAngularAcceleration);
+    }
+
+    public InteractableEntity getEntity() {
+        return this;
     }
 }
