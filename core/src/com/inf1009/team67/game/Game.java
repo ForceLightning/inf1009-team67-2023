@@ -75,7 +75,7 @@ public class Game extends ApplicationAdapter {
 		for (Integer z : entityCollection.keySet()) {
 			for (EntityBase entity : entityCollection.get(z)) {
 				if (entity instanceof DynamicBody) {
-					DynamicBody dynamicBody = (DynamicBody) entity;
+					DynamicBody<?> dynamicBody = (DynamicBody<?>) entity;
 					dynamicBody.resetAccumulator();
 				}
 			}
@@ -88,8 +88,8 @@ public class Game extends ApplicationAdapter {
 					for (int j = i + 1; j < entityCollection.get(z).size(); j++) {
 						EntityBase otherEntity = entityCollection.get(z).get(j);
 						if (otherEntity instanceof DynamicBody) {
-							DynamicBody thisInteractable = (DynamicBody) entity;
-							DynamicBody otherInteractable = (DynamicBody) otherEntity;
+							DynamicBody<?> thisInteractable = (DynamicBody<?>) entity;
+							DynamicBody<?> otherInteractable = (DynamicBody<?>) otherEntity;
 							if (thisInteractable.isCollidingWith(otherInteractable)) {
 								thisInteractable.handleCollision(otherInteractable);
 							}
@@ -102,7 +102,7 @@ public class Game extends ApplicationAdapter {
 		for (Integer z : entityCollection.keySet()) {
 			for (EntityBase entity : entityCollection.get(z)) {
 				if (entity instanceof DynamicBody) {
-					DynamicBody dynamicBody = (DynamicBody) entity;
+					DynamicBody<?> dynamicBody = (DynamicBody<?>) entity;
 					dynamicBody.applyFromAccumulator();
 				}
 			}

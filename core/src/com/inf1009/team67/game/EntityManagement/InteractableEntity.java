@@ -2,6 +2,7 @@ package com.inf1009.team67.game.EntityManagement;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.inf1009.team67.game.CollisionManagement.Accumulator;
 import com.inf1009.team67.game.CollisionManagement.DynamicBody;
 
 public class InteractableEntity extends EntityBase implements Interactable, DynamicBody<InteractableEntity> {
@@ -31,11 +32,11 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
         return super.getHitBox();
     }
 
-    public boolean isCollidingWith(DynamicBody<InteractableEntity> other) {
+    public <V extends DynamicBody<?>> boolean isCollidingWith(V other) {
         return this.getHitBox().overlaps(other.getHitBox());
     }
 
-    public void handleCollision(DynamicBody<InteractableEntity> other) {
+    public <V extends DynamicBody<?>> void handleCollision(V other) {
         // TODO Auto-generated method stub
     }
 
@@ -52,12 +53,12 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
     }
 
     public void applyFromAccumulator() {
-        setPosition(getPosition().add(accumulator.deltaPosition));
-        setVelocity(getVelocity().add(accumulator.deltaVelocity));
-        setAcceleration(getAcceleration().add(accumulator.deltaAcceleration));
-        setRotation(getRotation() + accumulator.deltaAngle);
-        setAngularVelocity(getAngularVelocity() + accumulator.deltaAngularVelocity);
-        setAngularAcceleration(getAngularAcceleration() + accumulator.deltaAngularAcceleration);
+        setPosition(getPosition().add(accumulator.getPositionUpdate()));
+        setVelocity(getVelocity().add(accumulator.getVelocityUpdate()));
+        setAcceleration(getAcceleration().add(accumulator.getAccelerationUpdate()));
+        setRotation(getRotation() + accumulator.getAngleUpdate());
+        setAngularVelocity(getAngularVelocity() + accumulator.getAngularVelocityUpdate());
+        setAngularAcceleration(getAngularAcceleration() + accumulator.getAngularAccelerationUpdate());
     }
 
     public InteractableEntity getEntity() {

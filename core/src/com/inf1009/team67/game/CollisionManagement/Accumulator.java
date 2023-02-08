@@ -1,6 +1,7 @@
-package com.inf1009.team67.game.EntityManagement;
+package com.inf1009.team67.game.CollisionManagement;
 
 import com.badlogic.gdx.math.Vector2;
+import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public class Accumulator {
     protected Vector2 deltaPosition;
