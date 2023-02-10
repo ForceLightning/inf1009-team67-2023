@@ -6,12 +6,12 @@ import java.util.HashMap;
 import com.inf1009.team67.game.Util.Pair;
 
 public class StateMap {
-    private EnumSet<State> movementStates = EnumSet.of(State.NONE_MOVEMENT, State.MOVING);
-    private EnumSet<State> combatStates = EnumSet.of(State.NONE_COMBAT, State.ATTACKING);
-    private EnumSet<State> jumpStates = EnumSet.of(State.NONE_JUMP, State.GROUNDED, State.JUMPING, State.AIRBORNE, State.COYOTE_TIME);
-    private EnumSet<Inputs> movementInputs = EnumSet.of(Inputs.UP, Inputs.DOWN, Inputs.LEFT, Inputs.RIGHT, Inputs.JUMP);
-    private EnumSet<Inputs> combatInputs = EnumSet.of(Inputs.ATTACK, Inputs.INTERACT);
-    private EnumSet<Inputs> jumpInputs = EnumSet.of(Inputs.JUMP);
+    private static EnumSet<State> movementStates = EnumSet.of(State.NONE_MOVEMENT, State.MOVING);
+    private static EnumSet<State> combatStates = EnumSet.of(State.NONE_COMBAT, State.ATTACKING);
+    private static EnumSet<State> jumpStates = EnumSet.of(State.NONE_JUMP, State.GROUNDED, State.JUMPING, State.AIRBORNE, State.COYOTE_TIME);
+    private static EnumSet<Inputs> movementInputs = EnumSet.of(Inputs.UP, Inputs.DOWN, Inputs.LEFT, Inputs.RIGHT, Inputs.JUMP);
+    private static EnumSet<Inputs> combatInputs = EnumSet.of(Inputs.ATTACK, Inputs.INTERACT);
+    private static EnumSet<Inputs> jumpInputs = EnumSet.of(Inputs.JUMP);
     private HashMap<Pair<Inputs, State>, State> stateMap = new HashMap<Pair<Inputs, State>, State>();
     public StateMap() {
         // set all mappings to NONE
