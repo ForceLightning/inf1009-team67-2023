@@ -103,7 +103,7 @@ public class Game extends ApplicationAdapter {
 			for (EntityBase entity : entityCollection.get(z)) {
 				if (entity instanceof DynamicBody) {
 					DynamicBody<?> dynamicBody = (DynamicBody<?>) entity;
-					dynamicBody.applyFromAccumulator();
+					dynamicBody.applyFromAccumulator(0.1f);
 				}
 			}
 		}

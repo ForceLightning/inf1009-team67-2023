@@ -40,8 +40,8 @@ public abstract class EntityBase extends Actor {
         Texture texture = new Texture(Gdx.files.internal(texturePath));
         region = new TextureRegion(texture);
         this.setBounds(region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight());
-        this.setVelocity(0, 0);
-        this.setAcceleration(0, 0);
+        this.velocity = new Vector2(0, 0);
+        this.acceleration = new Vector2(0, 0);
         this.setAngularVelocity(0);
         this.setAngularAcceleration(0);
         this.alpha = alpha;
@@ -56,6 +56,26 @@ public abstract class EntityBase extends Actor {
 
     public EntityBase() {
         super();
+        this.velocity = new Vector2(0, 0);
+        this.acceleration = new Vector2(0, 0);
+        Texture texture = new Texture(Gdx.files.internal("textures/badlogic.jpg"));
+        region = new TextureRegion(texture);
+        this.setBounds(region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight());
+        this.setAngularVelocity(0);
+        this.setAngularAcceleration(0);
+        this.alpha = 1;
+        this.boundingBox = new Rectangle(0, 0, 0, 0);
+        this.setInteractionCircle(new Circle(0, 0, 0));
+        this.setHitBox(new Circle(0, 0, 0));
+        this.setPosition(0, 0);
+        this.setZIndex(0);
+        this.setWidth(0);
+        this.setHeight(0);
+        this.setColor(Color.WHITE);
+        this.setRotation(0);
+        this.setName("Entity");
+        this.setVisible(true);
+        this.setTouchable(Touchable.disabled);
     }
 
     public Vector2 getPosition() {
@@ -101,6 +121,14 @@ public abstract class EntityBase extends Actor {
         }
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
         this.hitBox.setPosition(getCentreX(), getCentreY());
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        this.boundingBox.setSize(width, height);
+        this.interactionCircle.setRadius(Math.max(width, height)/2);
+        this.hitBox.setRadius((float) Math.min(width/2, height/2));
     }
 
     public void setPosition(Vector2 position) {
@@ -323,6 +351,7 @@ public abstract class EntityBase extends Actor {
             setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
             setRotation(body.getAngle() * MathUtils.radiansToDegrees);
         } else {
+            velocity.scl(0.9f);
             velocity.add(acceleration.cpy().scl(delta));
             setX(getX() + velocity.x * delta);
             setY(getY() + velocity.y * delta);

@@ -3,7 +3,7 @@ package com.inf1009.team67.game.CollisionManagement;
 import com.badlogic.gdx.math.Circle;
 
 public interface DynamicBody<T> {
-    public void applyFromAccumulator();
+    public void applyFromAccumulator(float delta);
     public void setAccumulator(Accumulator accumulator);
     public void resetAccumulator();
     public Accumulator getAccumulator();
