@@ -6,4 +6,5 @@ public enum playerStates {
         falling,
         jumping,
         dead,
+        // TODO(Removal): Remove this enum, may not be necessary for player class.
 }

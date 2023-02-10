@@ -18,6 +18,7 @@ import com.inf1009.team67.game.Renderer;
 import com.inf1009.team67.game.CollisionManagement.CollisionHelper;
 import com.inf1009.team67.game.EntityManagement.EntityCollection;
 import com.inf1009.team67.game.EntityManagement.TestEntity;
+import com.inf1009.team67.game.InputBehaviourManagement.Player;
 import com.inf1009.team67.game.Shape.Rectangle;
 public class GameScreen extends ScreenManager {
     public AssetsManager assetsManager = new AssetsManager();
@@ -53,10 +54,14 @@ public class GameScreen extends ScreenManager {
     public void show() {
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
+        Player player = new Player();
         test.setPosition(400, 240);
         test2.setPosition(450, 240);
+        player.setPosition(100, 100);
+        player.setColor(0xFF7777FF);
         entityCollection.insertEntity(test);
         entityCollection.insertEntity(test2);
+        entityCollection.insertEntity(player);
         //assetsManager.queueAddMusic();
         //assetsManager.manager.finishLoading();
         //playingMusic = assetsManager.manager.get("music/loz_title.mp3");
@@ -74,8 +79,8 @@ public class GameScreen extends ScreenManager {
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        collisionHelper.updateCollisions(entityCollection.getEntityCollection());
-
+        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        entityCollection.update(delta);
         // rectangle.render();
         // //rectangle.movement();
         // if(rectangle.getX() <= 0 + 40) rectangle.setX(0 + 40);

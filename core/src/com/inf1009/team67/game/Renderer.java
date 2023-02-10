@@ -4,18 +4,12 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.inf1009.team67.game.EntityManagement.Entity;
 import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public class Renderer {
     private SpriteBatch batch;
     public Renderer(SpriteBatch batch) {
         this.batch = batch;
-    }
-
-    public void render(Entity entity) {
-        // not sure if necessary if we are using stage to draw
-        batch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y, entity.getWidth(), entity.getHeight());
     }
 
     public void render(ArrayList<EntityBase> entities) {

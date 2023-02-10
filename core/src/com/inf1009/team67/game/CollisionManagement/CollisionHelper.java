@@ -3,7 +3,6 @@ package com.inf1009.team67.game.CollisionManagement;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import com.badlogic.gdx.Gdx;
 import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public class CollisionHelper {
@@ -12,7 +11,7 @@ public class CollisionHelper {
         b.handleCollision(a);
     }
 
-    public void updateCollisions(TreeMap<Integer, ArrayList<EntityBase>> entityCollection) {
+    public void updateCollisions(TreeMap<Integer, ArrayList<EntityBase>> entityCollection, float delta) {
         // reest the accumulators
         for (Integer z : entityCollection.keySet()) {
             for (EntityBase entity : entityCollection.get(z)) {
@@ -36,13 +35,12 @@ public class CollisionHelper {
                 }
             }
         }
-        // apply the accumulators and update the entities
-        float delta = Math.max(Gdx.graphics.getDeltaTime(), 1/60);
+        // apply the accumulators
+        delta = Math.max(delta, 1/60);
         for (Integer z : entityCollection.keySet()) {
             for (EntityBase entity : entityCollection.get(z)) {
                 if (entity instanceof DynamicBody) {
                     ((DynamicBody<?>) entity).applyFromAccumulator(delta);
-                    entity.update(delta);
                 }
             }
         }

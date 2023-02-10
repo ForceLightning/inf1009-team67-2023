@@ -25,8 +25,9 @@ public abstract class EntityBase extends Actor {
     private float angularVelocity;
     private float angularAcceleration;
     private Body body;
+    private float baseMovementSpeed;
 
-    public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha) {
+    public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha, float baseMovementSpeed) {
         super();
         this.setPosition(x, y);
         this.setZIndex(z);
@@ -52,6 +53,7 @@ public abstract class EntityBase extends Actor {
             getCentreY(),
             (float) Math.sqrt(Math.pow(width/2, 2) + Math.pow(height/2, 2))
         ));
+        this.baseMovementSpeed = baseMovementSpeed;
     }
 
     public EntityBase() {
@@ -76,6 +78,7 @@ public abstract class EntityBase extends Actor {
         this.setName("Entity");
         this.setVisible(true);
         this.setTouchable(Touchable.disabled);
+        this.baseMovementSpeed = 0;
     }
 
     public Vector2 getPosition() {
@@ -121,6 +124,10 @@ public abstract class EntityBase extends Actor {
         }
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
         this.hitBox.setPosition(getCentreX(), getCentreY());
+    }
+
+    public void modifyPosition(Vector2 deltaPosition) {
+        setPosition(getX() + deltaPosition.x, getY() + deltaPosition.y);
     }
 
     @Override
@@ -362,5 +369,13 @@ public abstract class EntityBase extends Actor {
 
     public void update() {
         update(Gdx.graphics.getDeltaTime());
+    }
+
+    public void setBaseMovementSpeed(float baseMovementSpeed) {
+        this.baseMovementSpeed = baseMovementSpeed;
+    }
+
+    public float getBaseMovementSpeed() {
+        return baseMovementSpeed;
     }
 }

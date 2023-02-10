@@ -1,6 +1,7 @@
 package com.inf1009.team67.game.EntityManagement;
 
 public enum CardinalDirection {
+    // TODO(Review): Is this enum necessary?
     NORTH(0, 1), EAST(1, 0), SOUTH(0, -1), WEST(-1, 0);
 
     public final int x, y;

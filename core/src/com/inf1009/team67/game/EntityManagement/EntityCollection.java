@@ -108,4 +108,12 @@ public class EntityCollection {
         stage.getRoot().clear();
     }
 
+    public void update(float delta) {
+        for (Integer z : entityCollection.keySet()) {
+            for (EntityBase entity : entityCollection.get(z)) {
+                entity.update(delta);
+            }
+        }
+    }
+
 }
