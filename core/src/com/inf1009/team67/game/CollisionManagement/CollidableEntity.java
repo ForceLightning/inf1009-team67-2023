@@ -1,18 +1,29 @@
-package com.inf1009.team67.game.EntityManagement;
+package com.inf1009.team67.game.CollisionManagement;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.inf1009.team67.game.CollisionManagement.Accumulator;
-import com.inf1009.team67.game.CollisionManagement.DynamicBody;
+import com.inf1009.team67.game.EntityManagement.EntityBase;
+import com.inf1009.team67.game.EntityManagement.Interactable;
 
-public class InteractableEntity extends EntityBase implements Interactable, DynamicBody<InteractableEntity> {
+public class CollidableEntity extends EntityBase implements Interactable, DynamicBody<CollidableEntity> {
     private Accumulator accumulator;
+    private Color nonColidingColor;
 
-    public InteractableEntity() {
+    public CollidableEntity() {
         super();
         accumulator = new Accumulator(this);
+        nonColidingColor = getColor().cpy();
     }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        setColor(nonColidingColor);
+    }
+
     public boolean isInteractingWith(Interactable other) {
         return this.getInteractionCircle().overlaps(other.getInteractionCircle());
     }
@@ -53,9 +64,10 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
         this.getAccumulator().addToPosition(delta_p);
         this.getAccumulator().addToVelocity(delta_v);
         this.getAccumulator().addToAcceleration(delta_a);
-        other.getAccumulator().addToPosition(delta_p.scl(-1));
-        other.getAccumulator().addToVelocity(delta_v.scl(-1));
-        other.getAccumulator().addToAcceleration(delta_a.scl(-1));
+        setColor(0xff00ffff);
+        // other.getAccumulator().addToPosition(delta_p.scl(-1));
+        // other.getAccumulator().addToVelocity(delta_v.scl(-1));
+        // other.getAccumulator().addToAcceleration(delta_a.scl(-1));
     }
 
     public Accumulator getAccumulator() {
@@ -72,14 +84,21 @@ public class InteractableEntity extends EntityBase implements Interactable, Dyna
 
     public void applyFromAccumulator(float delta) {
         setPosition(getPosition().add(accumulator.getPositionUpdate()));
-        setVelocity(getVelocity().add(accumulator.getVelocityUpdate().scl(delta)).scl(0.9f));
+        setVelocity(getVelocity().add(accumulator.getVelocityUpdate().scl(delta)).scl(1f));
         setAcceleration(getAcceleration().add(accumulator.getAccelerationUpdate().scl(delta)));
         setRotation(getRotation() + accumulator.getAngleUpdate() * delta);
         setAngularVelocity(getAngularVelocity() + accumulator.getAngularVelocityUpdate() * delta);
         setAngularAcceleration(getAngularAcceleration() + accumulator.getAngularAccelerationUpdate() * delta);
     }
 
-    public InteractableEntity getEntity() {
+    public CollidableEntity getEntity() {
         return this;
+    }
+
+    @Override
+    public void drawDebug(ShapeRenderer shapes) {
+        super.drawDebugBounds(shapes);
+        shapes.line(getCentre(), getVelocity().cpy().scl(2f).add(getCentre()));
+
     }
 }

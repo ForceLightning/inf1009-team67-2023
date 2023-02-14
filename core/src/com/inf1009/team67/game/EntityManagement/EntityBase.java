@@ -358,12 +358,13 @@ public abstract class EntityBase extends Actor {
             setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
             setRotation(body.getAngle() * MathUtils.radiansToDegrees);
         } else {
-            velocity.scl(0.9f);
-            velocity.add(acceleration.cpy().scl(delta));
-            setX(getX() + velocity.x * delta);
-            setY(getY() + velocity.y * delta);
+            setVelocity(velocity.scl((1-delta)));
+            setVelocity(velocity.add(acceleration.cpy().scl(delta)));
+            setAcceleration(0, 0);
+            setPosition(getPosition().add(getVelocity().cpy().scl(delta)));
             setRotation(getRotation() + angularVelocity * delta);
             angularVelocity += angularAcceleration * delta;
+            angularAcceleration *= (1-delta);
         }
     }
 

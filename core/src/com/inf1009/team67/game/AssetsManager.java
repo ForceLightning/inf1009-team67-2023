@@ -52,13 +52,7 @@ public class AssetsManager {
 
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-
-
     }
-
-
-
 }
 
 

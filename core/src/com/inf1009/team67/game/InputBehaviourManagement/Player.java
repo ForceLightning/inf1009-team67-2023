@@ -3,9 +3,9 @@ package com.inf1009.team67.game.InputBehaviourManagement;
 import java.util.EnumSet;
 
 import com.badlogic.gdx.math.Vector2;
-import com.inf1009.team67.game.EntityManagement.InteractableEntity;
+import com.inf1009.team67.game.CollisionManagement.CollidableEntity;
 
-public class Player extends InteractableEntity {
+public class Player extends CollidableEntity {
     private StateManager stateManager;
     // Constructor
     public Player() {
@@ -13,13 +13,14 @@ public class Player extends InteractableEntity {
         this.setTexture("textures/circle.png");
         this.setSize(100, 100);
         this.stateManager = new StateManager();
-        this.setBaseMovementSpeed(10);
+        this.setBaseMovementSpeed(100);
     }
 
     public void update(float delta) {
         this.stateManager.handleInput();
         handleMovementInput();
-        this.applyFromAccumulator(delta);
+        super.update(delta);
+        // this.applyFromAccumulator(delta);
     }
 
     public void handleMovementInput() {
@@ -43,7 +44,8 @@ public class Player extends InteractableEntity {
                     break;
             }
         }
-        deltaPosition.scl(getBaseMovementSpeed());
-        this.getAccumulator().addToPosition(deltaPosition);
+        deltaPosition.nor().scl(getBaseMovementSpeed());
+        // this.getAccumulator().addToPosition(deltaPosition);
+        this.setVelocity(deltaPosition);
     }
 }

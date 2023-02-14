@@ -1,6 +1,5 @@
-package com.inf1009.team67.game.screens;
+package com.inf1009.team67.game.SceneManagement;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,40 +14,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.AssetsManager;
+import com.inf1009.team67.game.game.MyGdxGame;
 
-public class MenuScreen extends ScreenManager {
+public class MenuScreen extends ScreenBase {
 
     private Stage stage;
 
     private Skin skin;
 
     private AssetsManager assetsManager = new AssetsManager();
-
     private SpriteBatch batch;
     private Sprite sprite;
     private Music playingMusic;
 
-    public MenuScreen(Game myGdxGame) {
+    private TextButton Play;
+    private TextButton leaderboard;
+    private TextButton instructions;
+    private TextButton settings;
+    private TextButton exit;
+
+    public MenuScreen(MyGdxGame game) {
+        super(game);
         //parent = myGdxGame;
-        super(myGdxGame);
-
-
         stage = new Stage(new ScreenViewport());
         //Gdx.input.setInputProcessor(stage);
-
         assetsManager.queueAddSkin();
         assetsManager.manager.finishLoading();
         skin = assetsManager.manager.get("skin/metal-ui.json");
-
-
-
-    }
-
-    @Override
-    public void show() {
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
 
@@ -58,11 +50,11 @@ public class MenuScreen extends ScreenManager {
         table.setSize(500, 500);
         table.setScale(1.0f);
 
-        TextButton Play = new TextButton("Play!", skin);
-        TextButton leaderboard = new TextButton("Leaderboard", skin);
-        TextButton instructions = new TextButton("Instructions", skin);
-        TextButton settings = new TextButton("Settings", skin);
-        TextButton exit = new TextButton("Exit", skin);
+        Play = new TextButton("Play!", skin);
+        leaderboard = new TextButton("Leaderboard", skin);
+        instructions = new TextButton("Instructions", skin);
+        settings = new TextButton("Settings", skin);
+        exit = new TextButton("Exit", skin);
 
         table.add(Play).fillX().uniformX().size(110,50);
         table.row().pad(10, 0, 5, 0);
@@ -73,15 +65,16 @@ public class MenuScreen extends ScreenManager {
         table.add(settings).fillX().uniformX().size(110,50);
         table.row().pad(5, 0, 5, 0);
         table.add(exit).fillX().uniformX().size(110,50);
+    }
 
-
-
-
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
         Play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //screenManager.changeScreen(ScreenManager.APPLICATION);
-                game.setScreen(new GameScreen(game));
+                game.setScreen(ScreenEnum.GAME);
             }
         });
 
@@ -89,7 +82,7 @@ public class MenuScreen extends ScreenManager {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //screenManager.changeScreen(ScreenManager.PREFERENCES);
-                game.setScreen(new SettingsScreen(game));
+                game.setScreen(ScreenEnum.SETTINGS);
             }
         });
 
@@ -131,14 +124,8 @@ public class MenuScreen extends ScreenManager {
         batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
         sprite.draw(batch);
         batch.end();
-
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw(); // Drawing the level
-
-
-
-
     }
 
     @Override
@@ -160,7 +147,7 @@ public class MenuScreen extends ScreenManager {
 
     @Override
     public void hide() {
-
+        stage.unfocusAll();
     }
 
     @Override

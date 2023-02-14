@@ -8,7 +8,7 @@ import com.inf1009.team67.game.EntityManagement.EntityBase;
 public class CollisionHelper {
     public static <T extends DynamicBody<?>> void handleCollision(T a, T b) {
         a.handleCollision(b);
-        b.handleCollision(a);
+        // b.handleCollision(a);
     }
 
     public void updateCollisions(TreeMap<Integer, ArrayList<EntityBase>> entityCollection, float delta) {

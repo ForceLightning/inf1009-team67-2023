@@ -1,6 +1,5 @@
-package com.inf1009.team67.game.screens;
+package com.inf1009.team67.game.SceneManagement;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,16 +12,15 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.game.MyGdxGame;
 
 
-public class SettingsScreen extends ScreenManager {
+public class SettingsScreen extends ScreenBase {
 
-    private MyGdxGame parent;
     private Stage stage;
 
 
-    public SettingsScreen(Game myGdxGame) {
+    public SettingsScreen(MyGdxGame game) {
 
         //parent = myGdxGame;
-        super(myGdxGame);
+        super(game);
         stage = new Stage(new ScreenViewport());
     }
 
