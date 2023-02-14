@@ -20,7 +20,7 @@ public abstract class EntityBase extends Actor {
     private Vector2 acceleration;
     private Rectangle boundingBox;
     private Circle interactionCircle;
-    private Circle hitBox;
+    // private Circle hitBox;
     private TextureRegion region;
     private float angularVelocity;
     private float angularAcceleration;
@@ -48,11 +48,6 @@ public abstract class EntityBase extends Actor {
         this.alpha = alpha;
         this.boundingBox = new Rectangle(x, y, width, height);
         this.setInteractionCircle(new Circle(getCentreX(), getCentreY(), Math.max(width, height)/2));
-        this.setHitBox(new Circle(
-            getCentreX(),
-            getCentreY(),
-            (float) Math.sqrt(Math.pow(width/2, 2) + Math.pow(height/2, 2))
-        ));
         this.baseMovementSpeed = baseMovementSpeed;
     }
 
@@ -68,7 +63,6 @@ public abstract class EntityBase extends Actor {
         this.alpha = 1;
         this.boundingBox = new Rectangle(0, 0, 0, 0);
         this.setInteractionCircle(new Circle(0, 0, 0));
-        this.setHitBox(new Circle(0, 0, 0));
         this.setPosition(0, 0);
         this.setZIndex(0);
         this.setWidth(0);
@@ -123,7 +117,6 @@ public abstract class EntityBase extends Actor {
                 break;
         }
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
-        this.hitBox.setPosition(getCentreX(), getCentreY());
     }
 
     public void modifyPosition(Vector2 deltaPosition) {
@@ -135,7 +128,6 @@ public abstract class EntityBase extends Actor {
         super.setSize(width, height);
         this.boundingBox.setSize(width, height);
         this.interactionCircle.setRadius(Math.max(width, height)/2);
-        this.hitBox.setRadius((float) Math.min(width/2, height/2));
     }
 
     public void setPosition(Vector2 position) {
@@ -147,7 +139,6 @@ public abstract class EntityBase extends Actor {
         super.setX(x);
         this.boundingBox.setX(x);
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
-        this.hitBox.setPosition(getCentreX(), getCentreY());
     }
 
     @Override
@@ -155,7 +146,6 @@ public abstract class EntityBase extends Actor {
         super.setY(y);
         this.boundingBox.setY(y);
         this.interactionCircle.setPosition(getCentreX(), getCentreY());
-        this.hitBox.setPosition(getCentreX(), getCentreY());
     }
 
     @Override
@@ -318,30 +308,6 @@ public abstract class EntityBase extends Actor {
 
     public Circle getInteractionCircle() {
         return interactionCircle;
-    }
-
-    public void setHitBox(Circle circle) {
-        hitBox = circle;
-    }
-
-    public void setHitBox(float x, float y, float radius) {
-        hitBox = new Circle(x, y, radius);
-    }
-
-    public void setHitBox(float radius) {
-        hitBox = new Circle(getCentreX(), getCentreY(), radius);
-    }
-
-    public void setHitBox(float x, float y) {
-        hitBox = new Circle(
-            x,
-            y,
-            (float) Math.sqrt(Math.pow(getWidth()/2, 2) + Math.pow(getHeight()/2, 2))
-        );
-    }
-
-    public Circle getHitBox() {
-        return hitBox;
     }
 
     public boolean isInteractingWith(EntityBase other) {

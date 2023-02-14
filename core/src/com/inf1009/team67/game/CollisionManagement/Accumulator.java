@@ -90,7 +90,7 @@ public class Accumulator {
         return deltaAcceleration;
     }
 
-    public float getAngleUpdate() {
+    public float getRotationUpdate() {
         return deltaAngle;
     }
 
