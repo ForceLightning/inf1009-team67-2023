@@ -3,7 +3,7 @@ package com.inf1009.team67.game.SceneManagement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import com.inf1009.team67.game.game.MyGdxGame;
+import com.inf1009.team67.game.Main.MyGdxGame;
 
 public class ScreenManager {
     private ScreenBase currentScreen;

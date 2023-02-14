@@ -1,6 +1,6 @@
 package com.inf1009.team67.game.SceneManagement;
 
-import com.inf1009.team67.game.game.MyGdxGame;
+import com.inf1009.team67.game.Main.MyGdxGame;
 
 public class EndScreen extends ScreenBase {
 

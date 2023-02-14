@@ -1,11 +1,11 @@
-package com.inf1009.team67.game.game;
+package com.inf1009.team67.game.Main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.inf1009.team67.game.AssetsManager;
 import com.inf1009.team67.game.SceneManagement.ScreenEnum;
 import com.inf1009.team67.game.SceneManagement.ScreenManager;
+import com.inf1009.team67.game.Util.AssetsManager;
 
 
 public class MyGdxGame extends Game {

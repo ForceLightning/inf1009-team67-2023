@@ -1,4 +1,4 @@
-package com.inf1009.team67.game;
+package com.inf1009.team67.game.Util;
 
 import java.util.ArrayList;
 
