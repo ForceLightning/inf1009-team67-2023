@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.Main.MyGdxGame;
+import com.inf1009.team67.game.Main.Settings;
 import com.inf1009.team67.game.Util.AssetsManager;
 
 public class MenuScreen extends ScreenBase {
@@ -38,9 +39,9 @@ public class MenuScreen extends ScreenBase {
         //parent = myGdxGame;
         stage = new Stage(new ScreenViewport());
         //Gdx.input.setInputProcessor(stage);
-        assetsManager.queueAddSkin();
-        assetsManager.manager.finishLoading();
-        skin = assetsManager.manager.get("skin/metal-ui.json");
+        game.assetsManager.manager.finishLoading();
+        playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
+        skin = game.assetsManager.manager.get("skin/metal-ui.json");
 
         Table table = new Table();
 
@@ -70,6 +71,9 @@ public class MenuScreen extends ScreenBase {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        playingMusic.play();
+        playingMusic.setVolume(Settings.getMusicVolume() * Settings.getMasterVolume());
+        // print music status
         Play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -86,10 +90,6 @@ public class MenuScreen extends ScreenBase {
             }
         });
 
-        assetsManager.queueAddMusic();
-        assetsManager.manager.finishLoading();
-        playingMusic = assetsManager.manager.get("music/loz_title.mp3");
-        playingMusic.play();
 
         assetsManager.queueAddBackground();
         batch = new SpriteBatch();
@@ -99,7 +99,6 @@ public class MenuScreen extends ScreenBase {
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
                 Gdx.app.exit();
             }
         });

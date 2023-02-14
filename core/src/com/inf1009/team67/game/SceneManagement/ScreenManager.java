@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.inf1009.team67.game.Main.MyGdxGame;
 
 public class ScreenManager {
-    private ScreenBase currentScreen;
     private HashMap<ScreenEnum, Class<? extends ScreenBase>> screenCollection;
     private MyGdxGame game;
 
@@ -18,7 +17,6 @@ public class ScreenManager {
         screenCollection.put(ScreenEnum.SETTINGS, SettingsScreen.class);
         screenCollection.put(ScreenEnum.GAME, GameScreen.class);
         screenCollection.put(ScreenEnum.END, EndScreen.class);
-        currentScreen = null;
     }
 
     public void setScreen(ScreenEnum screen) {
@@ -29,10 +27,6 @@ public class ScreenManager {
                 .getDeclaredConstructor(MyGdxGame.class)
                 .newInstance(game);
             game.setScreen(newScreen);
-            currentScreen = newScreen;
-            if (currentScreen != null) {
-                currentScreen.hide();
-            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
