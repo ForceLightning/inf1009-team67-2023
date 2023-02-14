@@ -5,6 +5,7 @@ import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public class Accumulator {
     protected Vector2 deltaPosition;
+    protected Vector2 deltaAbsolutePosition;
     protected Vector2 deltaVelocity;
     protected Vector2 deltaAcceleration;
     protected float deltaAngle;
@@ -19,6 +20,7 @@ public class Accumulator {
 
     public Accumulator() {
         deltaPosition = new Vector2();
+        deltaAbsolutePosition = new Vector2();
         deltaVelocity = new Vector2();
         deltaAcceleration = new Vector2();
         deltaAngle = 0.0f;
@@ -42,6 +44,10 @@ public class Accumulator {
 
     public void addToPosition(Vector2 velocity) {
         deltaPosition.add(velocity);
+    }
+
+    public void addToAbsolutePosition(Vector2 deltaAbsolutePosition) {
+        this.deltaAbsolutePosition.add(deltaAbsolutePosition);
     }
 
     public void addToVelocity(Vector2 acceleration) {
@@ -68,6 +74,14 @@ public class Accumulator {
         return deltaPosition;
     }
 
+    public Vector2 getAbsolutePositionUpdate() {
+        return deltaAbsolutePosition;
+    }
+
+    public Vector2 getCombinedPositionUpdate(float delta) {
+        return deltaPosition.cpy().scl(delta).add(deltaAbsolutePosition);
+    }
+
     public Vector2 getVelocityUpdate() {
         return deltaVelocity;
     }
@@ -76,7 +90,7 @@ public class Accumulator {
         return deltaAcceleration;
     }
 
-    public float getAngleUpdate() {
+    public float getRotationUpdate() {
         return deltaAngle;
     }
 
@@ -90,6 +104,7 @@ public class Accumulator {
 
     public void reset() {
         deltaPosition = new Vector2();
+        deltaAbsolutePosition = new Vector2();
         deltaVelocity = new Vector2();
         deltaAcceleration = new Vector2();
         deltaAngle = 0.0f;
