@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.inf1009.team67.game.AssetsManager;
-import com.inf1009.team67.game.game.MyGdxGame;
+import com.inf1009.team67.game.Main.MyGdxGame;
+import com.inf1009.team67.game.Util.AssetsManager;
 
 public class MenuScreen extends ScreenBase {
 
@@ -103,10 +103,6 @@ public class MenuScreen extends ScreenBase {
                 Gdx.app.exit();
             }
         });
-
-
-
-
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.inf1009.team67.game.SceneManagement;
 
 import com.badlogic.gdx.Screen;
-import com.inf1009.team67.game.game.MyGdxGame;
+import com.inf1009.team67.game.Main.MyGdxGame;
 
 public class ScreenBase implements Screen {
 

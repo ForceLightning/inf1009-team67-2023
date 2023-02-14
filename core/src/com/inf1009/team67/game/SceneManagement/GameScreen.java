@@ -4,7 +4,6 @@ package com.inf1009.team67.game.SceneManagement;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.inf1009.team67.game.game.MyGdxGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,13 +11,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.inf1009.team67.game.AssetsManager;
-import com.inf1009.team67.game.Renderer;
 import com.inf1009.team67.game.CollisionManagement.CollisionHelper;
 import com.inf1009.team67.game.EntityManagement.EntityCollection;
 import com.inf1009.team67.game.EntityManagement.TestEntity;
 import com.inf1009.team67.game.InputBehaviourManagement.Player;
+import com.inf1009.team67.game.Main.MyGdxGame;
 import com.inf1009.team67.game.Shape.Rectangle;
+import com.inf1009.team67.game.Util.AssetsManager;
+import com.inf1009.team67.game.Util.Renderer;
 public class GameScreen extends ScreenBase {
     public AssetsManager assetsManager = new AssetsManager();
 
