@@ -1,7 +1,6 @@
-package com.inf1009.team67.game.screens;
+package com.inf1009.team67.game.SceneManagement;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,7 +19,7 @@ import com.inf1009.team67.game.EntityManagement.EntityCollection;
 import com.inf1009.team67.game.EntityManagement.TestEntity;
 import com.inf1009.team67.game.InputBehaviourManagement.Player;
 import com.inf1009.team67.game.Shape.Rectangle;
-public class GameScreen extends ScreenManager {
+public class GameScreen extends ScreenBase {
     public AssetsManager assetsManager = new AssetsManager();
 
     private MyGdxGame parent;
@@ -36,7 +35,7 @@ public class GameScreen extends ScreenManager {
     private final CollisionHelper collisionHelper;
 
 
-    public GameScreen(Game myGdxGame){
+    public GameScreen(MyGdxGame myGdxGame){
         super(myGdxGame);
 
         batch = new SpriteBatch();
@@ -46,21 +45,29 @@ public class GameScreen extends ScreenManager {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport(camera), batch);
+        stage.setDebugAll(true);
         entityCollection = new EntityCollection(stage);
         collisionHelper = new CollisionHelper();
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
+        TestEntity test3 = new TestEntity();
         Player player = new Player();
         test.setPosition(400, 240);
+        test.setColor(0xFF0000FF);
         test2.setPosition(450, 240);
+        test2.setColor(0x00FF00FF);
+        test3.setPosition(450, 241);
+        test3.setColor(0x0000FFFF);
         player.setPosition(100, 100);
-        player.setColor(0xFF7777FF);
+        player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(test);
         entityCollection.insertEntity(test2);
+        entityCollection.insertEntity(test3);
         entityCollection.insertEntity(player);
         //assetsManager.queueAddMusic();
         //assetsManager.manager.finishLoading();
@@ -79,8 +86,8 @@ public class GameScreen extends ScreenManager {
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
+        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         // rectangle.render();
         // //rectangle.movement();
         // if(rectangle.getX() <= 0 + 40) rectangle.setX(0 + 40);
@@ -118,8 +125,7 @@ public class GameScreen extends ScreenManager {
     @Override
     public void dispose() {
         batch.dispose();
+        entityCollection.dispose();
         stage.dispose();
     }
 }
-
-

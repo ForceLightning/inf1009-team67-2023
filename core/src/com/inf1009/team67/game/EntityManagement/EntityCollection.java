@@ -39,6 +39,31 @@ public class EntityCollection {
         entityCollection.get(z).add(entity);
     }
 
+    public void insertAtZ(EntityBase entity, int z, int index) {
+        if (!entityCollection.containsKey(z)) {
+            entityCollection.put(z, new ArrayList<EntityBase>());
+            entityCollection.get(z).add(entity);
+            return;
+        }
+        // determine the index of the entity in the stage
+        Integer prev = entityCollection.lowerKey(z);
+        Integer groupIndex = 0;
+        for (Integer i : entityCollection.keySet()) {
+            if (i == prev) {
+                break;
+            }
+            groupIndex += 1; 
+        }
+        Integer entityIndex = 0;
+        Iterator<Integer> layerIterator = entityCollection.keySet().iterator();
+        for (int i = 0; i < groupIndex; i++) {
+            entityIndex += entityCollection.get(layerIterator.next()).size();
+        }
+        // add entity to stage and entityCollection
+        stage.getRoot().addActorAt(entityIndex + index, entity);
+        entityCollection.get(z).add(index, entity);
+    }
+
     public void insertEntity(EntityBase entity) {
         Integer lastLayer = 0;
         try {
@@ -115,5 +140,6 @@ public class EntityCollection {
             }
         }
     }
+
 
 }

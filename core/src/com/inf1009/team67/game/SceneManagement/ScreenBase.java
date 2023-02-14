@@ -1,13 +1,13 @@
-package com.inf1009.team67.game.screens;
+package com.inf1009.team67.game.SceneManagement;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.inf1009.team67.game.game.MyGdxGame;
 
-public class ScreenManager implements Screen {
+public class ScreenBase implements Screen {
 
-    public Game game;
+    public MyGdxGame game;
 
-    public ScreenManager(Game game) {
+    public ScreenBase(MyGdxGame game) {
         this.game = game;
     }
 
