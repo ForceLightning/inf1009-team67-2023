@@ -17,12 +17,8 @@ import com.inf1009.team67.game.EntityManagement.TestEntity;
 import com.inf1009.team67.game.InputBehaviourManagement.Player;
 import com.inf1009.team67.game.Main.MyGdxGame;
 import com.inf1009.team67.game.Shape.Rectangle;
-import com.inf1009.team67.game.Util.AssetsManager;
-import com.inf1009.team67.game.Util.Renderer;
 public class GameScreen extends ScreenBase {
-    public AssetsManager assetsManager = new AssetsManager();
 
-    private MyGdxGame parent;
     private SpriteBatch batch;
     private Sprite sprite;
     private Rectangle rectangle;
@@ -30,7 +26,6 @@ public class GameScreen extends ScreenBase {
     private Texture backgroundTexture;
     private OrthographicCamera camera;
     private EntityCollection entityCollection;
-    private Renderer renderer;
     private Stage stage;
     private final CollisionHelper collisionHelper;
 
@@ -41,7 +36,6 @@ public class GameScreen extends ScreenBase {
         batch = new SpriteBatch();
         rectangle = new Rectangle(150,60,90,50,5);
         this.sprite = new Sprite();
-        renderer = new Renderer(batch);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         stage = new Stage(new ScreenViewport(camera), batch);
@@ -119,7 +113,7 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void hide() {
-
+        stage.unfocusAll();
     }
 
     @Override

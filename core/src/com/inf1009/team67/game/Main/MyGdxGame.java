@@ -17,6 +17,8 @@ public class MyGdxGame extends Game {
 		super();
 		screenManager = new ScreenManager(this);
 		assetsManager = new AssetsManager();
+        assetsManager.queueAddMusic();
+        assetsManager.queueAddSkin();
 	}
 
 	@Override
