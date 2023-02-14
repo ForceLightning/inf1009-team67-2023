@@ -58,10 +58,11 @@ public class CollidableEntity extends EntityBase implements Interactable, Dynami
         double distance = center.dst(otherCenter);
         double intersect = this.getHitBox().radius + other.getHitBox().radius - distance;
         float overlap = Math.max(0, (float) intersect);
-        Vector2 delta_p = normal.cpy().scl(overlap / 16);
+        Vector2 delta_p = normal.cpy().scl(overlap / 2);
         Vector2 delta_v = normal.cpy().scl(overlap / 2);
         Vector2 delta_a = normal.cpy().scl(overlap / 4);
-        this.getAccumulator().addToPosition(delta_p);
+        // this.getAccumulator().addToPosition(delta_p);
+        this.getAccumulator().addToAbsolutePosition(delta_p);
         this.getAccumulator().addToVelocity(delta_v);
         this.getAccumulator().addToAcceleration(delta_a);
         setColor(0xff00ffff);
@@ -83,7 +84,7 @@ public class CollidableEntity extends EntityBase implements Interactable, Dynami
     }
 
     public void applyFromAccumulator(float delta) {
-        setPosition(getPosition().add(accumulator.getPositionUpdate()));
+        setPosition(getPosition().add(accumulator.getAbsolutePositionUpdate()));
         setVelocity(getVelocity().add(accumulator.getVelocityUpdate().scl(delta)).scl(1f));
         setAcceleration(getAcceleration().add(accumulator.getAccelerationUpdate().scl(delta)));
         setRotation(getRotation() + accumulator.getAngleUpdate() * delta);
