@@ -144,12 +144,14 @@ public class MenuScreen extends ScreenBase {
     @Override
     public void hide() {
         stage.unfocusAll();
+        playingMusic.stop();
     }
 
     @Override
     public void dispose() {
         assetsManager.manager.dispose();
         stage.dispose();
-
+        playingMusic.dispose();
+        batch.dispose();
     }
 }
