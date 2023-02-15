@@ -3,7 +3,7 @@ package com.inf1009.team67.game.CollisionManagement;
 import com.badlogic.gdx.math.Vector2;
 import com.inf1009.team67.game.EntityManagement.EntityBase;
 
-public class Accumulator {
+public class CollisionAccumulator {
     protected Vector2 deltaPosition;
     protected Vector2 deltaAbsolutePosition;
     protected Vector2 deltaVelocity;
@@ -13,12 +13,12 @@ public class Accumulator {
     protected float deltaAngularAcceleration;
     protected EntityBase entity;
 
-    public Accumulator(EntityBase entity) {
+    public CollisionAccumulator(EntityBase entity) {
         this.entity = entity;
         getFromEntity();
     }
 
-    public Accumulator() {
+    public CollisionAccumulator() {
         deltaPosition = new Vector2();
         deltaAbsolutePosition = new Vector2();
         deltaVelocity = new Vector2();
@@ -112,8 +112,8 @@ public class Accumulator {
         deltaAngularAcceleration = 0.0f;
     }
 
-    public Accumulator mergeAccumulator(Accumulator other) {
-        Accumulator merged = new Accumulator();
+    public CollisionAccumulator mergeAccumulator(CollisionAccumulator other) {
+        CollisionAccumulator merged = new CollisionAccumulator();
         merged.deltaPosition = this.deltaPosition.cpy().add(other.deltaPosition);
         merged.deltaVelocity = this.deltaVelocity.cpy().add(other.deltaVelocity);
         merged.deltaAcceleration = this.deltaAcceleration.cpy().add(other.deltaAcceleration);
