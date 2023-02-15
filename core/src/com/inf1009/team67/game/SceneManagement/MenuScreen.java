@@ -90,6 +90,13 @@ public class MenuScreen extends ScreenBase {
             }
         });
 
+        instructions.addListener(new ChangeListener(){
+            @Override
+            public void changed(ChangeEvent event, Actor actor){
+
+                game.setScreen(ScreenEnum.INSTRUCTIONS);
+            }
+        });
 
         assetsManager.queueAddBackground();
         batch = new SpriteBatch();
