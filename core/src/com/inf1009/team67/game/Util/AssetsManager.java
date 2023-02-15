@@ -1,4 +1,4 @@
-package com.inf1009.team67.game;
+package com.inf1009.team67.game.Util;
 
 
 import com.badlogic.gdx.Gdx;
@@ -52,13 +52,7 @@ public class AssetsManager {
 
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-
-
     }
-
-
-
 }
 
 
