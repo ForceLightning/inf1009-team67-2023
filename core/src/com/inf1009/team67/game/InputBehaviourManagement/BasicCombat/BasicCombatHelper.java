@@ -22,7 +22,7 @@ public class BasicCombatHelper {
     }
 
     public void handleAttack(ControllableCharacter combatant, ControllableCharacter other) {
-        if (combatant.getCombatStates().contains(BasicCombatState.ATTACKING)) {
+        if (combatant.getCombatStates().contains(BasicCombatState.ATTACKING) && combatant.getTarget() == other) {
             // System.out.println(combatant.toString() + "Attack timer: " + combatant.getAttackTimer());
             if (combatant.getAttackTimer() >= 0) {
                 combatant.resetAttackTimer();
@@ -42,8 +42,8 @@ public class BasicCombatHelper {
         if (inRange(combatant, other)) {
             float chase = inRange(combatant, other) ? 1 : -1;
             Vector2 chaseVector = new Vector2(
-                other.getPosition().x - combatant.getPosition().x,
-                other.getPosition().y - combatant.getPosition().y
+                other.getCentreX() - combatant.getCentreX(),
+                other.getCentreY() - combatant.getCentreY()
             ).nor().scl(chase);
             combatant.getCombatAccumulator().addToPositionRelMoveSpeed(chaseVector);
         }
@@ -51,17 +51,24 @@ public class BasicCombatHelper {
 
     public void setAggro(ControllableCharacter combatant, ControllableCharacter other) {
         boolean inRange = inRange(combatant, other);
-        if (combatant.getTarget() == null && inRange) {
-            combatant.setTarget(other);
-        } else if (combatant.getCombatStates().contains(BasicCombatState.IN_RANGE)){
+        if (combatant.getTarget() == null && (inRange || combatant.getCombatStates().contains(BasicCombatState.IN_RANGE)) && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
             combatant.setTarget(other);
             if (!combatant.getCombatStates().contains(BasicCombatState.HURT)) {
                 combatant.getCombatStates().add(BasicCombatState.ATTACKING);
                 combatant.setCombatBehaviour(BasicCombatBehaviour.ATTACK);
             }
-        } else if (!inRange(combatant, other) && combatant.getTarget() == other) {
+        } else if ((!inRange(combatant, other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) && combatant.getTarget() == other) {
             combatant.setTarget(null);
             combatant.getCombatStates().remove(BasicCombatState.ATTACKING);
+        }
+    }
+
+    public void setTarget(ControllableCharacter combatant, ControllableCharacter other) {
+        boolean inRange = inRange(combatant, other);
+        if (combatant.getTarget() == null && inRange && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
+            combatant.setTarget(other);
+        } else if ((!inRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) {
+            combatant.setTarget(null);
         }
     }
 
@@ -83,12 +90,18 @@ public class BasicCombatHelper {
                     for (EntityBase otherEntity: entityCollection.get(Z)) {
                         if (otherEntity instanceof ControllableCharacter) {
                             ControllableCharacter other = (ControllableCharacter) otherEntity;
-                            if (other != combatant) {
+                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
                                 if (other.isPlayer()) {
                                     setInRange(combatant, other);
                                     setAggro(combatant, other);
                                     handleAttack(combatant, other);
                                     handleChase(combatant, other);
+                                }
+                                if (combatant.isPlayer() && combatant.getCombatStates().contains(BasicCombatState.ATTACKING)) {
+                                    setTarget(combatant, other);
+                                    if (combatant.getTarget() == other) {
+                                        handleAttack(combatant, other);
+                                    }
                                 }
                             }
                         }

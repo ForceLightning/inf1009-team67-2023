@@ -141,6 +141,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             this.health = 0;
             this.combatBehaviour = BasicCombatBehaviour.DEAD;
             this.combatStates = EnumSet.of(BasicCombatState.DEAD);
+            this.target = null;
         } else if (this.health <= this.maxHealth * this.hurtThreshold) {
             this.combatStates.add(BasicCombatState.HURT);
         } else {
@@ -214,9 +215,14 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     @Override
     public void update(float delta) {
-        updateBehaviour(combatBehaviour);
-        applyFromCombatAccumulator(delta);
+        if (this.combatBehaviour != BasicCombatBehaviour.DEAD) {
+            updateBehaviour(combatBehaviour);
+            applyFromCombatAccumulator(delta);
+        }
         super.update(delta);
+        if (this.combatBehaviour == BasicCombatBehaviour.IDLE) {
+            this.target = null;
+        }
     }
     
     public void addCombatState(BasicCombatState state) {
@@ -248,9 +254,11 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
-        if (!isPlayer) {
-            if (target == null) {
-                shapes.circle(getCentreX(), getCentreY(), getAggroRange());
+        if (target == null) {
+            shapes.circle(getCentreX(), getCentreY(), getAggroRange());
+        } else {
+            if (this.isPlayer) {
+                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 2f);
             } else {
                 shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
             }

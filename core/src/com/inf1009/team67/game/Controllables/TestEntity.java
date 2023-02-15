@@ -6,5 +6,6 @@ public class TestEntity extends ControllableCharacter {
         super();
         this.setTexture("textures/circle.png");
         this.setSize(100, 100);
+        this.setBaseMovementSpeed(20);
     }
 }
