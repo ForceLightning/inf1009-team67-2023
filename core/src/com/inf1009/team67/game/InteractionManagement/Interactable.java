@@ -8,4 +8,8 @@ public interface Interactable {
     public boolean isInteractingWith(Interactable other);
     public Circle getInteractionCircle();
     public void addReaction(Interactable other, Action reaction);
+    public void setInteractionCircle(Circle circle);
+    public void setInteractionCircle(float x, float y, float radius);
+    public void setInteractionCircle(float x, float y);
+    public void setInteractionCircle(float radius);
 }
