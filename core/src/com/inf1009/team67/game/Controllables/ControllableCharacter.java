@@ -114,7 +114,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     @Override
     public void applyFromCombatAccumulator(float delta) {
         setPosition(getPosition().add(combatAccumulator.getDeltaPosition().scl(delta)));
-        setPosition(getPosition().add(combatAccumulator.getDeltaPositionRelMoveSpeed().scl(getBaseMovementSpeed()).scl(delta)));
+        setVelocity(getVelocity().add(combatAccumulator.getDeltaPositionRelMoveSpeed().scl(getBaseMovementSpeed()).scl(delta)));
         addHealth(combatAccumulator.getDeltaHealth());
         // if (combatAccumulator.getDeltaHealth() < 0) {
         //     System.out.println("Health: " + getHealth() + ", Delta Health: " + combatAccumulator.getDeltaHealth());
@@ -136,7 +136,11 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void setHealth(float health) {
-        this.health = Math.min(this.health, health);
+        this.health = health;
+    }
+
+    public void modifyHealth(float health) {
+        this.health = Math.min(this.maxHealth, health);
         if (this.health <= 0) {
             this.health = 0;
             this.combatBehaviour = BasicCombatBehaviour.DEAD;
@@ -150,11 +154,11 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void addDamage(float damage) {
-        this.setHealth(this.getHealth() - damage);
+        this.modifyHealth(this.getHealth() - damage);
     }
 
     public void addHealth(float health) {
-        this.setHealth(this.getHealth() + health);
+        this.modifyHealth(this.getHealth() + health);
     }
 
     public float getMaxHealth() {

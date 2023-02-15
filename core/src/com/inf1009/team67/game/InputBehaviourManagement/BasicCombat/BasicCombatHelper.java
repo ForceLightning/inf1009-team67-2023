@@ -51,13 +51,13 @@ public class BasicCombatHelper {
 
     public void setAggro(ControllableCharacter combatant, ControllableCharacter other) {
         boolean inRange = inRange(combatant, other);
-        if (combatant.getTarget() == null && (inRange || combatant.getCombatStates().contains(BasicCombatState.IN_RANGE)) && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
+        if (combatant.getTarget() == null && (inRange || combatant.getCombatStates().contains(BasicCombatState.IN_RANGE))) {
             combatant.setTarget(other);
             if (!combatant.getCombatStates().contains(BasicCombatState.HURT)) {
                 combatant.getCombatStates().add(BasicCombatState.ATTACKING);
                 combatant.setCombatBehaviour(BasicCombatBehaviour.ATTACK);
             }
-        } else if ((!inRange(combatant, other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) && combatant.getTarget() == other) {
+        } else if (!inRange(combatant, other) && combatant.getTarget() == other) {
             combatant.setTarget(null);
             combatant.getCombatStates().remove(BasicCombatState.ATTACKING);
         }
@@ -65,7 +65,7 @@ public class BasicCombatHelper {
 
     public void setTarget(ControllableCharacter combatant, ControllableCharacter other) {
         boolean inRange = inRange(combatant, other);
-        if (combatant.getTarget() == null && inRange && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
+        if (combatant.getTarget() == null && inRange) {
             combatant.setTarget(other);
         } else if ((!inRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) {
             combatant.setTarget(null);

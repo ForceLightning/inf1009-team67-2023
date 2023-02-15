@@ -85,6 +85,7 @@ public class GameScreen extends ScreenBase {
         batch.setProjectionMatrix(camera.combined);
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
+        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
         // rectangle.render();
         // //rectangle.movement();

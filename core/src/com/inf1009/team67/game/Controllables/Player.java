@@ -2,6 +2,9 @@ package com.inf1009.team67.game.Controllables;
 
 import java.util.EnumSet;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.inf1009.team67.game.InputBehaviourManagement.Inputs;
 import com.inf1009.team67.game.InputBehaviourManagement.StateManager;
@@ -18,6 +21,8 @@ public class Player extends ControllableCharacter {
         this.stateManager = new StateManager();
         this.setBaseMovementSpeed(100);
         this.setAttackSpeed(5);
+        this.setMaxHealth(1000f);
+        this.setHealth(1000f);
     }
 
     public void update(float delta) {
@@ -67,5 +72,23 @@ public class Player extends ControllableCharacter {
                     break;
             }
         }
+    }
+    @Override
+    public void drawDebug(ShapeRenderer shapes) {
+        super.drawDebug(shapes);
+        Color oldColor = shapes.getColor();
+        shapes.setColor(Color.RED);
+        // define the hp bar size
+        Vector2 hpBarSize = new Vector2(100, 10);
+        // get position above player bounds
+        // note that x and y are the bottom left corner of the rectangle
+        Vector2 hpBarPos = new Vector2(this.getCentreX() - hpBarSize.x / 2, this.getCentreY() + this.getHeight() / 2 + hpBarSize.y / 2);
+        // draw hp bar
+        shapes.set(ShapeType.Filled);
+        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x, hpBarSize.y);
+        shapes.setColor(Color.WHITE);
+        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x * (this.getHealth() / this.getMaxHealth()), hpBarSize.y);
+        shapes.set(ShapeType.Line);
+        shapes.setColor(oldColor);
     }
 }
