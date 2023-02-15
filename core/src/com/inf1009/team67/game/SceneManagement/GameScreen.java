@@ -114,6 +114,8 @@ public class GameScreen extends ScreenBase {
     @Override
     public void hide() {
         stage.unfocusAll();
+        entityCollection.dispose();
+        stage.dispose();
     }
 
     @Override
