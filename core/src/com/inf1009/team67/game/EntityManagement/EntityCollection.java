@@ -125,12 +125,7 @@ public class EntityCollection {
     }
 
     public void dispose() {
-        for (Integer z : entityCollection.keySet()) {
-            for (EntityBase entity : entityCollection.get(z)) {
-                entityCollection.get(z).remove(entity);
-            }
-        }
-        stage.getRoot().clear();
+        entityCollection.clear();
     }
 
     public void update(float delta) {
