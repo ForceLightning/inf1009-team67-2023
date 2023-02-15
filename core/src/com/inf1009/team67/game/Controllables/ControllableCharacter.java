@@ -116,9 +116,9 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         setPosition(getPosition().add(combatAccumulator.getDeltaPosition().scl(delta)));
         setPosition(getPosition().add(combatAccumulator.getDeltaPositionRelMoveSpeed().scl(getBaseMovementSpeed()).scl(delta)));
         addHealth(combatAccumulator.getDeltaHealth());
-        if (combatAccumulator.getDeltaHealth() < 0) {
-            System.out.println("Health: " + getHealth() + ", Delta Health: " + combatAccumulator.getDeltaHealth());
-        }
+        // if (combatAccumulator.getDeltaHealth() < 0) {
+        //     System.out.println("Health: " + getHealth() + ", Delta Health: " + combatAccumulator.getDeltaHealth());
+        // }
     }
 
     @Override

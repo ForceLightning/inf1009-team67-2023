@@ -27,7 +27,7 @@ public class BasicCombatHelper {
             if (combatant.getAttackTimer() >= 0) {
                 combatant.resetAttackTimer();
                 other.getCombatAccumulator().addToHealth(-1 * combatant.getDamage());
-                System.out.println(combatant.toString() + " attacked " + other.toString() + " for " + combatant.getDamage() + " damage.");
+                // System.out.println(combatant.toString() + " attacked " + other.toString() + " for " + combatant.getDamage() + " damage.");
             }
         }
     }
