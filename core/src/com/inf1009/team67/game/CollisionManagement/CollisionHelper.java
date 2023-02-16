@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public class CollisionHelper {
-    public static <T extends RigidBody<?>> void handleCollision(T a, T b) {
+    public static <T extends RigidBody<?>, V extends RigidBody<?>> void handleCollision(T a, V b) {
         a.handleCollision(b);
         b.handleCollision(a);
     }
