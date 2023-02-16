@@ -40,11 +40,14 @@ public class BasicCombatHelper {
 
     public void handleChase(ControllableCharacter combatant, ControllableCharacter other) {
         if (inRange(combatant, other)) {
-            float chase = inRange(combatant, other) ? 1 : -1;
+            boolean flee = combatant.getCombatBehaviour() == BasicCombatBehaviour.FLEE;
             Vector2 chaseVector = new Vector2(
                 other.getCentreX() - combatant.getCentreX(),
                 other.getCentreY() - combatant.getCentreY()
-            ).nor().scl(chase);
+            ).nor();
+            if (flee) {
+                chaseVector.rotateDeg(180);
+            }
             combatant.getCombatAccumulator().addToPositionRelMoveSpeed(chaseVector);
         }
     }
