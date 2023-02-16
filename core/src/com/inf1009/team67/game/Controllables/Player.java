@@ -76,19 +76,5 @@ public class Player extends ControllableCharacter {
     @Override
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
-        Color oldColor = shapes.getColor();
-        shapes.setColor(Color.RED);
-        // define the hp bar size
-        Vector2 hpBarSize = new Vector2(100, 10);
-        // get position above player bounds
-        // note that x and y are the bottom left corner of the rectangle
-        Vector2 hpBarPos = new Vector2(this.getCentreX() - hpBarSize.x / 2, this.getCentreY() + this.getHeight() / 2 + hpBarSize.y / 2);
-        // draw hp bar
-        shapes.set(ShapeType.Filled);
-        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x, hpBarSize.y);
-        shapes.setColor(Color.WHITE);
-        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x * (this.getHealth() / this.getMaxHealth()), hpBarSize.y);
-        shapes.set(ShapeType.Line);
-        shapes.setColor(oldColor);
     }
 }

@@ -33,7 +33,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.combatAccumulator = new BasicCombatAccumulator();
         this.health = 100;
         this.maxHealth = 100;
-        this.hurtThreshold = 0.1f;
+        this.hurtThreshold = 0.5f;
         this.attackSpeed = 1;
         this.attackDamage = 10;
         this.aggroRange = 200;
@@ -146,7 +146,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             this.combatBehaviour = BasicCombatBehaviour.DEAD;
             this.combatStates = EnumSet.of(BasicCombatState.DEAD);
             this.target = null;
-        } else if (this.health <= this.maxHealth * this.hurtThreshold) {
+        } else if (this.health <= (this.maxHealth * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
         } else {
             this.combatStates.remove(BasicCombatState.HURT);
@@ -267,5 +267,18 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
                 shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
             }
         }
+        shapes.setColor(Color.RED);
+        // define the hp bar size
+        Vector2 hpBarSize = new Vector2(100, 10);
+        // get position above player bounds
+        // note that x and y are the bottom left corner of the rectangle
+        Vector2 hpBarPos = new Vector2(this.getCentreX() - hpBarSize.x / 2, this.getCentreY() + this.getHeight() / 2 + hpBarSize.y / 2);
+        // draw hp bar
+        shapes.set(ShapeType.Filled);
+        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x, hpBarSize.y);
+        shapes.setColor(Color.WHITE);
+        shapes.rect(hpBarPos.x, hpBarPos.y, hpBarSize.x * (this.getHealth() / this.getMaxHealth()), hpBarSize.y);
+        shapes.set(ShapeType.Line);
+        shapes.setColor(oldColor);
     }
 }

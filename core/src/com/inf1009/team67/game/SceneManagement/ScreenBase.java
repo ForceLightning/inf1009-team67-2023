@@ -1,12 +1,7 @@
 package com.inf1009.team67.game.SceneManagement;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.Main.MyGdxGame;
 
@@ -28,7 +23,7 @@ public class ScreenBase implements Screen {
 
     @Override
     public void render(float delta) {
-        stage.act(delta);
+        stage.act(Math.min(delta, 1/60f));
     }
 
     @Override

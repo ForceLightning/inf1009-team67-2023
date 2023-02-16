@@ -72,7 +72,6 @@ public class InstructionsScreen extends ScreenBase {
         
         table.add(instruction_box).size(500, 400);
         backArea.add(backButton).size(110, 50);
-        Label masterVolumeLabel = new Label("Master Volume", skin);
 
         
     }
