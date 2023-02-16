@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Circle;
 
 public interface RigidBody<T> {
     public void applyFromAccumulator(float delta);
-    public void setAccumulator(Accumulator accumulator);
+    public void setAccumulator(CollisionAccumulator accumulator);
     public void resetAccumulator();
-    public Accumulator getAccumulator();
+    public CollisionAccumulator getAccumulator();
     public <V extends RigidBody<?>> boolean isCollidingWith(V other);
     public <V extends RigidBody<?>> void handleCollision(V other);
     public T getEntity();

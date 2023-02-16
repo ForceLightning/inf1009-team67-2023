@@ -7,16 +7,17 @@ import com.inf1009.team67.game.EntityManagement.EntityBase;
 
 public abstract class DynamicBody extends EntityBase implements RigidBody<DynamicBody> {
     private Circle hitBox;
-    private Accumulator accumulator;
+    private CollisionAccumulator accumulator;
 
     public DynamicBody() {
         super();
-        accumulator = new Accumulator(this);
+        accumulator = new CollisionAccumulator(this);
         hitBox = new Circle(getCentre(), Math.min(getWidth()/2, getHeight()/2));
     }
 
     @Override 
     public void update(float delta) {
+        applyFromAccumulator(delta);
         super.update(delta);
     }
 
@@ -55,11 +56,11 @@ public abstract class DynamicBody extends EntityBase implements RigidBody<Dynami
         accumulator.reset();
     }
 
-    public Accumulator getAccumulator() {
+    public CollisionAccumulator getAccumulator() {
         return accumulator;
     }
 
-    public void setAccumulator(Accumulator accumulator) {
+    public void setAccumulator(CollisionAccumulator accumulator) {
         this.accumulator = accumulator;
     }
 

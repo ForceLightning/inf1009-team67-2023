@@ -12,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.CollisionManagement.CollisionHelper;
+import com.inf1009.team67.game.Controllables.Player;
+import com.inf1009.team67.game.Controllables.TestEntity;
 import com.inf1009.team67.game.EntityManagement.EntityCollection;
-import com.inf1009.team67.game.EntityManagement.TestEntity;
-import com.inf1009.team67.game.InputBehaviourManagement.Player;
+import com.inf1009.team67.game.InputBehaviourManagement.BasicCombat.BasicCombatHelper;
 import com.inf1009.team67.game.Main.MyGdxGame;
 import com.inf1009.team67.game.Shape.Rectangle;
 public class GameScreen extends ScreenBase {
@@ -28,6 +29,7 @@ public class GameScreen extends ScreenBase {
     private EntityCollection entityCollection;
     private Stage stage;
     private final CollisionHelper collisionHelper;
+    private final BasicCombatHelper basicCombatHelper;
 
 
     public GameScreen(MyGdxGame myGdxGame){
@@ -42,6 +44,7 @@ public class GameScreen extends ScreenBase {
         stage.setDebugAll(true);
         entityCollection = new EntityCollection(stage);
         collisionHelper = new CollisionHelper();
+        basicCombatHelper = new BasicCombatHelper();
     }
 
     @Override
@@ -80,8 +83,10 @@ public class GameScreen extends ScreenBase {
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        entityCollection.update(delta);
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
+        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        entityCollection.update(delta);
         // rectangle.render();
         // //rectangle.movement();
         // if(rectangle.getX() <= 0 + 40) rectangle.setX(0 + 40);

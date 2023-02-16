@@ -35,14 +35,5 @@ public class CollisionHelper {
                 }
             }
         }
-        // apply the accumulators
-        delta = Math.max(delta, 1/60);
-        for (Integer z : entityCollection.keySet()) {
-            for (EntityBase entity : entityCollection.get(z)) {
-                if (entity instanceof RigidBody) {
-                    ((RigidBody<?>) entity).applyFromAccumulator(delta);
-                }
-            }
-        }
     }
 }
