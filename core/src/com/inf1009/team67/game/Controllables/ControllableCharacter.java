@@ -153,6 +153,15 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         }
     }
 
+    public void hurtCheck() {
+        if (this.health <= (this.maxHealth * this.hurtThreshold)) {
+            this.combatStates.add(BasicCombatState.HURT);
+            this.combatBehaviour = BasicCombatBehaviour.FLEE;
+        } else {
+            this.combatStates.remove(BasicCombatState.HURT);
+        }
+    }
+
     public void addDamage(float damage) {
         this.modifyHealth(this.getHealth() - damage);
     }
@@ -221,6 +230,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     public void update(float delta) {
         if (this.combatBehaviour != BasicCombatBehaviour.DEAD) {
             updateBehaviour(combatBehaviour);
+            hurtCheck();
             applyFromCombatAccumulator(delta);
         }
         super.update(delta);
