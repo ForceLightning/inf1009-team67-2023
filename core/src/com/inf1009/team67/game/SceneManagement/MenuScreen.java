@@ -19,8 +19,6 @@ import com.inf1009.team67.game.Util.AssetsManager;
 
 public class MenuScreen extends ScreenBase {
 
-    private Stage stage;
-
     private Skin skin;
 
     private AssetsManager assetsManager = new AssetsManager();
@@ -37,7 +35,6 @@ public class MenuScreen extends ScreenBase {
     public MenuScreen(MyGdxGame game) {
         super(game);
         //parent = myGdxGame;
-        stage = new Stage(new ScreenViewport());
         //Gdx.input.setInputProcessor(stage);
         game.assetsManager.manager.finishLoading();
         playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
@@ -47,7 +44,7 @@ public class MenuScreen extends ScreenBase {
 
         table.setFillParent(true);
         table.setDebug(false);
-        stage.addActor(table);
+        getStage().addActor(table);
         table.setSize(500, 500);
         table.setScale(1.0f);
 
@@ -70,7 +67,7 @@ public class MenuScreen extends ScreenBase {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(getStage());
         playingMusic.play();
         playingMusic.setVolume(Settings.getMusicVolume() * Settings.getMasterVolume());
         // print music status
@@ -117,8 +114,8 @@ public class MenuScreen extends ScreenBase {
         //Gdx.gl.glClearColor(0f, 0.4f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //ask stage to do action and draw itself
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+        getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        getStage().draw();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -126,14 +123,14 @@ public class MenuScreen extends ScreenBase {
         batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
         sprite.draw(batch);
         batch.end();
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw(); // Drawing the level
+        getStage().act(Gdx.graphics.getDeltaTime());
+        getStage().draw(); // Drawing the level
     }
 
     @Override
     public void resize(int width, int height) {
         // change stage viewport when screen size is changed
-        stage.getViewport().update(width, height, true);
+        getStage().getViewport().update(width, height, true);
     }
 
 
@@ -149,14 +146,14 @@ public class MenuScreen extends ScreenBase {
 
     @Override
     public void hide() {
-        stage.unfocusAll();
+        getStage().unfocusAll();
         playingMusic.stop();
     }
 
     @Override
     public void dispose() {
         assetsManager.manager.dispose();
-        stage.dispose();
+        getStage().dispose();
         playingMusic.dispose();
         batch.dispose();
     }

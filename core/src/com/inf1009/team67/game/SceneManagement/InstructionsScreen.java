@@ -24,7 +24,6 @@ import com.inf1009.team67.game.Util.AssetsManager;
 
 public class InstructionsScreen extends ScreenBase {
 
-    private Stage stage;
     private Skin skin;
 
     private String instructions;
@@ -40,8 +39,7 @@ public class InstructionsScreen extends ScreenBase {
     public InstructionsScreen(MyGdxGame game) {
         super(game);
         //parent = myGdxGame;
-        stage = new Stage(new ScreenViewport());
-        //Gdx.input.setInputProcessor(stage);
+        //Gdx.input.setInputProcessor(getStage());
         game.assetsManager.manager.finishLoading();
         playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
         skin = game.assetsManager.manager.get("skin/metal-ui.json");
@@ -61,9 +59,6 @@ public class InstructionsScreen extends ScreenBase {
         instruction_box = new Label(newItems.get(0), skin);
         instruction_box.setWrap(true);
         instruction_box.setAlignment(Align.center);
-       
-       
-        stage = new Stage(new ScreenViewport());
 
         Table table = new Table();
         Table backArea = new Table();
@@ -72,8 +67,8 @@ public class InstructionsScreen extends ScreenBase {
         backArea.setSize(100, 100);
         table.setFillParent(true);
 
-        stage.addActor(table);
-        stage.addActor(backArea);
+        getStage().addActor(table);
+        getStage().addActor(backArea);
         
         table.add(instruction_box).size(500, 400);
         backArea.add(backButton).size(110, 50);
@@ -85,7 +80,7 @@ public class InstructionsScreen extends ScreenBase {
 
 @Override
 public void show() {
-    Gdx.input.setInputProcessor(stage);
+    Gdx.input.setInputProcessor(getStage());
 
     backButton.addListener(new ChangeListener() {
         @Override
@@ -101,16 +96,16 @@ public void render(float delta) {
     Gdx.gl.glClearColor(0x77, 0xff, 0xff, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    // tell our stage to do actions and draw itself
-    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-    stage.draw();
+    // tell our getStage() to do actions and draw itself
+    getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+    getStage().draw();
 
 }
 
 @Override
 public void resize(int width, int height) {
-    // change the stage's viewport when the screen size is changed
-    stage.getViewport().update(width, height, true);
+    // change the getStage()'s viewport when the screen size is changed
+    getStage().getViewport().update(width, height, true);
 
 }
 
@@ -126,7 +121,7 @@ public void resume() {
 
 @Override
 public void hide() {
-    stage.unfocusAll();
+    getStage().unfocusAll();
 }
 
 @Override

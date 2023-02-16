@@ -19,7 +19,6 @@ import com.inf1009.team67.game.Util.Pair;
 
 public class SettingsScreen extends ScreenBase {
 
-    private Stage stage;
     private Skin skin;
     private TextButton backButton;
     private Slider masterVolumeSlider;
@@ -31,7 +30,6 @@ public class SettingsScreen extends ScreenBase {
         game.assetsManager.manager.finishLoading();
         skin = game.assetsManager.manager.get("skin/metal-ui.json");
         backButton = new TextButton("Back", skin);
-        stage = new Stage(new ScreenViewport());
         // Create a table that fills the screen. Everything else will go inside
         // this table.
         Table table = new Table();
@@ -40,8 +38,8 @@ public class SettingsScreen extends ScreenBase {
         backArea.setSize(100, 100);
         table.setFillParent(true);
         // table.setDebug(true);
-        stage.addActor(table);
-        stage.addActor(backArea);
+        getStage().addActor(table);
+        getStage().addActor(backArea);
         backArea.add(backButton).size(110, 50);
         Label masterVolumeLabel = new Label("Master Volume", skin);
         Label musicVolumeLabel = new Label("Music Volume", skin);
@@ -61,7 +59,7 @@ public class SettingsScreen extends ScreenBase {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(getStage());
 
         masterVolumeSlider.setValue(Settings.getMasterVolume());
         musicVolumeSlider.setValue(Settings.getMusicVolume());
@@ -103,16 +101,16 @@ public class SettingsScreen extends ScreenBase {
         Gdx.gl.glClearColor(0x77, 0xff, 0xff, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // tell our stage to do actions and draw itself
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+        // tell our getStage() to do actions and draw itself
+        getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        getStage().draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-        // change the stage's viewport when the screen size is changed
-        stage.getViewport().update(width, height, true);
+        // change the getStage()'s viewport when the screen size is changed
+        getStage().getViewport().update(width, height, true);
 
     }
 
@@ -128,7 +126,7 @@ public class SettingsScreen extends ScreenBase {
 
     @Override
     public void hide() {
-        stage.unfocusAll();
+        getStage().unfocusAll();
     }
 
     @Override

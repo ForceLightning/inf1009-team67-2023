@@ -28,5 +28,8 @@ public class MyGdxGame extends Game {
 	public void setScreen(ScreenEnum screen) {
 		screenManager.setScreen(screen);
 	}
+	public void switchScreen(ScreenEnum screen) {
+		screenManager.switchScreen(screen);
+	}
 
 }

@@ -17,10 +17,36 @@ public class ScreenManager {
         screenCollection.put(ScreenEnum.SETTINGS, SettingsScreen.class);
         screenCollection.put(ScreenEnum.GAME, GameScreen.class);
         screenCollection.put(ScreenEnum.END, EndScreen.class);
+        screenCollection.put(ScreenEnum.INSTRUCTIONS, InstructionsScreen.class);
+    }
+
+    public void switchScreen(ScreenEnum screen) {
+        if (game.getScreen() instanceof ScreenBase) {
+            final ScreenBase currentScreen = (ScreenBase) game.getScreen();
+            try {
+                ScreenBase newScreen = screenCollection
+                    .get(screen)
+                    .getDeclaredConstructor(MyGdxGame.class)
+                    .newInstance(game);
+                TransitionScreen transitionScreen = new TransitionScreen(
+                    game,
+                    currentScreen,
+                    newScreen
+                );
+                game.setScreen(transitionScreen);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setScreen(ScreenEnum screen) {
-
         try {
             ScreenBase newScreen = screenCollection
                 .get(screen)

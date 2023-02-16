@@ -48,17 +48,12 @@ public class SplashScreen extends ScreenBase {
     public void render(float delta) {
 
 
-        // game.setScreen(new SplashScreen(game));
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
         sprite.draw(batch);
         font.draw(batch, "Press any key to start", Gdx.graphics.getWidth() * .43f, Gdx.graphics.getHeight() * .50f);
-        // Gdx.gl.glClearColor(0, 0.25f, 0f, 1);
-        // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // batch.begin();
-        // font.draw(batch, "Press any key to start", Gdx.graphics.getWidth() * .50f, Gdx.graphics.getHeight() * .50f);
         batch.end();
     }
 
