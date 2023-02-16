@@ -46,4 +46,8 @@ public class TransitionScreen extends ScreenBase {
         }
         alpha += fadeDirection ? 0.01f : -0.01f;
     }
+
+    @Override
+    public void show() {
+    }
 }

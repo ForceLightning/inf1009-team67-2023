@@ -77,55 +77,36 @@ public class InstructionsScreen extends ScreenBase {
     }
 
 
-@Override
-public void show() {
-    Gdx.input.setInputProcessor(getStage());
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(getStage());
 
-    backButton.addListener(new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            // screenManager.changeScreen(ScreenManager.MENU);
-            game.setScreen(ScreenEnum.MENU);
-        }
-    });}
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // screenManager.changeScreen(ScreenManager.MENU);
+                game.setScreen(ScreenEnum.MENU);
+            }
+        });}
 
-@Override
-public void render(float delta) {
-    // clear the screen ready for next set of images to be drawn
-    Gdx.gl.glClearColor(0x77, 0xff, 0xff, 1);
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void render(float delta) {
+        // clear the screen ready for next set of images to be drawn
+        Gdx.gl.glClearColor(0x77, 0xff, 0xff, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    // tell our getStage() to do actions and draw itself
-    getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-    getStage().draw();
+        // tell our getStage() to do actions and draw itself
+        getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        getStage().draw();
 
-}
+    }
 
-@Override
-public void resize(int width, int height) {
-    // change the getStage()'s viewport when the screen size is changed
-    getStage().getViewport().update(width, height, true);
+    @Override
+    public void resize(int width, int height) {
+        // change the getStage()'s viewport when the screen size is changed
+        getStage().getViewport().update(width, height, true);
 
-}
+    }
 
-@Override
-public void pause() {
-
-}
-
-@Override
-public void resume() {
-
-}
-
-@Override
-public void hide() {
-    getStage().unfocusAll();
-}
-
-@Override
-public void dispose() {
-
-}
 }
 

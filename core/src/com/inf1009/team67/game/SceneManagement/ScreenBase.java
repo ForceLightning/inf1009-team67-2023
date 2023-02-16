@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.game.Main.MyGdxGame;
 
-public class ScreenBase implements Screen {
+public abstract class ScreenBase implements Screen {
 
     public MyGdxGame game;
     private Stage stage;
@@ -17,9 +17,7 @@ public class ScreenBase implements Screen {
 
     }
 
-    @Override
-    public void show() {
-    }
+    public abstract void show();
 
     @Override
     public void render(float delta) {
@@ -28,6 +26,7 @@ public class ScreenBase implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -37,14 +36,17 @@ public class ScreenBase implements Screen {
 
     @Override
     public void resume() {
+        setPaused(false);
     }
 
     @Override
     public void hide() {
+        stage.unfocusAll();
     }
 
     @Override
     public void dispose() {
+        stage.dispose();
     }
 
     public Stage getStage() {
@@ -52,7 +54,7 @@ public class ScreenBase implements Screen {
     }
 
     public void hideAfterTransition() {
-
+        hide();
     }
 
     public void setStage(Stage stage) {
