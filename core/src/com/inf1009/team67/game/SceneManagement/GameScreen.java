@@ -27,7 +27,6 @@ public class GameScreen extends ScreenBase {
     private Texture backgroundTexture;
     private OrthographicCamera camera;
     private EntityCollection entityCollection;
-    private Stage stage;
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
 
@@ -40,16 +39,16 @@ public class GameScreen extends ScreenBase {
         this.sprite = new Sprite();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        stage = new Stage(new ScreenViewport(camera), batch);
-        stage.setDebugAll(true);
-        entityCollection = new EntityCollection(stage);
+        setStage(new Stage(new ScreenViewport(camera), batch));
+        getStage().setDebugAll(true);
+        entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper();
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(getStage());
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
@@ -79,7 +78,7 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void render(float delta) {
-
+        super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -93,10 +92,11 @@ public class GameScreen extends ScreenBase {
         // if(rectangle.getX() > 800 - 40) rectangle.setX(800 - 40);
         // if(rectangle.getY() <=0 + 40) rectangle.setY(0 + 40);
         // if(rectangle.getY() > 600 - 40) rectangle.setY(600 - 40);
-        stage.draw();
+        getStage().draw();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
-            game.setScreen(new MenuScreen(game));
+            // game.setScreen(new MenuScreen(game));
+            game.switchScreen(ScreenEnum.MENU);
         }
 
     }
@@ -118,15 +118,15 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void hide() {
-        stage.unfocusAll();
+        getStage().unfocusAll();
         entityCollection.dispose();
-        stage.dispose();
+        getStage().dispose();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         entityCollection.dispose();
-        stage.dispose();
+        getStage().dispose();
     }
 }
