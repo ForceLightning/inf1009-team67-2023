@@ -3,9 +3,6 @@ package com.inf1009.team67.game.SceneManagement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.inf1009.team67.game.Main.MyGdxGame;
 
 public class ScreenManager {
@@ -25,19 +22,27 @@ public class ScreenManager {
 
     public void switchScreen(ScreenEnum screen) {
         if (game.getScreen() instanceof ScreenBase) {
-            Stage currentStage = ((ScreenBase) game.getScreen()).getStage();
-            currentStage.getRoot().getColor().a = 1;
-            SequenceAction sequenceAction = new SequenceAction();
-            sequenceAction.addAction(Actions.fadeOut(0.5f));
-            sequenceAction.addAction(Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    setScreen(screen);
-                }
-            }));
-            currentStage.getRoot().addAction(sequenceAction);
-        } else {
-            setScreen(screen);
+            final ScreenBase currentScreen = (ScreenBase) game.getScreen();
+            try {
+                ScreenBase newScreen = screenCollection
+                    .get(screen)
+                    .getDeclaredConstructor(MyGdxGame.class)
+                    .newInstance(game);
+                TransitionScreen transitionScreen = new TransitionScreen(
+                    game,
+                    currentScreen,
+                    newScreen
+                );
+                game.setScreen(transitionScreen);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -44,11 +44,6 @@ public class GameScreen extends ScreenBase {
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper();
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(getStage());
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
@@ -65,6 +60,11 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(test2);
         entityCollection.insertEntity(test3);
         entityCollection.insertEntity(player);
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(getStage());
         //assetsManager.queueAddMusic();
         //assetsManager.manager.finishLoading();
         //playingMusic = assetsManager.manager.get("music/loz_title.mp3");
@@ -96,6 +96,7 @@ public class GameScreen extends ScreenBase {
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
             // game.setScreen(new MenuScreen(game));
+            // game.setScreen(ScreenEnum.MENU);
             game.switchScreen(ScreenEnum.MENU);
         }
 
@@ -118,6 +119,12 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void hide() {
+        // getStage().unfocusAll();
+        // entityCollection.dispose();
+        // getStage().dispose();
+    }
+
+    public void hideAfterTransition() {
         getStage().unfocusAll();
         entityCollection.dispose();
         getStage().dispose();
