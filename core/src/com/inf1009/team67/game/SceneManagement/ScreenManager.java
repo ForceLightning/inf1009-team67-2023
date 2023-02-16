@@ -18,6 +18,7 @@ public class ScreenManager {
         screenCollection.put(ScreenEnum.GAME, GameScreen.class);
         screenCollection.put(ScreenEnum.END, EndScreen.class);
         screenCollection.put(ScreenEnum.INSTRUCTIONS, InstructionsScreen.class);
+        screenCollection.put(ScreenEnum.LEADERBOARD, LeaderboardScreen.class);
     }
 
     public void switchScreen(ScreenEnum screen) {

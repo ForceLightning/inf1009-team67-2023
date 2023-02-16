@@ -95,6 +95,14 @@ public class MenuScreen extends ScreenBase {
             }
         });
 
+        leaderboard.addListener(new ChangeListener(){
+            @Override
+            public void changed(ChangeEvent event, Actor actor){
+
+                game.setScreen(ScreenEnum.LEADERBOARD);
+            }
+        });
+
         assetsManager.queueAddBackground();
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
