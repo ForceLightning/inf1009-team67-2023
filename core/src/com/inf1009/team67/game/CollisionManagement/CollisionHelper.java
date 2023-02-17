@@ -26,7 +26,7 @@ public class CollisionHelper {
                 if (entity instanceof RigidBody) {
                     Integer index = entityCollection.get(z).indexOf(entity);
                     for (EntityBase other : entityCollection.get(z).subList(index + 1, entityCollection.get(z).size())) {
-                        if (entity != other && entity instanceof RigidBody) {
+                        if (entity != other && other instanceof RigidBody) {
                             if (((RigidBody<?>) entity).isCollidingWith((RigidBody<?>) other)) {
                                 handleCollision((RigidBody<?>) entity, (RigidBody<?>) other);
                             }
