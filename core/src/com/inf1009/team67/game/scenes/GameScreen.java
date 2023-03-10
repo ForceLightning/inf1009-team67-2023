@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -30,10 +32,13 @@ public class GameScreen extends ScreenBase {
     private EntityCollection entityCollection;
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
+    private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
+    private int difficulty = 0; // goes from 0 - 9
 
 
     public GameScreen(MyGdxGame myGdxGame){
         super(myGdxGame);
+        this.game.setScore(0);
 
         batch = new SpriteBatch();
         rectangle = new Rectangle(150,60,90,50,5);
@@ -45,6 +50,8 @@ public class GameScreen extends ScreenBase {
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper();
+        // TODO: Spawn enemy entities outside of screen bounds
+        // TODO: Setup a timer for difficulty scaling
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
@@ -94,6 +101,10 @@ public class GameScreen extends ScreenBase {
         // if(rectangle.getY() <=0 + 40) rectangle.setY(0 + 40);
         // if(rectangle.getY() > 600 - 40) rectangle.setY(600 - 40);
         getStage().draw();
+        uiShapeRenderer.setProjectionMatrix(camera.combined);
+        uiShapeRenderer.begin(ShapeType.Line);
+        // TODO: UI Renderering here
+        uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
             // game.setScreen(new MenuScreen(game));

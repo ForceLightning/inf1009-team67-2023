@@ -20,6 +20,7 @@ public class MyGdxGame extends Game {
 	Texture img;
 	private ScreenManager screenManager;
 	public AssetsManager assetsManager;
+	private int score = 0;
 	public MyGdxGame() {
 		super();
 		screenManager = new ScreenManager(this);
@@ -47,6 +48,14 @@ public class MyGdxGame extends Game {
 		screenManager.addScreen(ScreenEnum.END, EndScreen.class);
 		screenManager.addScreen(ScreenEnum.INSTRUCTIONS, InstructionsScreen.class);
 		screenManager.addScreen(ScreenEnum.LEADERBOARD, LeaderboardScreen.class);
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 }
