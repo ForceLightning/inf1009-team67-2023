@@ -1,4 +1,4 @@
-package com.inf1009.team67.game.Controllables;
+package com.inf1009.team67.game.controllables;
 
 import java.util.EnumSet;
 
@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.inf1009.team67.game.InputBehaviourManagement.Inputs;
-import com.inf1009.team67.game.InputBehaviourManagement.StateManager;
-import com.inf1009.team67.game.InputBehaviourManagement.BasicCombat.BasicCombatBehaviour;
-import com.inf1009.team67.game.InputBehaviourManagement.BasicCombat.BasicCombatState;
+import com.inf1009.team67.engine.controllables.ControllableCharacter;
+import com.inf1009.team67.engine.inputbehaviourmanagement.Inputs;
+import com.inf1009.team67.engine.inputbehaviourmanagement.StateManager;
+import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
+import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatState;
 
 public class Player extends ControllableCharacter {
     private StateManager stateManager;

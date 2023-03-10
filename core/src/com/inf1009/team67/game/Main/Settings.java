@@ -1,4 +1,4 @@
-package com.inf1009.team67.game.Main;
+package com.inf1009.team67.game.main;
 
 public class Settings {
     private static float masterVolume = 1f;

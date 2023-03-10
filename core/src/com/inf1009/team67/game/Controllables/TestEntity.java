@@ -1,5 +1,6 @@
-package com.inf1009.team67.game.Controllables;
+package com.inf1009.team67.game.controllables;
 
+import com.inf1009.team67.engine.controllables.ControllableCharacter;
 
 public class TestEntity extends ControllableCharacter {
     public TestEntity() {
