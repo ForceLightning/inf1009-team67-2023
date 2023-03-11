@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.engine.collisionmanagement.CollisionHelper;
+import com.inf1009.team67.engine.controllables.ControllableCharacter;
+import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.entitymanagement.EntityCollection;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
@@ -33,6 +35,7 @@ public class GameScreen extends ScreenBase {
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
+    private Player player;
     private int difficulty = 0; // goes from 0 - 9
 
 
@@ -55,7 +58,7 @@ public class GameScreen extends ScreenBase {
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
-        Player player = new Player();
+        player = new Player();
         test.setPosition(400, 240);
         test.setColor(0xFF0000FF);
         test2.setPosition(450, 240);
@@ -89,17 +92,15 @@ public class GameScreen extends ScreenBase {
         super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
+        camera.position.set(player.getX(), player.getY(), 0);
+        ControllableCharacter target = getCursorTarget();
+        if (target != null) {
+            player.setTarget(target);
+        }
         batch.setProjectionMatrix(camera.combined);
-        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
-        // rectangle.render();
-        // //rectangle.movement();
-        // if(rectangle.getX() <= 0 + 40) rectangle.setX(0 + 40);
-        // if(rectangle.getX() > 800 - 40) rectangle.setX(800 - 40);
-        // if(rectangle.getY() <=0 + 40) rectangle.setY(0 + 40);
-        // if(rectangle.getY() > 600 - 40) rectangle.setY(600 - 40);
         getStage().draw();
         uiShapeRenderer.setProjectionMatrix(camera.combined);
         uiShapeRenderer.begin(ShapeType.Line);
@@ -112,6 +113,19 @@ public class GameScreen extends ScreenBase {
             game.switchScreen(ScreenEnum.MENU);
         }
 
+    }
+
+    public ControllableCharacter getCursorTarget() {
+        ControllableCharacter target = null;
+        for (EntityBase entity: entityCollection.getEntityCollection().get(player.getZ())) {
+            if (entity instanceof ControllableCharacter && entity != player) {
+                ControllableCharacter controllableCharacter = (ControllableCharacter) entity;
+                if (controllableCharacter.getHitBox().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                    target = (ControllableCharacter) entity;
+                }
+            }
+        }
+        return target;
     }
 
     @Override

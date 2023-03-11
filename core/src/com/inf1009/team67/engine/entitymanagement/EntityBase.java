@@ -17,6 +17,7 @@ public abstract class EntityBase extends Actor {
     private float alpha;
     private Vector2 velocity;
     private Vector2 acceleration;
+    private int z;
     private Rectangle boundingBox;
     private TextureRegion region;
     private float angularVelocity;
@@ -27,7 +28,7 @@ public abstract class EntityBase extends Actor {
     public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha, float baseMovementSpeed) {
         super();
         this.setPosition(x, y);
-        this.setZIndex(z);
+        this.z = z;
         this.setWidth(width);
         this.setHeight(height);
         this.setColor(color);
@@ -59,7 +60,7 @@ public abstract class EntityBase extends Actor {
         this.alpha = 1;
         this.boundingBox = new Rectangle(0, 0, 0, 0);
         this.setPosition(0, 0);
-        this.setZIndex(0);
+        this.z = 0;
         this.setWidth(0);
         this.setHeight(0);
         this.setColor(Color.WHITE);
@@ -312,4 +313,13 @@ public abstract class EntityBase extends Actor {
     public float getBaseMovementSpeed() {
         return baseMovementSpeed;
     }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
+
 }
