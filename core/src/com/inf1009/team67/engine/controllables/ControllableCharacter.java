@@ -21,6 +21,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     private float attackSpeed;
     private float attackDamage;
     private float aggroRange;
+    private float attackRange;
     private long lastAttackTimeMillis;
     private ControllableCharacter target;
     private BasicCombatAccumulator combatAccumulator;
@@ -37,6 +38,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.attackSpeed = 1;
         this.attackDamage = 10;
         this.aggroRange = 200;
+        this.attackRange = 200;
         this.lastAttackTimeMillis = 0;
         this.target = null;
         this.isPlayer = isPlayer;
@@ -291,4 +293,17 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
     }
+
+    public float getAttackRange() {
+        return attackRange;
+    }
+
+    public float getAttackRange2() {
+        return attackRange * attackRange;
+    }
+
+    public void setAttackRange(float attackRange) {
+        this.attackRange = attackRange;
+    }
+
 }

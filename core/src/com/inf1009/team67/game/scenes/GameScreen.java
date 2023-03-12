@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.engine.collisionmanagement.CollisionHelper;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
@@ -36,6 +37,9 @@ public class GameScreen extends ScreenBase {
     private final BasicCombatHelper basicCombatHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
     private Player player;
+    private Timer difficultyTimer = new Timer();
+    private Timer spawnTimer = new Timer();
+    private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
 
 
@@ -54,7 +58,27 @@ public class GameScreen extends ScreenBase {
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper();
         // TODO: Spawn enemy entities outside of screen bounds
+        float spawnInterval = 1 / spawnFrequency;
+        spawnTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                TestEntity newEnemy = new TestEntity();
+                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
+                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
+                newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
+                newEnemy.setColor(0xFF0000FF);
+                entityCollection.insertEntity(newEnemy);
+            }
+        }, spawnInterval, spawnInterval);
         // TODO: Setup a timer for difficulty scaling
+        difficultyTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                if (difficulty < 9) {
+                    difficulty++;
+                }
+            }
+        }, 60, 60);
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
