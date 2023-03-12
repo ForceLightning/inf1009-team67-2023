@@ -105,7 +105,7 @@ public class BasicCombatHelper {
                     if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
                         game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
                         combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
-                        System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
+                        // System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
                     }
                     combatant.getCombatAccumulator().reset();
                 }

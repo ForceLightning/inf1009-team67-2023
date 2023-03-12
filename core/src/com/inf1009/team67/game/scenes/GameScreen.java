@@ -31,6 +31,7 @@ import com.inf1009.team67.game.main.MyGdxGame;
 public class GameScreen extends ScreenBase {
 
     private SpriteBatch batch;
+    private SpriteBatch uiBatch = new SpriteBatch();
     private Sprite sprite;
     private Rectangle rectangle;
     private Music playingMusic;
@@ -103,8 +104,8 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(player);
         Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
-        scoreLabel.setPosition(player.getX() + 400, player.getY() + 240, Align.top);
-        getStage().addActor(scoreLabel);
+        // scoreLabel.setPosition(player.getX() + 400, player.getY() + 240, Align.top);
+        // getStage().addActor(scoreLabel);
     }
 
     @Override
@@ -139,8 +140,12 @@ public class GameScreen extends ScreenBase {
         uiShapeRenderer.setProjectionMatrix(camera.combined);
         uiShapeRenderer.begin(ShapeType.Line);
         // TODO: UI Renderering here
-        scoreLabel.setPosition(player.getCentreX(), player.getCentreY() + 235, Align.top);
+        uiShapeRenderer.end();
+        uiBatch.begin();
         scoreLabel.setText("Score: " + game.getScore());
+        scoreLabel.setPosition(400, 475, Align.top);
+        scoreLabel.draw(uiBatch, 1);
+        uiBatch.end();
         uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
@@ -148,6 +153,7 @@ public class GameScreen extends ScreenBase {
             // game.setScreen(ScreenEnum.MENU);
             game.switchScreen(ScreenEnum.MENU);
         }
+        // TODO: If player is dead, switch to end screen
 
     }
 
@@ -161,6 +167,7 @@ public class GameScreen extends ScreenBase {
                 float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
                 newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
                 newEnemy.setColor(0xFF0000FF);
+                newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + (difficulty + 1) * 8);
                 entityCollection.insertEntity(newEnemy);
             }
         }, spawnInterval, spawnInterval);
