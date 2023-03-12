@@ -10,7 +10,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -41,7 +45,16 @@ public class GameScreen extends ScreenBase {
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
+    private Label scoreLabel;
 
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 
     public GameScreen(MyGdxGame myGdxGame){
         super(myGdxGame);
@@ -56,26 +69,19 @@ public class GameScreen extends ScreenBase {
         getStage().setDebugAll(true);
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
-        basicCombatHelper = new BasicCombatHelper();
+        basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
         // TODO: Spawn enemy entities outside of screen bounds
-        float spawnInterval = 1 / spawnFrequency;
-        spawnTimer.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                TestEntity newEnemy = new TestEntity();
-                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
-                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
-                newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
-                newEnemy.setColor(0xFF0000FF);
-                entityCollection.insertEntity(newEnemy);
-            }
-        }, spawnInterval, spawnInterval);
+        scheduleSpawner(spawnFrequency);
         // TODO: Setup a timer for difficulty scaling
         difficultyTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
                 if (difficulty < 9) {
                     difficulty++;
+                    spawnFrequency += 0.1f;
+                    float spawnInterval = 1 / spawnFrequency;
+                    spawnTimer.clear();
+                    scheduleSpawner(spawnInterval);
                 }
             }
         }, 60, 60);
@@ -95,6 +101,10 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(test2);
         entityCollection.insertEntity(test3);
         entityCollection.insertEntity(player);
+        Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
+        scoreLabel.setPosition(player.getX() + 400, player.getY() + 240, Align.top);
+        getStage().addActor(scoreLabel);
     }
 
     @Override
@@ -116,7 +126,7 @@ public class GameScreen extends ScreenBase {
         super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
-        camera.position.set(player.getX(), player.getY(), 0);
+        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
         ControllableCharacter target = getCursorTarget();
         if (target != null) {
             player.setTarget(target);
@@ -129,6 +139,8 @@ public class GameScreen extends ScreenBase {
         uiShapeRenderer.setProjectionMatrix(camera.combined);
         uiShapeRenderer.begin(ShapeType.Line);
         // TODO: UI Renderering here
+        scoreLabel.setPosition(player.getCentreX(), player.getCentreY() + 235, Align.top);
+        scoreLabel.setText("Score: " + game.getScore());
         uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
@@ -139,12 +151,29 @@ public class GameScreen extends ScreenBase {
 
     }
 
+    public void scheduleSpawner(float frequency) {
+        float spawnInterval = 1 / frequency;
+        spawnTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                TestEntity newEnemy = new TestEntity();
+                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
+                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
+                newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
+                newEnemy.setColor(0xFF0000FF);
+                entityCollection.insertEntity(newEnemy);
+            }
+        }, spawnInterval, spawnInterval);
+    }
+
     public ControllableCharacter getCursorTarget() {
         ControllableCharacter target = null;
         for (EntityBase entity: entityCollection.getEntityCollection().get(player.getZ())) {
             if (entity instanceof ControllableCharacter && entity != player) {
                 ControllableCharacter controllableCharacter = (ControllableCharacter) entity;
-                if (controllableCharacter.getHitBox().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Vector3 cursorLocation = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(cursorLocation);
+                if (controllableCharacter.getHitBox().contains(cursorLocation.x, cursorLocation.y)) {
                     target = (ControllableCharacter) entity;
                 }
             }

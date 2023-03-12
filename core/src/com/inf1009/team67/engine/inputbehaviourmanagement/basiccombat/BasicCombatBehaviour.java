@@ -6,7 +6,9 @@ public enum BasicCombatBehaviour {
     IDLE {
         @Override
         public BasicCombatBehaviour updateState(BasicCombatBehaviour behaviour, EnumSet<BasicCombatState> states) {
-            if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
+            if (behaviour == KILLED || states.contains(BasicCombatState.KILLED)) {
+                return DEAD;
+            } else if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
                 return DEAD;
             } else if (states.contains(BasicCombatState.IN_AGGRO_RANGE) && !states.contains(BasicCombatState.HURT)) {
                 return ATTACK;
@@ -18,7 +20,9 @@ public enum BasicCombatBehaviour {
     ATTACK {
         @Override
         public BasicCombatBehaviour updateState(BasicCombatBehaviour behaviour, EnumSet<BasicCombatState> states) {
-            if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
+            if (behaviour == KILLED || states.contains(BasicCombatState.KILLED)) {
+                return DEAD;
+            } else if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
                 return DEAD;
             } else if (states.contains(BasicCombatState.HURT)) {
                 return FLEE;
@@ -32,7 +36,9 @@ public enum BasicCombatBehaviour {
     FLEE {
         @Override
         public BasicCombatBehaviour updateState(BasicCombatBehaviour behaviour, EnumSet<BasicCombatState> states) {
-            if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
+            if (behaviour == KILLED || states.contains(BasicCombatState.KILLED)) {
+                return DEAD;
+            } else if (behaviour == DEAD || states.contains(BasicCombatState.DEAD)) {
                 return DEAD;
             } else if (states.contains(BasicCombatState.HURT) && states.contains(BasicCombatState.IN_AGGRO_RANGE)) {
                 return FLEE;
@@ -43,6 +49,14 @@ public enum BasicCombatBehaviour {
             }
         }
     },
+
+    KILLED {
+        @Override
+        public BasicCombatBehaviour updateState(BasicCombatBehaviour behaviour, EnumSet<BasicCombatState> states) {
+            return DEAD;
+        }
+    },
+
     DEAD {
         @Override
         public BasicCombatBehaviour updateState(BasicCombatBehaviour behaviour, EnumSet<BasicCombatState> states) {

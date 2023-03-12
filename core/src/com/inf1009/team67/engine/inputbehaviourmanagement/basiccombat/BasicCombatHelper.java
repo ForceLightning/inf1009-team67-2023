@@ -6,8 +6,17 @@ import java.util.TreeMap;
 import com.badlogic.gdx.math.Vector2;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
+import com.inf1009.team67.game.main.MyGdxGame;
+import com.inf1009.team67.game.scenes.GameScreen;
 
 public class BasicCombatHelper {
+    private MyGdxGame game;
+    private GameScreen gameScreen;
+
+    public BasicCombatHelper(MyGdxGame game, GameScreen gameScreen) {
+        this.game = game;
+        this.gameScreen = gameScreen;
+    }
 
     public void setInAggroRange(ControllableCharacter combatant, ControllableCharacter other) {
         if (inAggroRange(combatant, other)){
@@ -82,7 +91,7 @@ public class BasicCombatHelper {
         boolean inRange = inAggroRange(combatant, other);
         if (combatant.getTarget() == null && inRange) {
             combatant.setTarget(other);
-        } else if ((!inAggroRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) {
+        } else if ((!inAggroRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD || other.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
             combatant.setTarget(null);
         }
     }
@@ -93,6 +102,11 @@ public class BasicCombatHelper {
             for (EntityBase entity : entityCollection.get(Z)) {
                 if (entity instanceof ControllableCharacter) {
                     ControllableCharacter combatant = (ControllableCharacter) entity;
+                    if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
+                        game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
+                        combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
+                        System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
+                    }
                     combatant.getCombatAccumulator().reset();
                 }
             }
@@ -105,7 +119,7 @@ public class BasicCombatHelper {
                     for (EntityBase otherEntity: entityCollection.get(Z)) {
                         if (otherEntity instanceof ControllableCharacter) {
                             ControllableCharacter other = (ControllableCharacter) otherEntity;
-                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
+                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD && combatant.getCombatBehaviour() != BasicCombatBehaviour.KILLED && other.getCombatBehaviour() != BasicCombatBehaviour.KILLED) {
                                 if (other.isPlayer()) {
                                     setInAggroRange(combatant, other);
                                     setAggro(combatant, other);

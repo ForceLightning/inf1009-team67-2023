@@ -143,10 +143,13 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     public void modifyHealth(float health) {
         this.health = Math.min(this.maxHealth, health);
+        if (this.combatStates.contains(BasicCombatState.KILLED)) {
+            this.combatStates = EnumSet.of(BasicCombatState.DEAD);
+        }
         if (this.health <= 0) {
             this.health = 0;
-            this.combatBehaviour = BasicCombatBehaviour.DEAD;
-            this.combatStates = EnumSet.of(BasicCombatState.DEAD);
+            this.combatBehaviour = BasicCombatBehaviour.KILLED;
+            this.combatStates = EnumSet.of(BasicCombatState.KILLED);
             this.target = null;
         } else if (this.health <= (this.maxHealth * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
@@ -230,7 +233,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     @Override
     public void update(float delta) {
-        if (this.combatBehaviour != BasicCombatBehaviour.DEAD) {
+        if (this.combatBehaviour != BasicCombatBehaviour.DEAD && this.combatBehaviour != BasicCombatBehaviour.KILLED) {
             updateBehaviour(combatBehaviour);
             hurtCheck();
             applyFromCombatAccumulator(delta);
