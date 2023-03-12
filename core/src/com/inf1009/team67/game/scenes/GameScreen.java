@@ -10,10 +10,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.engine.collisionmanagement.CollisionHelper;
+import com.inf1009.team67.engine.controllables.ControllableCharacter;
+import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.entitymanagement.EntityCollection;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
@@ -24,6 +31,7 @@ import com.inf1009.team67.game.main.MyGdxGame;
 public class GameScreen extends ScreenBase {
 
     private SpriteBatch batch;
+    private SpriteBatch uiBatch = new SpriteBatch();
     private Sprite sprite;
     private Rectangle rectangle;
     private Music playingMusic;
@@ -33,8 +41,21 @@ public class GameScreen extends ScreenBase {
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
+    private Player player;
+    private Timer difficultyTimer = new Timer();
+    private Timer spawnTimer = new Timer();
+    private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
+    private Label scoreLabel;
 
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 
     public GameScreen(MyGdxGame myGdxGame){
         super(myGdxGame);
@@ -49,13 +70,26 @@ public class GameScreen extends ScreenBase {
         getStage().setDebugAll(true);
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
-        basicCombatHelper = new BasicCombatHelper();
+        basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
         // TODO: Spawn enemy entities outside of screen bounds
+        scheduleSpawner(spawnFrequency);
         // TODO: Setup a timer for difficulty scaling
+        difficultyTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                if (difficulty < 9) {
+                    difficulty++;
+                    spawnFrequency += 0.1f;
+                    float spawnInterval = 1 / spawnFrequency;
+                    spawnTimer.clear();
+                    scheduleSpawner(spawnInterval);
+                }
+            }
+        }, 60, 60);
         TestEntity test = new TestEntity();
         TestEntity test2 = new TestEntity();
         TestEntity test3 = new TestEntity();
-        Player player = new Player();
+        player = new Player();
         test.setPosition(400, 240);
         test.setColor(0xFF0000FF);
         test2.setPosition(450, 240);
@@ -68,6 +102,10 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(test2);
         entityCollection.insertEntity(test3);
         entityCollection.insertEntity(player);
+        Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
+        // scoreLabel.setPosition(player.getX() + 400, player.getY() + 240, Align.top);
+        // getStage().addActor(scoreLabel);
     }
 
     @Override
@@ -89,21 +127,25 @@ public class GameScreen extends ScreenBase {
         super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
+        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
+        ControllableCharacter target = getCursorTarget();
+        if (target != null) {
+            player.setTarget(target);
+        }
         batch.setProjectionMatrix(camera.combined);
-        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
-        // rectangle.render();
-        // //rectangle.movement();
-        // if(rectangle.getX() <= 0 + 40) rectangle.setX(0 + 40);
-        // if(rectangle.getX() > 800 - 40) rectangle.setX(800 - 40);
-        // if(rectangle.getY() <=0 + 40) rectangle.setY(0 + 40);
-        // if(rectangle.getY() > 600 - 40) rectangle.setY(600 - 40);
         getStage().draw();
         uiShapeRenderer.setProjectionMatrix(camera.combined);
         uiShapeRenderer.begin(ShapeType.Line);
         // TODO: UI Renderering here
+        uiShapeRenderer.end();
+        uiBatch.begin();
+        scoreLabel.setText("Score: " + game.getScore());
+        scoreLabel.setPosition(400, 475, Align.top);
+        scoreLabel.draw(uiBatch, 1);
+        uiBatch.end();
         uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             // your actions
@@ -111,7 +153,39 @@ public class GameScreen extends ScreenBase {
             // game.setScreen(ScreenEnum.MENU);
             game.switchScreen(ScreenEnum.MENU);
         }
+        // TODO: If player is dead, switch to end screen
 
+    }
+
+    public void scheduleSpawner(float frequency) {
+        float spawnInterval = 1 / frequency;
+        spawnTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                TestEntity newEnemy = new TestEntity();
+                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
+                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
+                newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
+                newEnemy.setColor(0xFF0000FF);
+                newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + (difficulty + 1) * 8);
+                entityCollection.insertEntity(newEnemy);
+            }
+        }, spawnInterval, spawnInterval);
+    }
+
+    public ControllableCharacter getCursorTarget() {
+        ControllableCharacter target = null;
+        for (EntityBase entity: entityCollection.getEntityCollection().get(player.getZ())) {
+            if (entity instanceof ControllableCharacter && entity != player) {
+                ControllableCharacter controllableCharacter = (ControllableCharacter) entity;
+                Vector3 cursorLocation = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(cursorLocation);
+                if (controllableCharacter.getHitBox().contains(cursorLocation.x, cursorLocation.y)) {
+                    target = (ControllableCharacter) entity;
+                }
+            }
+        }
+        return target;
     }
 
     @Override

@@ -6,19 +6,40 @@ import java.util.TreeMap;
 import com.badlogic.gdx.math.Vector2;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
+import com.inf1009.team67.game.main.MyGdxGame;
+import com.inf1009.team67.game.scenes.GameScreen;
 
 public class BasicCombatHelper {
+    private MyGdxGame game;
+    private GameScreen gameScreen;
 
-    public void setInRange(ControllableCharacter combatant, ControllableCharacter other) {
-        if (inRange(combatant, other)){
-            combatant.getCombatStates().add(BasicCombatState.IN_RANGE);
+    public BasicCombatHelper(MyGdxGame game, GameScreen gameScreen) {
+        this.game = game;
+        this.gameScreen = gameScreen;
+    }
+
+    public void setInAggroRange(ControllableCharacter combatant, ControllableCharacter other) {
+        if (inAggroRange(combatant, other)){
+            combatant.getCombatStates().add(BasicCombatState.IN_AGGRO_RANGE);
         } else {
-            combatant.getCombatStates().remove(BasicCombatState.IN_RANGE);
+            combatant.getCombatStates().remove(BasicCombatState.IN_AGGRO_RANGE);
         }
     }
 
-    public boolean inRange(ControllableCharacter combatant, ControllableCharacter other) {
+    public void setInAttackRange(ControllableCharacter combatant, ControllableCharacter other) {
+        if (inAttackRange(combatant, other)){
+            combatant.getCombatStates().add(BasicCombatState.IN_ATTACK_RANGE);
+        } else {
+            combatant.getCombatStates().remove(BasicCombatState.IN_ATTACK_RANGE);
+        }
+    }
+
+    public boolean inAggroRange(ControllableCharacter combatant, ControllableCharacter other) {
         return combatant.getPosition().dst2(other.getPosition()) <= combatant.getAggroRange2();
+    }
+
+    public boolean inAttackRange(ControllableCharacter combatant, ControllableCharacter other) {
+        return combatant.getPosition().dst2(other.getPosition()) <= combatant.getAttackRange2();
     }
 
     public void handleAttack(ControllableCharacter combatant, ControllableCharacter other) {
@@ -33,13 +54,13 @@ public class BasicCombatHelper {
     }
 
     public void handleFlee(ControllableCharacter combatant, ControllableCharacter other) {
-        if (combatant.getCombatStates().contains(BasicCombatState.HURT) && combatant.getCombatStates().contains(BasicCombatState.IN_RANGE)) {
+        if (combatant.getCombatStates().contains(BasicCombatState.HURT) && combatant.getCombatStates().contains(BasicCombatState.IN_AGGRO_RANGE)) {
             combatant.setTarget(other);
         }
     }
 
     public void handleChase(ControllableCharacter combatant, ControllableCharacter other) {
-        if (inRange(combatant, other)) {
+        if (inAggroRange(combatant, other)) {
             boolean flee = combatant.getCombatBehaviour() == BasicCombatBehaviour.FLEE;
             Vector2 chaseVector = new Vector2(
                 other.getCentreX() - combatant.getCentreX(),
@@ -53,24 +74,24 @@ public class BasicCombatHelper {
     }
 
     public void setAggro(ControllableCharacter combatant, ControllableCharacter other) {
-        boolean inRange = inRange(combatant, other);
-        if (combatant.getTarget() == null && (inRange || combatant.getCombatStates().contains(BasicCombatState.IN_RANGE))) {
+        boolean inAttackRange = inAttackRange(combatant, other);
+        if (combatant.getTarget() == null && (inAttackRange || combatant.getCombatStates().contains(BasicCombatState.IN_ATTACK_RANGE))) {
             combatant.setTarget(other);
             if (!combatant.getCombatStates().contains(BasicCombatState.HURT)) {
                 combatant.getCombatStates().add(BasicCombatState.ATTACKING);
                 combatant.setCombatBehaviour(BasicCombatBehaviour.ATTACK);
             }
-        } else if (!inRange(combatant, other) && combatant.getTarget() == other) {
+        } else if (!inAttackRange(combatant, other) && combatant.getTarget() == other) {
             combatant.setTarget(null);
             combatant.getCombatStates().remove(BasicCombatState.ATTACKING);
         }
     }
 
     public void setTarget(ControllableCharacter combatant, ControllableCharacter other) {
-        boolean inRange = inRange(combatant, other);
+        boolean inRange = inAggroRange(combatant, other);
         if (combatant.getTarget() == null && inRange) {
             combatant.setTarget(other);
-        } else if ((!inRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD) {
+        } else if ((!inAggroRange(combatant, other) && combatant.getTarget() == other) || other.getCombatBehaviour() == BasicCombatBehaviour.DEAD || other.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
             combatant.setTarget(null);
         }
     }
@@ -81,6 +102,11 @@ public class BasicCombatHelper {
             for (EntityBase entity : entityCollection.get(Z)) {
                 if (entity instanceof ControllableCharacter) {
                     ControllableCharacter combatant = (ControllableCharacter) entity;
+                    if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
+                        game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
+                        combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
+                        // System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
+                    }
                     combatant.getCombatAccumulator().reset();
                 }
             }
@@ -93,9 +119,9 @@ public class BasicCombatHelper {
                     for (EntityBase otherEntity: entityCollection.get(Z)) {
                         if (otherEntity instanceof ControllableCharacter) {
                             ControllableCharacter other = (ControllableCharacter) otherEntity;
-                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD) {
+                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD && combatant.getCombatBehaviour() != BasicCombatBehaviour.KILLED && other.getCombatBehaviour() != BasicCombatBehaviour.KILLED) {
                                 if (other.isPlayer()) {
-                                    setInRange(combatant, other);
+                                    setInAggroRange(combatant, other);
                                     setAggro(combatant, other);
                                     handleAttack(combatant, other);
                                     handleChase(combatant, other);

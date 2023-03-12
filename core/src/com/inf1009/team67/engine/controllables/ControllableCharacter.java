@@ -21,6 +21,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     private float attackSpeed;
     private float attackDamage;
     private float aggroRange;
+    private float attackRange;
     private long lastAttackTimeMillis;
     private ControllableCharacter target;
     private BasicCombatAccumulator combatAccumulator;
@@ -37,6 +38,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.attackSpeed = 1;
         this.attackDamage = 10;
         this.aggroRange = 200;
+        this.attackRange = 200;
         this.lastAttackTimeMillis = 0;
         this.target = null;
         this.isPlayer = isPlayer;
@@ -141,10 +143,13 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     public void modifyHealth(float health) {
         this.health = Math.min(this.maxHealth, health);
+        if (this.combatStates.contains(BasicCombatState.KILLED)) {
+            this.combatStates = EnumSet.of(BasicCombatState.DEAD);
+        }
         if (this.health <= 0) {
             this.health = 0;
-            this.combatBehaviour = BasicCombatBehaviour.DEAD;
-            this.combatStates = EnumSet.of(BasicCombatState.DEAD);
+            this.combatBehaviour = BasicCombatBehaviour.KILLED;
+            this.combatStates = EnumSet.of(BasicCombatState.KILLED);
             this.target = null;
         } else if (this.health <= (this.maxHealth * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
@@ -228,7 +233,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     @Override
     public void update(float delta) {
-        if (this.combatBehaviour != BasicCombatBehaviour.DEAD) {
+        if (this.combatBehaviour != BasicCombatBehaviour.DEAD && this.combatBehaviour != BasicCombatBehaviour.KILLED) {
             updateBehaviour(combatBehaviour);
             hurtCheck();
             applyFromCombatAccumulator(delta);
@@ -291,4 +296,17 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
     }
+
+    public float getAttackRange() {
+        return attackRange;
+    }
+
+    public float getAttackRange2() {
+        return attackRange * attackRange;
+    }
+
+    public void setAttackRange(float attackRange) {
+        this.attackRange = attackRange;
+    }
+
 }
