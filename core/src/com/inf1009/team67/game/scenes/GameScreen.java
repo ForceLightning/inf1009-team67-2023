@@ -148,13 +148,12 @@ public class GameScreen extends ScreenBase {
         uiBatch.end();
         uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            // your actions
-            // game.setScreen(new MenuScreen(game));
-            // game.setScreen(ScreenEnum.MENU);
             game.switchScreen(ScreenEnum.MENU);
         }
         // TODO: If player is dead, switch to end screen
-
+        if (player.getHealth() <= 0) {
+            game.switchScreen(ScreenEnum.END);
+        }
     }
 
     public void scheduleSpawner(float frequency) {

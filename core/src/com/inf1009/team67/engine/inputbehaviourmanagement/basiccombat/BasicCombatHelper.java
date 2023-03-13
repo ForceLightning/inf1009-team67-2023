@@ -102,7 +102,7 @@ public class BasicCombatHelper {
             for (EntityBase entity : entityCollection.get(Z)) {
                 if (entity instanceof ControllableCharacter) {
                     ControllableCharacter combatant = (ControllableCharacter) entity;
-                    if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED) {
+                    if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED && !combatant.isPlayer()) {
                         game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
                         combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
                         // System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
