@@ -23,7 +23,7 @@ public class Player extends ControllableCharacter {
         this.setBaseMovementSpeed(100);
         this.setAttackSpeed(5);
         this.setMaxHealth(1000f);
-        this.setHealth(1000f);
+        this.setHealth(200f);
     }
 
     public void update(float delta) {
