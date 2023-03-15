@@ -333,16 +333,5 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.attackRange = attackRange;
     }
 
-    @Override
-    public void dispose ()
-    {
-        super.dispose();
-        if (this.combatBehaviour != BasicCombatBehaviour.DEAD && this.combatBehaviour != BasicCombatBehaviour.KILLED)
-        {
-            game.setScreen(ScreenEnum.GAMEOVERSCREEN);
-        }
-
-
-    }
 
 }
