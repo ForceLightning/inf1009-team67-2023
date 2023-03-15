@@ -41,7 +41,7 @@ public class GameScreen extends ScreenBase {
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
-    private Player player;
+    private Player player;  // getHealth and getMaxHealth
     private Timer difficultyTimer = new Timer();
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
