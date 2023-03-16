@@ -23,10 +23,11 @@ import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.entitymanagement.EntityCollection;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
+import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
 import com.inf1009.team67.game.Shape.Rectangle;
 import com.inf1009.team67.game.controllables.Player;
-import com.inf1009.team67.game.controllables.TestEntity;
+import com.inf1009.team67.game.controllables.HostileEntity;
 import com.inf1009.team67.game.main.MyGdxGame;
 public class GameScreen extends ScreenBase {
 
@@ -40,6 +41,7 @@ public class GameScreen extends ScreenBase {
     private EntityCollection entityCollection;
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
+    private final InteractionHelper interactionHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
     private Player player;
     private Timer difficultyTimer = new Timer();
@@ -71,9 +73,9 @@ public class GameScreen extends ScreenBase {
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
-        // TODO: Spawn enemy entities outside of screen bounds
+        interactionHelper = new InteractionHelper();
+        // TODO: Spawn health packs in a grid pattern depending on the player's location
         scheduleSpawner(spawnFrequency);
-        // TODO: Setup a timer for difficulty scaling
         difficultyTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
@@ -86,9 +88,9 @@ public class GameScreen extends ScreenBase {
                 }
             }
         }, 60, 60);
-        TestEntity test = new TestEntity();
-        TestEntity test2 = new TestEntity();
-        TestEntity test3 = new TestEntity();
+        HostileEntity test = new HostileEntity();
+        HostileEntity test2 = new HostileEntity();
+        HostileEntity test3 = new HostileEntity();
         player = new Player();
         test.setPosition(400, 240);
         test.setColor(0xFF0000FF);
@@ -135,6 +137,7 @@ public class GameScreen extends ScreenBase {
         batch.setProjectionMatrix(camera.combined);
         basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        interactionHelper.updateInteractions(entityCollection.getEntityCollection());
         entityCollection.update(delta);
         getStage().draw();
         uiShapeRenderer.setProjectionMatrix(camera.combined);
@@ -161,7 +164,7 @@ public class GameScreen extends ScreenBase {
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                TestEntity newEnemy = new TestEntity();
+                HostileEntity newEnemy = new HostileEntity();
                 float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
                 float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
                 newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
