@@ -269,23 +269,25 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
         Color oldColor = shapes.getColor();
-        if (shapes.isDrawing() && shapes.getCurrentType() != ShapeType.Filled) {
-            shapes.set(ShapeType.Filled);
-        }
-        float healthPercent = getHealth() / getMaxHealth();
-        Color healthColor = new Color(1 - healthPercent, healthPercent, 0, 0.5f);
-        shapes.setColor(healthColor);
-        shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
+        // if (shapes.isDrawing() && shapes.getCurrentType() != ShapeType.Filled) {
+        //     shapes.set(ShapeType.Filled);
+        // }
+        // float healthPercent = getHealth() / getMaxHealth();
+        // Color healthColor = new Color(1 - healthPercent, healthPercent, 0, 0.5f);
+        // shapes.setColor(healthColor);
+        // shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
         if (target == null) {
             shapes.circle(getCentreX(), getCentreY(), getAggroRange());
         } else {
+            shapes.set(ShapeType.Filled);
             if (this.isPlayer) {
-                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 2f);
+                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 5f);
             } else {
                 shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
             }
+            shapes.set(ShapeType.Line);
         }
         shapes.setColor(Color.RED);
         // define the hp bar size
