@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
+import com.inf1009.team67.engine.helpers.HandleEnum;
 
 public abstract class DynamicBody extends EntityBase implements RigidBody<DynamicBody> {
     private Circle hitBox;
@@ -13,6 +14,7 @@ public abstract class DynamicBody extends EntityBase implements RigidBody<Dynami
         super();
         accumulator = new CollisionAccumulator(this);
         hitBox = new Circle(getCentre(), Math.min(getWidth()/2, getHeight()/2));
+        this.addRequiredHandle(HandleEnum.COLLISION);
     }
 
     @Override 

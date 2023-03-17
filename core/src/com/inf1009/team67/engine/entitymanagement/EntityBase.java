@@ -1,5 +1,7 @@
 package com.inf1009.team67.engine.entitymanagement;
 
+import java.util.EnumSet;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,8 +14,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Align;
+import com.inf1009.team67.engine.helpers.HandleEnum;
+import com.inf1009.team67.engine.helpers.RequiresHandler;
 
-public abstract class EntityBase extends Actor {
+public abstract class EntityBase extends Actor implements RequiresHandler {
     private float alpha;
     private Vector2 velocity;
     private Vector2 acceleration;
@@ -25,6 +29,7 @@ public abstract class EntityBase extends Actor {
     private Body body;
     private float baseMovementSpeed;
     private float movementSpeedModifier;
+    private EnumSet<HandleEnum> requiredHandles = EnumSet.noneOf(HandleEnum.class);
 
     public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha, float baseMovementSpeed) {
         super();
@@ -335,6 +340,34 @@ public abstract class EntityBase extends Actor {
 
     public void setZ(int z) {
         this.z = z;
+    }
+
+    public TextureRegion getRegion() {
+        return region;
+    }
+
+    public void setRegion(TextureRegion region) {
+        this.region = region;
+    }
+
+    @Override
+    public EnumSet<HandleEnum> getRequiredHandles() {
+        return requiredHandles;
+    }
+
+    @Override
+    public void setRequiredHandles(EnumSet<HandleEnum> requiredHandles) {
+        this.requiredHandles = requiredHandles;
+    }
+
+    @Override
+    public void addRequiredHandle(HandleEnum handle) {
+        requiredHandles.add(handle);
+    }
+
+    @Override
+    public void removeRequiredHandle(HandleEnum handle) {
+        requiredHandles.remove(handle);
     }
 
 }
