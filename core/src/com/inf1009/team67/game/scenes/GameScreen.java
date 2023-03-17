@@ -4,6 +4,9 @@ package com.inf1009.team67.game.scenes;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -159,21 +162,27 @@ public class GameScreen extends ScreenBase {
         }
     }
 
+    public void spawnEnemy(float x, float y, float speedIncrease) {
+        HostileEntity newEnemy = new HostileEntity();
+        newEnemy.setPosition(x, y);
+        newEnemy.setColor(0xFF0000FF);
+        newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + speedIncrease);
+        entityCollection.insertEntity(newEnemy);
+    }
+
     public void scheduleSpawner(float frequency) {
         float spawnInterval = 1 / frequency;
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
                 // System.out.println("Spawning Enemies, Spawn interval: " + spawnInterval);
-                HostileEntity newEnemy = new HostileEntity();
                 float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
                 float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
-                newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
-                newEnemy.setColor(0xFF0000FF);
-                newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + (difficulty + 1) * 8);
-                entityCollection.insertEntity(newEnemy);
+                offsetX += player.getCentreX();
+                offsetY += player.getCentreY();
+                spawnEnemy(offsetX, offsetY, difficulty * 8f);
             }
-        }, spawnInterval, spawnInterval);
+        }, 0, spawnInterval);
     }
 
     public void scheduleDifficulty() {
@@ -199,8 +208,8 @@ public class GameScreen extends ScreenBase {
         float yStep = (rightCorner.y - leftCorner.y) / rows;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-
-                HealthPack newFood = FoodFactory.createFood((int) System.currentTimeMillis());
+                Random rng = new Random((int) (System.currentTimeMillis() + i + j + difficulty));
+                HealthPack newFood = FoodFactory.createFood(rng.nextInt(columns + rows));
                 if (newFood == null) {
                     continue;
                 } else if (newFood instanceof HealthyFood) {
