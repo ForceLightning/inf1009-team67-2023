@@ -1,5 +1,7 @@
 package com.inf1009.team67.game.food;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 
@@ -24,5 +26,13 @@ public class HealthyFood extends HealthPack {
             setInteractable(false);
             setVisible(isInteractable());
         }
+    }
+
+    @Override
+    public void drawDebug(ShapeRenderer shapes) {
+        Color oldColor = shapes.getColor();
+        shapes.setColor(Color.GREEN);
+        super.drawDebug(shapes);
+        shapes.setColor(oldColor);
     }
 }

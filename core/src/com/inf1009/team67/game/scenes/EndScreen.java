@@ -52,6 +52,7 @@ public class EndScreen extends ScreenBase {
             rankAttained.setText("1");
         } else {
             // Add the scores
+            rankAttained.setText(((Integer) (lines.length + 1)).toString());
             for (String line : lines) {
                 String[] parts = line.split(",");
                 Integer priorTopScore = Integer.parseInt(parts[2]);
