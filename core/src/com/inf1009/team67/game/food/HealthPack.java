@@ -22,6 +22,9 @@ public abstract class HealthPack extends EntityBase implements Interactable {
         this.health = health;
         this.movementSpeedAilment = movementSpeedAilment;
         this.maxHealthAilment = maxHealthAilment;
+        this.setSize(10, 10);
+        this.interactionCircle = new Circle(this.getX(), this.getY(), this.getWidth() / 2);
+        this.setColor(0xffffffff);
     }
 
     public int getHealth() {
@@ -52,8 +55,8 @@ public abstract class HealthPack extends EntityBase implements Interactable {
         if (other instanceof Player && isInteractable && other.isInteractable()) {
             Player player = (Player) other;
             player.modifyHealth(player.getHealth() + health);
-            player.setMovementSpeedModifier(movementSpeedAilment);
-            player.setMaxHealth(player.getMaxHealth() * maxHealthAilment);
+            player.setMovementSpeedModifier(player.getMovementSpeedModifier() <= 0.25 ? 0.25f : movementSpeedAilment);
+            player.setMaxHealthModifier(maxHealthAilment);
             isInteractable = false;
             setVisible(isInteractable);
         }

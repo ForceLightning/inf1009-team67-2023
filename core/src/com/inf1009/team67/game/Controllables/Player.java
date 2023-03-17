@@ -28,15 +28,16 @@ public class Player extends ControllableCharacter implements Interactable {
         this.setBaseMovementSpeed(100);
         this.setAttackSpeed(5);
         this.setMaxHealth(1000f);
-        this.setHealth(200f);
-        this.interactionCircle = new Circle(this.getX(), this.getY(), this.getWidth() / 2);
+        this.setHealth(1000f);
+        this.interactionCircle = new Circle(this.getCentreX(), this.getCentreY(), this.getWidth() / 2);
     }
 
     public void update(float delta) {
-        super.update();
+        // super.update();
         this.stateManager.handleInput();
         handleMovementInput();
         super.update(delta);
+        this.interactionCircle.setPosition(this.getCentreX(), this.getCentreY());
         // this.applyFromAccumulator(delta);
     }
 
@@ -84,12 +85,15 @@ public class Player extends ControllableCharacter implements Interactable {
     @Override
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
+        Color previousColor = shapes.getColor();
+        shapes.setColor(Color.RED);
+        shapes.circle(interactionCircle.x, interactionCircle.y, interactionCircle.radius);
+        shapes.setColor(previousColor);
     }
 
     @Override
     public void handleInteraction(Interactable other) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleInteraction'");
+        return;
     }
 
     @Override

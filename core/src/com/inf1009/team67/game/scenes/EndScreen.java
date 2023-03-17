@@ -63,7 +63,6 @@ public class EndScreen extends ScreenBase {
         }
         scoreTable.add(rankAttained).width(width).pad(padding);
         String scoreString = ((Integer) game.getScore()).toString();
-        System.out.println(scoreString);
         Label score = new Label(scoreString, skin);
         // Handle input for the name
         name = new Label("", skin);
