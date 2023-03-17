@@ -26,6 +26,7 @@ import com.inf1009.team67.engine.collisionmanagement.CollisionHelper;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.entitymanagement.EntityCollection;
+import com.inf1009.team67.engine.helpers.SuperHelper;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
@@ -50,6 +51,7 @@ public class GameScreen extends ScreenBase {
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
     private final InteractionHelper interactionHelper;
+    private final SuperHelper superHelper = SuperHelper.getInstance();
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
     private Player player;
     private Timer difficultyTimer = new Timer();
@@ -82,6 +84,7 @@ public class GameScreen extends ScreenBase {
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
         interactionHelper = new InteractionHelper();
+        superHelper.setAllHelpers(collisionHelper, basicCombatHelper, interactionHelper);
         // TODO: Spawn health packs in a grid pattern depending on the player's location
         scheduleDifficulty();
         scheduleSpawner(spawnFrequency);
@@ -138,9 +141,10 @@ public class GameScreen extends ScreenBase {
             player.setTarget(target);
         }
         batch.setProjectionMatrix(camera.combined);
-        basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
-        collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
-        interactionHelper.updateInteractions(entityCollection.getEntityCollection());
+        // basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
+        // collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        // interactionHelper.updateInteractions(entityCollection.getEntityCollection());
+        superHelper.updateHelpers(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
         getStage().draw();
         uiShapeRenderer.setProjectionMatrix(camera.combined);

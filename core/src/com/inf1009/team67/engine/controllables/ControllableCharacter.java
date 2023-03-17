@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.inf1009.team67.engine.collisionmanagement.CollidableEntity;
+import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatAccumulator;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatState;
@@ -43,6 +44,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.lastAttackTimeMillis = 0;
         this.target = null;
         this.isPlayer = isPlayer;
+        this.addRequiredHandle(HandleEnum.COMBAT);
     }
 
     public ControllableCharacter() {

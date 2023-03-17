@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
+import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.inputbehaviourmanagement.Inputs;
 import com.inf1009.team67.engine.inputbehaviourmanagement.StateManager;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
@@ -30,6 +31,7 @@ public class Player extends ControllableCharacter implements Interactable {
         this.setMaxHealth(1000f);
         this.setHealth(1000f);
         this.interactionCircle = new Circle(this.getCentreX(), this.getCentreY(), this.getWidth() / 2);
+        this.addRequiredHandle(HandleEnum.INTERACTION);
     }
 
     public void update(float delta) {
