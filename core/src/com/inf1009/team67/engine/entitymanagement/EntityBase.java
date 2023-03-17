@@ -24,6 +24,7 @@ public abstract class EntityBase extends Actor {
     private float angularAcceleration;
     private Body body;
     private float baseMovementSpeed;
+    private float movementSpeedModifier;
 
     public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha, float baseMovementSpeed) {
         super();
@@ -46,6 +47,7 @@ public abstract class EntityBase extends Actor {
         this.alpha = alpha;
         this.boundingBox = new Rectangle(x, y, width, height);
         this.baseMovementSpeed = baseMovementSpeed;
+        this.movementSpeedModifier = 1.0f;
     }
 
     public EntityBase() {
@@ -69,6 +71,7 @@ public abstract class EntityBase extends Actor {
         this.setVisible(true);
         this.setTouchable(Touchable.disabled);
         this.baseMovementSpeed = 0;
+        this.movementSpeedModifier = 1.0f;
     }
 
     public Vector2 getPosition() {
@@ -312,6 +315,18 @@ public abstract class EntityBase extends Actor {
 
     public float getBaseMovementSpeed() {
         return baseMovementSpeed;
+    }
+
+    public float getMovementSpeed() {
+        return baseMovementSpeed * movementSpeedModifier;
+    }
+
+    public void setMovementSpeedModifier(float movementSpeedModifier) {
+        this.movementSpeedModifier = movementSpeedModifier;
+    }
+
+    public float getMovementSpeedModifier() {
+        return movementSpeedModifier;
     }
 
     public int getZ() {

@@ -26,6 +26,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     private ControllableCharacter target;
     private BasicCombatAccumulator combatAccumulator;
     private boolean isPlayer;
+    private float maxHealthModifier = 1f;
 
     public ControllableCharacter(boolean isPlayer) {
         super();
@@ -142,7 +143,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void modifyHealth(float health) {
-        this.health = Math.min(this.maxHealth, health);
+        this.health = Math.min(this.getMaxHealth(), health);
         if (this.combatStates.contains(BasicCombatState.KILLED)) {
             this.combatStates = EnumSet.of(BasicCombatState.DEAD);
         }
@@ -151,7 +152,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             this.combatBehaviour = BasicCombatBehaviour.KILLED;
             this.combatStates = EnumSet.of(BasicCombatState.KILLED);
             this.target = null;
-        } else if (this.health <= (this.maxHealth * this.hurtThreshold)) {
+        } else if (this.health <= (this.getMaxHealth() * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
         } else {
             this.combatStates.remove(BasicCombatState.HURT);
@@ -159,7 +160,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void hurtCheck() {
-        if (this.health <= (this.maxHealth * this.hurtThreshold)) {
+        if (this.health <= (this.getMaxHealth() * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
             this.combatBehaviour = BasicCombatBehaviour.FLEE;
         } else {
@@ -176,6 +177,10 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public float getMaxHealth() {
+        return maxHealth * maxHealthModifier;
+    }
+
+    public float getMaxHealthLimit() {
         return maxHealth;
     }
 
@@ -307,6 +312,14 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
 
     public void setAttackRange(float attackRange) {
         this.attackRange = attackRange;
+    }
+
+    public float getMaxHealthModifier() {
+        return maxHealthModifier;
+    }
+
+    public void setMaxHealthModifier(float maxHealthModifier) {
+        this.maxHealthModifier = maxHealthModifier;
     }
 
 }

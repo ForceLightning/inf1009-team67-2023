@@ -12,4 +12,6 @@ public interface Interactable {
     public void setInteractionCircle(float x, float y, float radius);
     public void setInteractionCircle(float x, float y);
     public void setInteractionCircle(float radius);
+    public void setInteractable(boolean isInteractable);
+    public boolean isInteractable();
 }

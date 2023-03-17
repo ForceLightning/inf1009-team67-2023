@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,10 +24,15 @@ import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.entitymanagement.EntityCollection;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
+import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
 import com.inf1009.team67.game.Shape.Rectangle;
 import com.inf1009.team67.game.controllables.Player;
-import com.inf1009.team67.game.controllables.TestEntity;
+import com.inf1009.team67.game.food.FoodFactory;
+import com.inf1009.team67.game.food.HealthPack;
+import com.inf1009.team67.game.food.HealthyFood;
+import com.inf1009.team67.game.food.UnhealthyFood;
+import com.inf1009.team67.game.controllables.HostileEntity;
 import com.inf1009.team67.game.main.MyGdxGame;
 public class GameScreen extends ScreenBase {
 
@@ -40,6 +46,7 @@ public class GameScreen extends ScreenBase {
     private EntityCollection entityCollection;
     private final CollisionHelper collisionHelper;
     private final BasicCombatHelper basicCombatHelper;
+    private final InteractionHelper interactionHelper;
     private ShapeRenderer uiShapeRenderer = new ShapeRenderer();
     private Player player;
     private Timer difficultyTimer = new Timer();
@@ -71,24 +78,15 @@ public class GameScreen extends ScreenBase {
         entityCollection = new EntityCollection(getStage());
         collisionHelper = new CollisionHelper();
         basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
-        // TODO: Spawn enemy entities outside of screen bounds
+        interactionHelper = new InteractionHelper();
+        // TODO: Spawn health packs in a grid pattern depending on the player's location
+        scheduleDifficulty();
         scheduleSpawner(spawnFrequency);
-        // TODO: Setup a timer for difficulty scaling
-        difficultyTimer.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                if (difficulty < 9) {
-                    difficulty++;
-                    spawnFrequency += 0.1f;
-                    float spawnInterval = 1 / spawnFrequency;
-                    spawnTimer.clear();
-                    scheduleSpawner(spawnInterval);
-                }
-            }
-        }, 60, 60);
-        TestEntity test = new TestEntity();
-        TestEntity test2 = new TestEntity();
-        TestEntity test3 = new TestEntity();
+        HostileEntity test = new HostileEntity();
+        HostileEntity test2 = new HostileEntity();
+        HostileEntity test3 = new HostileEntity();
+        HealthyFood test4 = new HealthyFood();
+        UnhealthyFood test5 = new UnhealthyFood();
         player = new Player();
         test.setPosition(400, 240);
         test.setColor(0xFF0000FF);
@@ -96,11 +94,15 @@ public class GameScreen extends ScreenBase {
         test2.setColor(0x00FF00FF);
         test3.setPosition(450, 241);
         test3.setColor(0x0000FFFF);
+        test4.setPosition(-100, 200);
+        test5.setPosition(-100, -100);
         player.setPosition(100, 100);
         player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(test);
         entityCollection.insertEntity(test2);
         entityCollection.insertEntity(test3);
+        entityCollection.insertEntity(test4);
+        entityCollection.insertEntity(test5);
         entityCollection.insertEntity(player);
         Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
@@ -135,6 +137,7 @@ public class GameScreen extends ScreenBase {
         batch.setProjectionMatrix(camera.combined);
         basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
+        interactionHelper.updateInteractions(entityCollection.getEntityCollection());
         entityCollection.update(delta);
         getStage().draw();
         uiShapeRenderer.setProjectionMatrix(camera.combined);
@@ -148,13 +151,12 @@ public class GameScreen extends ScreenBase {
         uiBatch.end();
         uiShapeRenderer.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            // your actions
-            // game.setScreen(new MenuScreen(game));
-            // game.setScreen(ScreenEnum.MENU);
             game.switchScreen(ScreenEnum.MENU);
         }
         // TODO: If player is dead, switch to end screen
-
+        if (player.getHealth() <= 0) {
+            game.switchScreen(ScreenEnum.END);
+        }
     }
 
     public void scheduleSpawner(float frequency) {
@@ -162,7 +164,8 @@ public class GameScreen extends ScreenBase {
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                TestEntity newEnemy = new TestEntity();
+                // System.out.println("Spawning Enemies, Spawn interval: " + spawnInterval);
+                HostileEntity newEnemy = new HostileEntity();
                 float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
                 float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
                 newEnemy.setPosition(player.getX() + offsetX, player.getY() + offsetY);
@@ -171,6 +174,46 @@ public class GameScreen extends ScreenBase {
                 entityCollection.insertEntity(newEnemy);
             }
         }, spawnInterval, spawnInterval);
+    }
+
+    public void scheduleDifficulty() {
+        difficultyTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                if (difficulty < 9) {
+                    difficulty++;
+                    spawnFrequency += 0.1f;
+                    spawnTimer.clear();
+                    scheduleSpawner(spawnFrequency);
+                    Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
+                    Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
+                    spawnHealthPacks(difficulty, leftCorner, rightCorner, (difficulty + 2), (difficulty + 2));
+                }
+            }
+        }, 6, 60);
+    }
+
+    public void spawnHealthPacks(int difficulty, Vector2 leftCorner, Vector2 rightCorner, int rows, int columns) {
+        System.out.println("Spawning food");
+        float xStep = (rightCorner.x - leftCorner.x) / columns;
+        float yStep = (rightCorner.y - leftCorner.y) / rows;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+                HealthPack newFood = FoodFactory.createFood((int) System.currentTimeMillis());
+                if (newFood == null) {
+                    continue;
+                } else if (newFood instanceof HealthyFood) {
+                    newFood.setColor(0x00FF00FF);
+                } else if (newFood instanceof UnhealthyFood) {
+                    newFood.setColor(0xFF0000FF);
+                }
+                newFood.setHealth(newFood.getHealth() + (difficulty + 1) * 10);
+                newFood.setPosition(leftCorner.x + xStep * j, leftCorner.y + yStep * i);
+                newFood.setColor(0x00FF00FF);
+                entityCollection.insertEntity(newFood);
+            }
+        }
     }
 
     public ControllableCharacter getCursorTarget() {
