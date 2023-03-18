@@ -341,7 +341,6 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.attackRange = attackRange;
     }
 
-<<<<<<< HEAD
     public float getMaxHealthModifier() {
         return maxHealthModifier;
     }
@@ -349,7 +348,5 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     public void setMaxHealthModifier(float maxHealthModifier) {
         this.maxHealthModifier = maxHealthModifier;
     }
-=======
->>>>>>> origin/game-data
 
 }

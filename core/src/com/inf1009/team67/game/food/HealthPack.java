@@ -3,6 +3,7 @@ package com.inf1009.team67.game.food;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
+import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 
@@ -15,6 +16,7 @@ public abstract class HealthPack extends EntityBase implements Interactable {
 
     public HealthPack() {
         super();
+        this.addRequiredHandle(HandleEnum.INTERACTION);
     }
 
     public HealthPack(int health, float movementSpeedAilment, float maxHealthAilment) {
@@ -25,6 +27,7 @@ public abstract class HealthPack extends EntityBase implements Interactable {
         this.setSize(10, 10);
         this.interactionCircle = new Circle(this.getX(), this.getY(), this.getWidth() / 2);
         this.setColor(0xffffffff);
+        this.addRequiredHandle(HandleEnum.INTERACTION);
     }
 
     public int getHealth() {
