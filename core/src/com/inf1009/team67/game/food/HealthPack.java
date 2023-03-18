@@ -29,6 +29,13 @@ public abstract class HealthPack extends EntityBase implements Interactable {
         this.setColor(0xffffffff);
         this.addRequiredHandle(HandleEnum.INTERACTION);
     }
+    
+    @Override
+    public void scaleFromCentre(float scale) {
+        super.scaleFromCentre(scale);
+        this.interactionCircle.setRadius(this.interactionCircle.radius * scale);
+        this.interactionCircle.setPosition(this.getCentreX(), this.getCentreY());
+    }
 
     public int getHealth() {
         return health;

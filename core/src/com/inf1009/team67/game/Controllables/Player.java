@@ -43,6 +43,13 @@ public class Player extends ControllableCharacter implements Interactable {
         // this.applyFromAccumulator(delta);
     }
 
+    @Override
+    public void scaleFromCentre(float scale) {
+        super.scaleFromCentre(scale);
+        this.interactionCircle.setRadius(this.interactionCircle.radius * scale);
+        this.interactionCircle.setPosition(this.getCentreX(), this.getCentreY());
+    }
+
     public void handleMovementInput() {
         if (getCombatStates().contains(BasicCombatState.DEAD)) {
             return;

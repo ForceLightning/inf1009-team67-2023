@@ -126,6 +126,12 @@ public abstract class EntityBase extends Actor implements RequiresHandler {
         setPosition(getX() + deltaPosition.x, getY() + deltaPosition.y);
     }
 
+    public void scaleFromCentre(float scale) {
+        setWidth(getWidth() * scale);
+        setHeight(getHeight() * scale);
+        setPosition(getX() - getWidth()/2, getY() - getHeight()/2);
+    }
+
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
