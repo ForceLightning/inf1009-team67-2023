@@ -303,6 +303,8 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         // shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
+
+
         if (target == null) {
             shapes.circle(getCentreX(), getCentreY(), getAggroRange());
         } else {
@@ -314,6 +316,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             }
             shapes.set(ShapeType.Line);
         }
+
         shapes.setColor(Color.RED);
         // define the hp bar size
         Vector2 hpBarSize = new Vector2(100, 10);

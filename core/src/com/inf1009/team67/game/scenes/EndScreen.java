@@ -1,8 +1,6 @@
 package com.inf1009.team67.game.scenes;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -24,8 +22,7 @@ public class EndScreen extends ScreenBase {
     private TextButton backButton;
     private TextField username;
     private TextButton saveButton;
-    private Label name;
-    private NameInputListener listener;
+    private boolean saved = false;
     private Label labelresponse;
 
     public EndScreen(MyGdxGame myGdxGame) {
@@ -47,7 +44,7 @@ public class EndScreen extends ScreenBase {
         getStage().addActor(scoreTable);
         backArea.add(backButton).size(110, 50);
         saveArea.add(saveButton).size(110, 50);
-        FileHandle file = Gdx.files.internal("leaderboard.csv");
+        FileHandle file = Gdx.files.local("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
         // Add the header
@@ -81,7 +78,6 @@ public class EndScreen extends ScreenBase {
         String scoreString = ((Integer) game.getScore()).toString();
         Label score = new Label(scoreString, skin);
         // Handle input for the name
-        name = new Label("", skin);
         labelresponse = new Label("Please input your name", skin);
         getStage().addActor(labelresponse);
         labelresponse.setX(580);
@@ -107,16 +103,13 @@ public class EndScreen extends ScreenBase {
             public void changed(ChangeEvent event, Actor actor) {
                 if (EndScreen.this.username.getText().isEmpty()) {
                     EndScreen.this.labelresponse.setText("Input your username please.");
-                } else {
+                } else if (!saved) {
                     saveScore(username.getText(), ((Integer) game.getScore()).toString());
+                    saved = true;
                     game.setScreen(ScreenEnum.LEADERBOARD);
                 }
             }
         });
-
-        listener = new NameInputListener();
-        // TODO: Fix or Replace the input listener
-        Gdx.input.getTextInput(listener, "Enter your name", "", "John Doe");
     }
 
     @Override
@@ -126,10 +119,10 @@ public class EndScreen extends ScreenBase {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getStage().act(delta);
         getStage().draw();
-        String name = listener.getName();
-        if (name != null) {
-            this.name.setText(name);
-        }
+        // String name = listener.getName();
+        // if (name != null) {
+        //     this.name.setText(name);
+        // }
 
         username.setTextFieldFilter(new TextFieldFilter() {
             // Accepts all Characters except ',' so the it wouldnt affect csv file
@@ -170,33 +163,60 @@ public class EndScreen extends ScreenBase {
 
     private void saveScore(String name, String score) {
         // Open the CSV file for reading
-        FileHandle file = Gdx.files.internal("leaderboard.csv");
+        boolean addedScore = false;
+        FileHandle file = Gdx.files.local("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
+        ArrayList<String> inputLines = new ArrayList<String>();
+        for (String line : lines) {
+            inputLines.add(line);
+        }
+        String dummyLine = "0,NULL,-999";
+        inputLines.add(dummyLine);
+        ArrayList<String> outputLines = new ArrayList<String>();
 
         // Check if the name and score already exist in the file
         boolean exists = false;
-        for (String line : lines) {
+        int rank = 0;
+        for (String line : inputLines) {
+            rank++;
             String[] parts = line.split(",");
             if (parts.length == 3 && parts[1].equals(name) && parts[2].equals(score)) {
                 exists = true;
-                break;
+                return;
             }
+            if (parts.length == 3 && Integer.parseInt(parts[2]) < Integer.parseInt(score) && !addedScore) {
+                String uppercaseName = name.toUpperCase();
+                String newScore = String.format("%d,%s,%s\n", rank, uppercaseName, score);
+                rank++;
+                outputLines.add(newScore);
+                addedScore = true;
+            }
+            String newLine = String.format("%d,%s,%s\n", rank, parts[1], parts[2]);
+            outputLines.add(newLine);
         }
+        
+        // remove dummy line
+        outputLines = new ArrayList<String>(outputLines.subList(0, outputLines.size() - 1));
 
-        // Append the score and name to the end of the file if it doesn't already exist
+        // strip the last newline
+        if (outputLines.size() > 0) {
+            outputLines.set(outputLines.size() - 1, outputLines.get(outputLines.size() - 1).replace("\n", ""));
+        }
+        if (outputLines.size() > 10) {
+            outputLines = new ArrayList<String>(outputLines.subList(0, 10));
+        }
         if (!exists) {
-            try (FileWriter writer = new FileWriter("leaderboard.csv", true)) {
-                writer.append(String.format("%d,%s,%s\n", getNextRank(), name, score));
-            } catch (IOException e) {
-                e.printStackTrace();
+            file.writeString("", false);
+            for (String line: outputLines) {
+                file.writeString(line, true);
             }
         }
     }
 
     private int getNextRank() {
         // Read the existing scores from the CSV file
-        FileHandle file = Gdx.files.internal("leaderboard.csv");
+        FileHandle file = Gdx.files.local("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
 
@@ -207,7 +227,7 @@ public class EndScreen extends ScreenBase {
 }
 
 // private void saveScore(String name, String score) {
-// FileHandle file = Gdx.files.internal("leaderboard.csv");
+// FileHandle file = Gdx.files.local("leaderboard.csv");
 // String text = file.readString();
 
 // // Create a new entry with the name and score
