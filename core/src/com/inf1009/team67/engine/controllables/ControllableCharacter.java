@@ -302,19 +302,20 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         shapes.setColor(oldColor);
 
 
-        if (target == null) {
-            shapes.circle(getCentreX(), getCentreY(), getAggroRange());
-        } else {
-            shapes.set(ShapeType.Filled);
-            if (this.isPlayer) {
-                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 5f);
-            } else {
-                shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
-            }
-            shapes.set(ShapeType.Line);
-        }
+        // if (target == null) {
+        shapes.circle(getCentreX(), getCentreY(), getAggroRange());
+        // } else {
+        //     shapes.set(ShapeType.Filled);
+        //     if (this.isPlayer) {
+        //         shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 5f);
+        //     } else {
+        //         shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
+        //     }
+        //     shapes.set(ShapeType.Line);
+        // }
 
         shapes.setColor(Color.RED);
+        shapes.circle(getCentreX(), getCentreY(), getAttackRange());
         // define the hp bar size
         Vector2 hpBarSize = new Vector2(100, 10);
         // get position above player bounds

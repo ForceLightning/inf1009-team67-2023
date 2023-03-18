@@ -56,7 +56,7 @@ public class GameScreen extends ScreenBase {
     private Timer difficultyTimer = new Timer();
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
-    private int difficulty = 8; // goes from 0 - 9
+    private int difficulty = 0; // goes from 0 - 9
     private Label scoreLabel;
     private GUI gui;
 
@@ -95,7 +95,7 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(player);
         Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
-        gui = new GUI(this.game, this);
+        gui = new GUI(this.game, this, camera);
     }
 
     @Override
@@ -117,17 +117,18 @@ public class GameScreen extends ScreenBase {
         super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
-        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
         ControllableCharacter target = getCursorTarget();
         if (target != null) {
             player.setTarget(target);
+            gui.updateTarget();
         }
-        batch.setProjectionMatrix(camera.combined);
         // basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         // collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         // interactionHelper.updateInteractions(entityCollection.getEntityCollection());
         superHelper.updateHelpers(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
+        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
+        batch.setProjectionMatrix(camera.combined);
         getStage().draw();
         // TODO: UI Renderering here
         gui.drawGUI(uiShapeRenderer, uiBatch);
@@ -153,6 +154,7 @@ public class GameScreen extends ScreenBase {
         newEnemy.setPosition(x, y);
         newEnemy.setColor(0xFF0000FF);
         newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + speedIncrease);
+        newEnemy.setAttackRange(newEnemy.getAttackRange() + difficulty * 10);
         entityCollection.insertEntity(newEnemy);
     }
 
