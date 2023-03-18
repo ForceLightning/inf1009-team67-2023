@@ -38,12 +38,11 @@ import com.inf1009.team67.game.food.HealthyFood;
 import com.inf1009.team67.game.food.UnhealthyFood;
 import com.inf1009.team67.game.controllables.HostileEntity;
 import com.inf1009.team67.game.main.MyGdxGame;
+import com.inf1009.team67.game.scenes.gui.GUI;
 public class GameScreen extends ScreenBase {
 
     private SpriteBatch batch;
     private SpriteBatch uiBatch = new SpriteBatch();
-    private Sprite sprite;
-    private Rectangle rectangle;
     private Music playingMusic;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
@@ -59,10 +58,15 @@ public class GameScreen extends ScreenBase {
     private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
     private Label scoreLabel;
+    private GUI gui;
 
 
     public int getDifficulty() {
-        return difficulty;
+        return difficulty + 1;
+    }
+
+    public int getMaxDifficulty() {
+        return 10;
     }
 
     public void setDifficulty(int difficulty) {
@@ -74,8 +78,6 @@ public class GameScreen extends ScreenBase {
         this.game.setScore(0);
 
         batch = new SpriteBatch();
-        rectangle = new Rectangle(150,60,90,50,5);
-        this.sprite = new Sprite();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         setStage(new Stage(new ScreenViewport(camera), batch));
@@ -85,35 +87,15 @@ public class GameScreen extends ScreenBase {
         basicCombatHelper = new BasicCombatHelper(myGdxGame, this);
         interactionHelper = new InteractionHelper();
         superHelper.setAllHelpers(collisionHelper, basicCombatHelper, interactionHelper);
-        // TODO: Spawn health packs in a grid pattern depending on the player's location
         scheduleDifficulty();
         scheduleSpawner(spawnFrequency);
-        // HostileEntity test = new HostileEntity();
-        // HostileEntity test2 = new HostileEntity();
-        // HostileEntity test3 = new HostileEntity();
-        // HealthyFood test4 = new HealthyFood();
-        // UnhealthyFood test5 = new UnhealthyFood();
         player = new Player();
-        // test.setPosition(400, 240);
-        // test.setColor(0xFF0000FF);
-        // test2.setPosition(450, 240);
-        // test2.setColor(0x00FF00FF);
-        // test3.setPosition(450, 241);
-        // test3.setColor(0x0000FFFF);
-        // test4.setPosition(-100, 200);
-        // test5.setPosition(-100, -100);
         player.setPosition(100, 100);
         player.setColor(0xFFFFFFFF);
-        // entityCollection.insertEntity(test);
-        // entityCollection.insertEntity(test2);
-        // entityCollection.insertEntity(test3);
-        // entityCollection.insertEntity(test4);
-        // entityCollection.insertEntity(test5);
         entityCollection.insertEntity(player);
         Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
-        // scoreLabel.setPosition(player.getX() + 400, player.getY() + 240, Align.top);
-        // getStage().addActor(scoreLabel);
+        gui = new GUI(this.game, this);
     }
 
     @Override
@@ -147,16 +129,16 @@ public class GameScreen extends ScreenBase {
         superHelper.updateHelpers(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
         getStage().draw();
-        uiShapeRenderer.setProjectionMatrix(camera.combined);
-        uiShapeRenderer.begin(ShapeType.Line);
         // TODO: UI Renderering here
-        uiShapeRenderer.end();
-        uiBatch.begin();
-        scoreLabel.setText("Score: " + game.getScore());
-        scoreLabel.setPosition(400, 475, Align.top);
-        scoreLabel.draw(uiBatch, 1);
-        uiBatch.end();
-        uiShapeRenderer.end();
+        gui.drawGUI(uiShapeRenderer, uiBatch);
+        // uiShapeRenderer.setProjectionMatrix(camera.combined);
+        // uiShapeRenderer.begin(ShapeType.Line);
+        // uiShapeRenderer.end();
+        // uiBatch.begin();
+        // scoreLabel.setText("Score: " + game.getScore());
+        // scoreLabel.setPosition(400, 475, Align.top);
+        // scoreLabel.draw(uiBatch, 1);
+        // uiBatch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.switchScreen(ScreenEnum.MENU);
         }
@@ -242,6 +224,10 @@ public class GameScreen extends ScreenBase {
             }
         }
         return target;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
     @Override

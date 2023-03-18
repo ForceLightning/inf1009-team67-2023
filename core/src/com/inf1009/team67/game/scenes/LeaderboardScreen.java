@@ -36,7 +36,7 @@ public class LeaderboardScreen extends ScreenBase {
         getStage().addActor(backArea);
 
         backArea.add(backButton).size(110, 50);
-        FileHandle file = Gdx.files.internal("leaderboard.csv");
+        FileHandle file = Gdx.files.local("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
             // Sort the scores in descending order based on the score
