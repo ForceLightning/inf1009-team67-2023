@@ -23,6 +23,8 @@ public class AssetsManager {
 
     public final String background = "background.jpg";
 
+
+
     private SpriteBatch batch;
     private Sprite sprite;
     private Texture backgroundTexture;
@@ -53,6 +55,20 @@ public class AssetsManager {
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+
+    public void queueAddGameOverScreen(){
+
+        //manager.load("gameover.jpg", Texture.class);
+
+        manager.update();
+
+        sprite = new Sprite(new Texture(Gdx.files.internal("gameover.png")));
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+    }
+
+
 }
 
 
