@@ -34,6 +34,7 @@ public class CollisionAccumulator {
     }
 
     public void getFromEntity() {
+        deltaAbsolutePosition = new Vector2();
         deltaPosition = entity.getVelocity().cpy();
         deltaVelocity = entity.getAcceleration().cpy();
         deltaAcceleration = new Vector2(0, 0);

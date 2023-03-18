@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.inf1009.team67.engine.collisionmanagement.CollidableEntity;
+import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatAccumulator;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatState;
@@ -46,6 +47,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     private ControllableCharacter target;
     private BasicCombatAccumulator combatAccumulator;
     private boolean isPlayer;
+    private float maxHealthModifier = 1f;
 
 
 
@@ -64,6 +66,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.lastAttackTimeMillis = 0;
         this.target = null;
         this.isPlayer = isPlayer;
+        this.addRequiredHandle(HandleEnum.COMBAT);
     }
 
     public ControllableCharacter() {
@@ -164,7 +167,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void modifyHealth(float health) {
-        this.health = Math.min(this.maxHealth, health);
+        this.health = Math.min(this.getMaxHealth(), health);
         if (this.combatStates.contains(BasicCombatState.KILLED)) {
             this.combatStates = EnumSet.of(BasicCombatState.DEAD);
         }
@@ -173,8 +176,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             this.combatBehaviour = BasicCombatBehaviour.KILLED;
             this.combatStates = EnumSet.of(BasicCombatState.KILLED);
             this.target = null;
-
-        } else if (this.health <= (this.maxHealth * this.hurtThreshold)) {
+        } else if (this.health <= (this.getMaxHealth() * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
         } else {
             this.combatStates.remove(BasicCombatState.HURT);
@@ -183,7 +185,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public void hurtCheck() {
-        if (this.health <= (this.maxHealth * this.hurtThreshold)) {
+        if (this.health <= (this.getMaxHealth() * this.hurtThreshold)) {
             this.combatStates.add(BasicCombatState.HURT);
             this.combatBehaviour = BasicCombatBehaviour.FLEE;
         } else {
@@ -200,6 +202,10 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     }
 
     public float getMaxHealth() {
+        return maxHealth * maxHealthModifier;
+    }
+
+    public float getMaxHealthLimit() {
         return maxHealth;
     }
 
@@ -288,13 +294,13 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
         Color oldColor = shapes.getColor();
-        if (shapes.isDrawing() && shapes.getCurrentType() != ShapeType.Filled) {
-            shapes.set(ShapeType.Filled);
-        }
-        float healthPercent = getHealth() / getMaxHealth();
-        Color healthColor = new Color(1 - healthPercent, healthPercent, 0, 0.5f);
-        shapes.setColor(healthColor);
-        shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
+        // if (shapes.isDrawing() && shapes.getCurrentType() != ShapeType.Filled) {
+        //     shapes.set(ShapeType.Filled);
+        // }
+        // float healthPercent = getHealth() / getMaxHealth();
+        // Color healthColor = new Color(1 - healthPercent, healthPercent, 0, 0.5f);
+        // shapes.setColor(healthColor);
+        // shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
 
@@ -302,11 +308,13 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         if (target == null) {
             shapes.circle(getCentreX(), getCentreY(), getAggroRange());
         } else {
+            shapes.set(ShapeType.Filled);
             if (this.isPlayer) {
-                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 2f);
+                shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 5f);
             } else {
                 shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
             }
+            shapes.set(ShapeType.Line);
         }
 
         shapes.setColor(Color.RED);
@@ -336,5 +344,12 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         this.attackRange = attackRange;
     }
 
+    public float getMaxHealthModifier() {
+        return maxHealthModifier;
+    }
+
+    public void setMaxHealthModifier(float maxHealthModifier) {
+        this.maxHealthModifier = maxHealthModifier;
+    }
 
 }
