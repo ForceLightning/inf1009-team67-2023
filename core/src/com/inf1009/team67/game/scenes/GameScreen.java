@@ -56,7 +56,7 @@ public class GameScreen extends ScreenBase {
     private Timer difficultyTimer = new Timer();
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
-    private int difficulty = 0; // goes from 0 - 9
+    private int difficulty = 8; // goes from 0 - 9
     private Label scoreLabel;
     private GUI gui;
 
@@ -180,18 +180,18 @@ public class GameScreen extends ScreenBase {
                     spawnFrequency += 0.1f;
                     spawnTimer.clear();
                     scheduleSpawner(spawnFrequency);
-                    Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
-                    Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
-                    spawnHealthPacks(difficulty, leftCorner, rightCorner, (difficulty + 2), (difficulty + 2));
                 }
+                Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
+                Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
+                spawnHealthPacks(difficulty, leftCorner, rightCorner, 2, 4);
             }
         }, 6, 60);
     }
 
     public void spawnHealthPacks(int difficulty, Vector2 leftCorner, Vector2 rightCorner, int rows, int columns) {
-        System.out.println("Spawning food");
-        float xStep = (rightCorner.x - leftCorner.x) / columns;
-        float yStep = (rightCorner.y - leftCorner.y) / rows;
+        // System.out.println("Spawning food");
+        float xStep = (rightCorner.x - leftCorner.x) / (columns - 1);
+        float yStep = (rightCorner.y - leftCorner.y) / (rows - 1);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Random rng = new Random((int) (System.currentTimeMillis() + i + j + difficulty));
@@ -206,6 +206,7 @@ public class GameScreen extends ScreenBase {
                 newFood.setHealth(newFood.getHealth() + (difficulty + 1) * 10);
                 newFood.setPosition(leftCorner.x + xStep * j, leftCorner.y + yStep * i);
                 newFood.setColor(0x00FF00FF);
+                newFood.scaleFromCentre(difficulty / 5f + 1);
                 entityCollection.insertEntity(newFood);
             }
         }
