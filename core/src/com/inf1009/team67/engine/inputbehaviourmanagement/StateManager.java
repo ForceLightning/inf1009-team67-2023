@@ -13,7 +13,7 @@ public class StateManager {
     private EnumSet<Inputs> activeInputs;
 
     public StateManager() {
-        this(Keys.W, Keys.S, Keys.A, Keys.D, Keys.SPACE, Keys.E, Keys.F, Keys.CONTROL_LEFT);
+        this(Keys.W, Keys.S, Keys.A, Keys.D, Keys.B, Keys.SPACE, Keys.F, Keys.CONTROL_LEFT);
     }
 
     public StateManager(Integer forward, Integer backward, Integer left, Integer right, Integer jump, Integer attack, Integer interact, Integer crouch) {
