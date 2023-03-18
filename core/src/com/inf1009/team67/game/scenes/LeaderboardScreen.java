@@ -1,5 +1,7 @@
 package com.inf1009.team67.game.scenes;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,10 +36,26 @@ public class LeaderboardScreen extends ScreenBase {
         getStage().addActor(backArea);
 
         backArea.add(backButton).size(110, 50);
-        FileHandle file = Gdx.files.internal("leaderboard.csv");
+        FileHandle file = Gdx.files.local("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
-        for (String line : lines) {
+            // Sort the scores in descending order based on the score
+        Arrays.sort(lines, (a, b) -> {
+            String[] partsA = a.split(",");
+            String[] partsB = b.split(",");
+            if (partsA.length != 3 || partsB.length != 3) {
+                return 0;
+        }
+        int scoreA = Integer.parseInt(partsA[2]);
+        int scoreB = Integer.parseInt(partsB[2]);
+        return scoreB - scoreA;
+    });
+    int rank = 1;
+    int count = 0; // Counter for number of scores added to table
+    for (String line : lines) {
+        if (count >= 5) { // Stop once 5 scores have been added
+            break;
+        }
             table.row();
             String[] parts = line.split(",");
             // ranking
@@ -52,6 +70,7 @@ public class LeaderboardScreen extends ScreenBase {
             Label score = new Label(parts[2], skin);
             float scoreWidth = Gdx.graphics.getWidth() * 0.2f;
             table.add(score).width(scoreWidth).height(50).pad(10);
+            count++;
         }
     }
 

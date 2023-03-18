@@ -2,16 +2,36 @@ package com.inf1009.team67.engine.controllables;
 
 import java.util.EnumSet;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.inf1009.team67.engine.collisionmanagement.CollidableEntity;
 import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatAccumulator;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatState;
+import com.inf1009.team67.engine.scenemanagement.ScreenBase;
+import com.inf1009.team67.engine.util.AssetsManager;
+import com.inf1009.team67.game.scenes.ScreenEnum;
+
+
+
+
+
+
 
 public class ControllableCharacter extends CollidableEntity implements ControllableCombatant {
     private BasicCombatBehaviour combatBehaviour;
@@ -28,6 +48,8 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     private BasicCombatAccumulator combatAccumulator;
     private boolean isPlayer;
     private float maxHealthModifier = 1f;
+
+
 
     public ControllableCharacter(boolean isPlayer) {
         super();
@@ -159,6 +181,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         } else {
             this.combatStates.remove(BasicCombatState.HURT);
         }
+
     }
 
     public void hurtCheck() {
@@ -280,6 +303,8 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
         // shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
+
+
         if (target == null) {
             shapes.circle(getCentreX(), getCentreY(), getAggroRange());
         } else {
@@ -291,6 +316,7 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
             }
             shapes.set(ShapeType.Line);
         }
+
         shapes.setColor(Color.RED);
         // define the hp bar size
         Vector2 hpBarSize = new Vector2(100, 10);
