@@ -40,13 +40,13 @@ public class EndScreen extends ScreenBase {
         backArea.setPosition(0, 0);
         backArea.setSize(100, 100);
         Table saveArea = new Table();
-        saveArea.setPosition(700,0);
+        saveArea.setPosition(700, 0);
         saveArea.setSize(100, 100);
         getStage().addActor(backArea);
         getStage().addActor(saveArea);
         getStage().addActor(scoreTable);
         backArea.add(backButton).size(110, 50);
-        saveArea.add(saveButton).size(110,50);
+        saveArea.add(saveButton).size(110, 50);
         FileHandle file = Gdx.files.internal("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
@@ -87,10 +87,10 @@ public class EndScreen extends ScreenBase {
         labelresponse.setX(580);
         labelresponse.setY(270);
         scoreTable.add(score).width(width).pad(padding);
-       // scoreTable.add(name).width(width).pad(padding);
+        // scoreTable.add(name).width(width).pad(padding);
         username = new TextField("Name", skin);
         scoreTable.add(username).width(width).pad(padding);
-        }
+    }
 
     @Override
     public void show() {
@@ -102,13 +102,12 @@ public class EndScreen extends ScreenBase {
             }
         });
 
-        saveButton.addListener(new ChangeListener(){
+        saveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(EndScreen.this.username.getText().isEmpty()){
+                if (EndScreen.this.username.getText().isEmpty()) {
                     EndScreen.this.labelresponse.setText("Input your username please.");
-                }
-                else{
+                } else {
                     saveScore(username.getText(), ((Integer) game.getScore()).toString());
                     game.setScreen(ScreenEnum.LEADERBOARD);
                 }
@@ -133,17 +132,17 @@ public class EndScreen extends ScreenBase {
         }
 
         username.setTextFieldFilter(new TextFieldFilter() {
-               // Accepts all Characters except ',' so the it wouldnt affect csv file 
-    public  boolean acceptChar(TextField textField, char c) {
-        if (c == ',')
-              return false;
-        return true;
-   }
-});
+            // Accepts all Characters except ',' so the it wouldnt affect csv file
+            public boolean acceptChar(TextField textField, char c) {
+                if (c == ',')
+                    return false;
+                return true;
+            }
+        });
 
     }
-            
-  
+
+
     @Override
     public void resize(int width, int height) {
 
@@ -174,7 +173,7 @@ public class EndScreen extends ScreenBase {
         FileHandle file = Gdx.files.internal("leaderboard.csv");
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
-    
+
         // Check if the name and score already exist in the file
         boolean exists = false;
         for (String line : lines) {
@@ -184,7 +183,7 @@ public class EndScreen extends ScreenBase {
                 break;
             }
         }
-    
+
         // Append the score and name to the end of the file if it doesn't already exist
         if (!exists) {
             try (FileWriter writer = new FileWriter("leaderboard.csv", true)) {
@@ -201,37 +200,37 @@ public class EndScreen extends ScreenBase {
         String text = file.readString();
         String[] lines = text.split("\\r?\\n");
 
-    
+
         // Return the next available rank
         return lines.length + 1;
     }
 }
 
 // private void saveScore(String name, String score) {
-//     FileHandle file = Gdx.files.internal("leaderboard.csv");
-//     String text = file.readString();
+// FileHandle file = Gdx.files.internal("leaderboard.csv");
+// String text = file.readString();
 
-//     // Create a new entry with the name and score
-//     String newEntry = String.format("%s,%s,%s\n", getRank(), name, score);
+// // Create a new entry with the name and score
+// String newEntry = String.format("%s,%s,%s\n", getRank(), name, score);
 
-//     // Append the new entry to the file
-//     text += newEntry;
-//     file.writeString(text, false);
+// // Append the new entry to the file
+// text += newEntry;
+// file.writeString(text, false);
 
-//     // Read the file and keep only the top 5 scores
-//     String[] lines = text.split("\\r?\\n");
-//     Arrays.sort(lines, new Comparator<String>() {
-//         @Override
-//         public int compare(String o1, String o2) {
-//             return Integer.parseInt(o2.split(",")[2]) - Integer.parseInt(o1.split(",")[2]);
-//         }
-//     });
-//     if (lines.length > 5) {
-//         // Keep only the top 5 scores
-//         lines = Arrays.copyOfRange(lines, 0, 5);
-//     }
-//     text = String.join("\n", lines);
+// // Read the file and keep only the top 5 scores
+// String[] lines = text.split("\\r?\\n");
+// Arrays.sort(lines, new Comparator<String>() {
+// @Override
+// public int compare(String o1, String o2) {
+// return Integer.parseInt(o2.split(",")[2]) - Integer.parseInt(o1.split(",")[2]);
+// }
+// });
+// if (lines.length > 5) {
+// // Keep only the top 5 scores
+// lines = Arrays.copyOfRange(lines, 0, 5);
+// }
+// text = String.join("\n", lines);
 
-//     // Write the new file contents
-//     file.writeString(text, false);
+// // Write the new file contents
+// file.writeString(text, false);
 // }
