@@ -43,7 +43,7 @@ public class BasicCombatAccumulator {
     }
 
     public Vector2 getDeltaPositionRelMoveSpeed() {
-        return deltaPositionRelMoveSpeed;
+        return deltaPositionRelMoveSpeed.nor();
     }
 
     public void setDeltaPositionRelMoveSpeed(Vector2 deltaPositionRelMoveSpeed) {

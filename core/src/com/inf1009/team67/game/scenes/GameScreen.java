@@ -95,7 +95,7 @@ public class GameScreen extends ScreenBase {
         entityCollection.insertEntity(player);
         Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
-        gui = new GUI(this.game, this);
+        gui = new GUI(this.game, this, camera);
     }
 
     @Override
@@ -117,17 +117,18 @@ public class GameScreen extends ScreenBase {
         super.render(delta);
         ScreenUtils.clear(0, 0.2f, 0, 0);
         camera.update();
-        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
         ControllableCharacter target = getCursorTarget();
         if (target != null) {
             player.setTarget(target);
+            gui.updateTarget();
         }
-        batch.setProjectionMatrix(camera.combined);
         // basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
         // collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
         // interactionHelper.updateInteractions(entityCollection.getEntityCollection());
         superHelper.updateHelpers(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
+        camera.position.set(player.getCentreX(), player.getCentreY(), 0);
+        batch.setProjectionMatrix(camera.combined);
         getStage().draw();
         // TODO: UI Renderering here
         gui.drawGUI(uiShapeRenderer, uiBatch);
@@ -153,6 +154,7 @@ public class GameScreen extends ScreenBase {
         newEnemy.setPosition(x, y);
         newEnemy.setColor(0xFF0000FF);
         newEnemy.setBaseMovementSpeed(newEnemy.getBaseMovementSpeed() + speedIncrease);
+        newEnemy.setAttackRange(newEnemy.getAttackRange() + difficulty * 10);
         entityCollection.insertEntity(newEnemy);
     }
 
@@ -180,18 +182,18 @@ public class GameScreen extends ScreenBase {
                     spawnFrequency += 0.1f;
                     spawnTimer.clear();
                     scheduleSpawner(spawnFrequency);
-                    Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
-                    Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
-                    spawnHealthPacks(difficulty, leftCorner, rightCorner, (difficulty + 2), (difficulty + 2));
                 }
+                Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
+                Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
+                spawnHealthPacks(difficulty, leftCorner, rightCorner, 2, 4);
             }
         }, 6, 60);
     }
 
     public void spawnHealthPacks(int difficulty, Vector2 leftCorner, Vector2 rightCorner, int rows, int columns) {
-        System.out.println("Spawning food");
-        float xStep = (rightCorner.x - leftCorner.x) / columns;
-        float yStep = (rightCorner.y - leftCorner.y) / rows;
+        // System.out.println("Spawning food");
+        float xStep = (rightCorner.x - leftCorner.x) / (columns - 1);
+        float yStep = (rightCorner.y - leftCorner.y) / (rows - 1);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Random rng = new Random((int) (System.currentTimeMillis() + i + j + difficulty));
@@ -206,6 +208,7 @@ public class GameScreen extends ScreenBase {
                 newFood.setHealth(newFood.getHealth() + (difficulty + 1) * 10);
                 newFood.setPosition(leftCorner.x + xStep * j, leftCorner.y + yStep * i);
                 newFood.setColor(0x00FF00FF);
+                newFood.scaleFromCentre(difficulty / 5f + 1);
                 entityCollection.insertEntity(newFood);
             }
         }

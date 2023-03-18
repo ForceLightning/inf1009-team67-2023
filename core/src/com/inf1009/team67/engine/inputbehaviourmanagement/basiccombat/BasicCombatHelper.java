@@ -37,11 +37,11 @@ public class BasicCombatHelper extends HelperBase<ControllableCharacter> {
         }
     }
 
-    public boolean inAggroRange(ControllableCharacter combatant, ControllableCharacter other) {
+    public static boolean inAggroRange(ControllableCharacter combatant, ControllableCharacter other) {
         return combatant.getPosition().dst2(other.getPosition()) <= combatant.getAggroRange2();
     }
 
-    public boolean inAttackRange(ControllableCharacter combatant, ControllableCharacter other) {
+    public static boolean inAttackRange(ControllableCharacter combatant, ControllableCharacter other) {
         return combatant.getPosition().dst2(other.getPosition()) <= combatant.getAttackRange2();
     }
 

@@ -9,5 +9,6 @@ public class HostileEntity extends ControllableCharacter {
         this.setSize(100, 100);
         this.setBaseMovementSpeed(20);
         this.setAggroRange(1000);
+        this.setAttackRange(100);
     }
 }
