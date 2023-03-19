@@ -1,11 +1,9 @@
 package com.inf1009.team67.engine.helpers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import com.inf1009.team67.engine.collisionmanagement.CollisionHelper;
-import com.inf1009.team67.engine.collisionmanagement.RigidBody;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
@@ -67,17 +65,6 @@ public class SuperHelper {
         }
         for (Integer z : entityCollection.keySet()) {
             for (EntityBase entity : entityCollection.get(z).subList(0, entityCollection.get(z).size())) {
-
-                // if (entity instanceof RigidBody) {
-                //     Integer index = entityCollection.get(z).indexOf(entity);
-                //     for (EntityBase other : entityCollection.get(z).subList(index + 1, entityCollection.get(z).size())) {
-                //         if (entity != other && other instanceof RigidBody) {
-                //             if (((RigidBody<?>) entity).isCollidingWith((RigidBody<?>) other)) {
-                //                 handleCollision((RigidBody<?>) entity, (RigidBody<?>) other);
-                //             }
-                //         }
-                //     }
-                // }
                 Integer entityIndex = entityCollection.get(z).indexOf(entity);
                 for (EntityBase other: entityCollection.get(z).subList(entityIndex + 1, entityCollection.get(z).size())) {
                     for (HelperBase helper: helpers) {

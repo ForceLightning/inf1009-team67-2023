@@ -213,44 +213,4 @@ public class EndScreen extends ScreenBase {
             }
         }
     }
-
-    private int getNextRank() {
-        // Read the existing scores from the CSV file
-        FileHandle file = Gdx.files.local("leaderboard.csv");
-        String text = file.readString();
-        String[] lines = text.split("\\r?\\n");
-
-
-        // Return the next available rank
-        return lines.length + 1;
-    }
 }
-
-// private void saveScore(String name, String score) {
-// FileHandle file = Gdx.files.local("leaderboard.csv");
-// String text = file.readString();
-
-// // Create a new entry with the name and score
-// String newEntry = String.format("%s,%s,%s\n", getRank(), name, score);
-
-// // Append the new entry to the file
-// text += newEntry;
-// file.writeString(text, false);
-
-// // Read the file and keep only the top 5 scores
-// String[] lines = text.split("\\r?\\n");
-// Arrays.sort(lines, new Comparator<String>() {
-// @Override
-// public int compare(String o1, String o2) {
-// return Integer.parseInt(o2.split(",")[2]) - Integer.parseInt(o1.split(",")[2]);
-// }
-// });
-// if (lines.length > 5) {
-// // Keep only the top 5 scores
-// lines = Arrays.copyOfRange(lines, 0, 5);
-// }
-// text = String.join("\n", lines);
-
-// // Write the new file contents
-// file.writeString(text, false);
-// }

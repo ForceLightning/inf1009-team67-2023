@@ -4,18 +4,18 @@ import com.badlogic.gdx.graphics.Color;
 
 public class CollidableEntity extends DynamicBody {
     private Color nonColidingColor;
-    private Color colidingColor;
+    private Color collidingColor;
 
     public CollidableEntity(Color colidingColor) {
         super();
         nonColidingColor = getColor().cpy();
-        this.colidingColor = colidingColor;
+        this.collidingColor = colidingColor;
     }
 
     public CollidableEntity() {
         super();
         this.nonColidingColor = getColor().cpy();
-        this.colidingColor = Color.PINK;
+        this.collidingColor = Color.PINK;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CollidableEntity extends DynamicBody {
     @Override
     public <V extends RigidBody<?>> void handleCollision(V other) {
         super.handleCollision(other);
-        setColor(colidingColor);
+        setColor(collidingColor);
     }
 
 }

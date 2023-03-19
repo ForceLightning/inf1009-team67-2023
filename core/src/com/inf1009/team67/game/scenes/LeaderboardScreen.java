@@ -50,7 +50,6 @@ public class LeaderboardScreen extends ScreenBase {
         int scoreB = Integer.parseInt(partsB[2]);
         return scoreB - scoreA;
     });
-    int rank = 1;
     int count = 0; // Counter for number of scores added to table
     for (String line : lines) {
         if (count >= 5) { // Stop once 5 scores have been added

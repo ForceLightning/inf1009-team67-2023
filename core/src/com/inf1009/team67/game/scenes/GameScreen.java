@@ -1,24 +1,17 @@
 package com.inf1009.team67.game.scenes;
 
 
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-
 import java.util.Random;
-
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -30,7 +23,6 @@ import com.inf1009.team67.engine.helpers.SuperHelper;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
-import com.inf1009.team67.game.Shape.Rectangle;
 import com.inf1009.team67.game.controllables.Player;
 import com.inf1009.team67.game.food.FoodFactory;
 import com.inf1009.team67.game.food.HealthPack;
@@ -43,8 +35,6 @@ public class GameScreen extends ScreenBase {
 
     private SpriteBatch batch;
     private SpriteBatch uiBatch = new SpriteBatch();
-    private Music playingMusic;
-    private Texture backgroundTexture;
     private OrthographicCamera camera;
     private EntityCollection entityCollection;
     private final CollisionHelper collisionHelper;
@@ -101,15 +91,6 @@ public class GameScreen extends ScreenBase {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(getStage());
-        //assetsManager.queueAddMusic();
-        //assetsManager.manager.finishLoading();
-        //playingMusic = assetsManager.manager.get("music/loz_title.mp3");
-       // playingMusic.play();
-
-        //assetsManager.queueAddBackground();
-        //batch = new SpriteBatch();
-        //Get the background texture from the asset manager
-        //backgroundTexture = assetsManager.manager.get("background.jpg", Texture.class);
     }
 
     @Override
@@ -122,28 +103,15 @@ public class GameScreen extends ScreenBase {
             player.setTarget(target);
             gui.updateTarget();
         }
-        // basicCombatHelper.updateCombatStates(entityCollection.getEntityCollection());
-        // collisionHelper.updateCollisions(entityCollection.getEntityCollection(), delta);
-        // interactionHelper.updateInteractions(entityCollection.getEntityCollection());
         superHelper.updateHelpers(entityCollection.getEntityCollection(), delta);
         entityCollection.update(delta);
         camera.position.set(player.getCentreX(), player.getCentreY(), 0);
         batch.setProjectionMatrix(camera.combined);
         getStage().draw();
-        // TODO: UI Renderering here
         gui.drawGUI(uiShapeRenderer, uiBatch);
-        // uiShapeRenderer.setProjectionMatrix(camera.combined);
-        // uiShapeRenderer.begin(ShapeType.Line);
-        // uiShapeRenderer.end();
-        // uiBatch.begin();
-        // scoreLabel.setText("Score: " + game.getScore());
-        // scoreLabel.setPosition(400, 475, Align.top);
-        // scoreLabel.draw(uiBatch, 1);
-        // uiBatch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.switchScreen(ScreenEnum.MENU);
         }
-        // TODO: If player is dead, switch to end screen
         if (player.getHealth() <= 0) {
             game.switchScreen(ScreenEnum.END);
         }
@@ -163,7 +131,6 @@ public class GameScreen extends ScreenBase {
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                // System.out.println("Spawning Enemies, Spawn interval: " + spawnInterval);
                 float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
                 float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
                 offsetX += player.getCentreX();
@@ -191,7 +158,6 @@ public class GameScreen extends ScreenBase {
     }
 
     public void spawnHealthPacks(int difficulty, Vector2 leftCorner, Vector2 rightCorner, int rows, int columns) {
-        // System.out.println("Spawning food");
         float xStep = (rightCorner.x - leftCorner.x) / (columns - 1);
         float yStep = (rightCorner.y - leftCorner.y) / (rows - 1);
         for (int i = 0; i < rows; i++) {
@@ -250,9 +216,6 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void hide() {
-        // getStage().unfocusAll();
-        // entityCollection.dispose();
-        // getStage().dispose();
     }
 
     public void hideAfterTransition() {

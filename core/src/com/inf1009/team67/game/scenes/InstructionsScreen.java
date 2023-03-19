@@ -6,47 +6,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
-import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.main.MyGdxGame;
 
 public class InstructionsScreen extends ScreenBase {
 
     private Skin skin;
-
-    private String instructions;
-    
     private TextButton backButton;
     private Label instruction_box;
-    private AssetsManager assetsManager = new AssetsManager();
-    private SpriteBatch batch;
-    private Sprite sprite;
     private Music playingMusic;
 
 
     public InstructionsScreen(MyGdxGame game) {
         super(game);
-        //parent = myGdxGame;
-        //Gdx.input.setInputProcessor(getStage());
         game.assetsManager.manager.finishLoading();
         playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
         skin = game.assetsManager.manager.get("skin/metal-ui.json");
-
-        //instructions = game.assetsManager.manager.get("skin/instructions.txt");
-
         FileHandle handle = Gdx.files.local("instructions.txt");
         String text = handle.readString();
         ArrayList<String> newItems = new ArrayList<String>();
