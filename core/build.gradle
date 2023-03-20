@@ -4,3 +4,56 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-core"
+
+// apply plugin: "eclipse"
+
+// version = '1.0'
+// ext {
+//     appName = "INF1009 Team 67 Group Project"
+//     gdxVersion = '1.11.0'
+//     roboVMVersion = '2.3.16'
+//     box2DLightsVersion = '1.5'
+//     ashleyVersion = '1.7.4'
+//     aiVersion = '1.8.2'
+//     gdxControllersVersion = '2.2.1'
+// }
+
+// dependencies {
+//     umlDoclet "nl.talsmasoftware:umldoclet:2.1.0"
+//     implementation "com.github.gboersma:uml-java-doclet:1.1"
+// }
+// repositories {
+//     google()
+//     mavenLocal()
+//     mavenCentral()
+//     gradlePluginPortal()
+//     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+//     maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+//     maven { url "https://jitpack.io" }
+// }
+
+// apply plugin: 'java'
+
+// configurations {
+//     umlDoclet
+// }
+
+// task myJavaDocs(type: Javadoc) {
+//     source = sourceSets.main.allJava
+//     destinationDir = reporting.file("uml")
+//     // include "core/src/**"
+//     options.docletpath = configurations.umlDoclet.files.asType(List)
+//     options.doclet = "nl.talsmasoftware.umldoclet.UMLDoclet"
+//     // options.addStringOption("output", file("${buildDir}/javadoc").absolutePath)
+//     // options.addStringOption("umlImageDirectory", file("${buildDir}/javadoc/resources").absolutePath)
+//     // options.addStringOption("umlImageFormat", "png")
+//     // options.addStringOption("create-puml-files", "true")
+//     // options.addStringOption("failOnError", "true")
+// }
+
+// task copyUmlDiagrams(type: Copy) {
+//     from "${buildDir}/javadoc/resources"
+//     into "${javadoc.destinationDir}/javadoc"
+// }
+
+// javadoc.finalizedBy(copyUmlDiagrams)
