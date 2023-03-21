@@ -11,9 +11,6 @@ import com.badlogic.gdx.audio.Music;
 
 public class AssetsManager {
     private final AssetManager manager = new AssetManager();
-    // private final String skin = "skin/metal-ui.json";
-    // private final String playingMusic = "music/loz_title.mp3";
-    // private final String background = "background.jpg";
     private final String skinFilePath = "skin/metal-ui.json";
     private final String playingMusicFilePath = "music/loz_title.mp3";
     private final String backgroundFilePath = "background.jpg";

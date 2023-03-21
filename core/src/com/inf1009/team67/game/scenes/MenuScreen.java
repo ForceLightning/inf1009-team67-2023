@@ -33,11 +33,7 @@ public class MenuScreen extends ScreenBase {
 
     public MenuScreen(MyGdxGame game) {
         super(game);
-        //parent = myGdxGame;
-        //Gdx.input.setInputProcessor(stage);
         assetsManager.getManager().finishLoading();
-        // playingMusic = assetsManager.getManager().get("music/loz_title.mp3");
-        // skin = assetsManager.getManager().get("skin/metal-ui.json");
         playingMusic = AssetsManager.getInstance().getMusic();
         skin = AssetsManager.getInstance().getSkin();
 

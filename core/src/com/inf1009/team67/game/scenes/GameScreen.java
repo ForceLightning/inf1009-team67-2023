@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -23,7 +21,6 @@ import com.inf1009.team67.engine.helpers.SuperHelper;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
-import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.controllables.Player;
 import com.inf1009.team67.game.food.FoodFactory;
 import com.inf1009.team67.game.food.HealthPack;
@@ -48,7 +45,6 @@ public class GameScreen extends ScreenBase {
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
-    private Label scoreLabel;
     private GUI gui;
 
 
@@ -84,8 +80,6 @@ public class GameScreen extends ScreenBase {
         player.setPosition(100, 100);
         player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(player);
-        Skin skin = AssetsManager.getInstance().getSkin();
-        scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
         gui = new GUI(this.game, this, camera);
     }
 

@@ -21,8 +21,6 @@ public class LeaderboardScreen extends ScreenBase {
     private TextButton backButton;
     public LeaderboardScreen(MyGdxGame game) {
         super(game);
-        // game.assetsManager.manager.finishLoading();
-        // skin = game.assetsManager.manager.get("skin/metal-ui.json");
         AssetsManager.getInstance().getManager().finishLoading();
         skin = AssetsManager.getInstance().getSkin();
         backButton = new TextButton("Back", skin);

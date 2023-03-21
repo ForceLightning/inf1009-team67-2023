@@ -27,9 +27,6 @@ public class InstructionsScreen extends ScreenBase {
 
     public InstructionsScreen(MyGdxGame game) {
         super(game);
-        // game.assetsManager.manager.finishLoading();
-        // playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
-        // skin = game.assetsManager.manager.get("skin/metal-ui.json");
         AssetsManager.getInstance().getManager().finishLoading();
         playingMusic = AssetsManager.getInstance().getMusic();
         skin = AssetsManager.getInstance().getSkin();
