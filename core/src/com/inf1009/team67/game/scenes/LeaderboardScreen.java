@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.main.MyGdxGame;
 
 public class LeaderboardScreen extends ScreenBase {
@@ -20,8 +21,8 @@ public class LeaderboardScreen extends ScreenBase {
     private TextButton backButton;
     public LeaderboardScreen(MyGdxGame game) {
         super(game);
-        game.assetsManager.manager.finishLoading();
-        skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        AssetsManager.getInstance().getManager().finishLoading();
+        skin = AssetsManager.getInstance().getSkin();
         backButton = new TextButton("Back", skin);
 
         // Create a table that fills the screen. Everything else will go inside

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.controllables.Player;
 import com.inf1009.team67.game.main.MyGdxGame;
 import com.inf1009.team67.game.scenes.GameScreen;
@@ -24,7 +25,8 @@ public class GUI {
         this.gameScreen = gameScreen;
         this.camera = camera;
         this.player = gameScreen.getPlayer();
-        Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        // Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        Skin skin = AssetsManager.getInstance().getSkin();
         this.healthBar = new HealthBar(skin);
         this.score = new Score(skin);
         this.target = new Target(camera);

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.main.MyGdxGame;
 
 public class InstructionsScreen extends ScreenBase {
@@ -26,9 +27,9 @@ public class InstructionsScreen extends ScreenBase {
 
     public InstructionsScreen(MyGdxGame game) {
         super(game);
-        game.assetsManager.manager.finishLoading();
-        playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
-        skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        AssetsManager.getInstance().getManager().finishLoading();
+        playingMusic = AssetsManager.getInstance().getMusic();
+        skin = AssetsManager.getInstance().getSkin();
         FileHandle handle = Gdx.files.local("instructions.txt");
         String text = handle.readString();
         ArrayList<String> newItems = new ArrayList<String>();
