@@ -110,6 +110,7 @@ public class GameScreen extends ScreenBase {
         if (player.getHealth() <= 0) {
             game.switchScreen(ScreenEnum.END);
         }
+        // TODO(Enhancement): Garbage collection for dead/uninteractable entities.
     }
 
     public void spawnEnemy(float x, float y, float speedIncrease) {
@@ -147,7 +148,7 @@ public class GameScreen extends ScreenBase {
                 }
                 Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
                 Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
-                spawnHealthPacks(difficulty, leftCorner, rightCorner, 2, 4);
+                spawnHealthPacks(difficulty, leftCorner, rightCorner, difficulty / 2 + 2, difficulty / 2 + 2);
             }
         }, 6, 60);
     }

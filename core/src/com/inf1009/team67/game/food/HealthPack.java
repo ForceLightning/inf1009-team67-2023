@@ -2,17 +2,18 @@ package com.inf1009.team67.game.food;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 
-public abstract class HealthPack extends EntityBase implements Interactable {
+public abstract class HealthPack extends EntityBase implements Interactable, Poolable {
     private int health;
     private float movementSpeedAilment;
     private float maxHealthAilment;
     private Circle interactionCircle;
-    private boolean isInteractable = true;
+    private boolean isInteractable = false;
 
     public HealthPack() {
         super();
@@ -69,6 +70,7 @@ public abstract class HealthPack extends EntityBase implements Interactable {
             player.setMaxHealthModifier(maxHealthAilment);
             isInteractable = false;
             setVisible(isInteractable);
+            FoodFactory.freeFood(this);
         }
     }
 
@@ -116,5 +118,24 @@ public abstract class HealthPack extends EntityBase implements Interactable {
     @Override
     public void addReaction(Interactable other, Action reaction) {
         return;
+    }
+
+    @Override
+    public void reset() {
+        this.setInteractable(false);
+        this.setVisible(false);
+    }
+
+    public void init(int health, float movementSpeedAilment, float maxHealthAilment) {
+        this.setHealth(health);
+        this.setMovementSpeedAilment(movementSpeedAilment);
+        this.setMaxHealthAilment(maxHealthAilment);
+        this.setInteractable(true);
+        this.setVisible(true);
+    }
+
+    public void init() {
+        this.setInteractable(true);
+        this.setVisible(true);
     }
 }
