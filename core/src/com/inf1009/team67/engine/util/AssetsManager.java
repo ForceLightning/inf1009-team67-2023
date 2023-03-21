@@ -77,7 +77,7 @@ public class AssetsManager {
         // Wait for the asset to finish loading
         //manager.finishLoading();
 
-        background = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
+        background = new Sprite(new Texture(Gdx.files.internal(backgroundFilePath)));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
@@ -91,7 +91,7 @@ public class AssetsManager {
 
     public Sprite getBackground() {
         if (background == null) {
-            background = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
+            background = new Sprite(new Texture(Gdx.files.internal(backgroundFilePath)));
             background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         return background;
