@@ -23,6 +23,7 @@ import com.inf1009.team67.engine.helpers.SuperHelper;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
 import com.inf1009.team67.engine.interactionmanagement.InteractionHelper;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.controllables.Player;
 import com.inf1009.team67.game.food.FoodFactory;
 import com.inf1009.team67.game.food.HealthPack;
@@ -83,7 +84,7 @@ public class GameScreen extends ScreenBase {
         player.setPosition(100, 100);
         player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(player);
-        Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        Skin skin = AssetsManager.getInstance().getSkin();
         scoreLabel = new Label("Score: " + game.getScore(), skin, "font", "white");
         gui = new GUI(this.game, this, camera);
     }

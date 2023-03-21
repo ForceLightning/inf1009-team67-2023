@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldFilter;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.inf1009.team67.engine.scenemanagement.ScreenBase;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.main.MyGdxGame;
 
 public class EndScreen extends ScreenBase {
@@ -27,8 +28,8 @@ public class EndScreen extends ScreenBase {
 
     public EndScreen(MyGdxGame myGdxGame) {
         super(myGdxGame);
-        game.assetsManager.manager.finishLoading();
-        skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        AssetsManager.getInstance().getManager().finishLoading();
+        skin = AssetsManager.getInstance().getSkin();
         backButton = new TextButton("Back", skin);
         saveButton = new TextButton("Save", skin);
         Table backArea = new Table();

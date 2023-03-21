@@ -19,15 +19,13 @@ public class MyGdxGame extends Game {
 	SpriteBatch batch;
 	Texture img;
 	private ScreenManager screenManager;
-	public AssetsManager assetsManager;
+	private AssetsManager assetsManager;
 	private int score = 0;
 	public MyGdxGame() {
 		super();
 		screenManager = new ScreenManager(this);
 		initialiseScreens();
-		assetsManager = new AssetsManager();
-        assetsManager.queueAddMusic();
-        assetsManager.queueAddSkin();
+		assetsManager = AssetsManager.getInstance();
 	}
 
 	@Override
@@ -35,6 +33,7 @@ public class MyGdxGame extends Game {
 		screenManager.setScreen(ScreenEnum.SPLASHSCREEN);
 	}
 	public void setScreen(ScreenEnum screen) {
+		assetsManager.init();
 		screenManager.setScreen(screen);
 	}
 	public void switchScreen(ScreenEnum screen) {

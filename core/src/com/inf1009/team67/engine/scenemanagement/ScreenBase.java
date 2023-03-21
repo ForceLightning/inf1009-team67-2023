@@ -3,6 +3,7 @@ package com.inf1009.team67.engine.scenemanagement;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.inf1009.team67.engine.util.AssetsManager;
 import com.inf1009.team67.game.main.MyGdxGame;
 
 public abstract class ScreenBase implements Screen {
@@ -14,7 +15,6 @@ public abstract class ScreenBase implements Screen {
     public ScreenBase(MyGdxGame game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
-
     }
 
     public abstract void show();
@@ -72,6 +72,11 @@ public abstract class ScreenBase implements Screen {
     public boolean isPaused() {
         return isPaused;
     }
+
+    public AssetsManager getAssetsManager() {
+        return AssetsManager.getInstance();
+    }
+
 }
 
 
