@@ -3,9 +3,11 @@ package com.inf1009.team67.game.scenes;
 
 import java.util.Random;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -46,7 +48,7 @@ public class GameScreen extends ScreenBase {
     private float spawnFrequency = 0.2f;
     private int difficulty = 0; // goes from 0 - 9
     private GUI gui;
-
+    private TextureRegion background = new TextureRegion(new Texture(Gdx.files.internal("textures/grass.png")), 16, 16);
 
     public int getDifficulty() {
         return difficulty + 1;
@@ -81,6 +83,7 @@ public class GameScreen extends ScreenBase {
         player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(player);
         gui = new GUI(this.game, this, camera);
+        // background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
     @Override
@@ -102,6 +105,19 @@ public class GameScreen extends ScreenBase {
         entityCollection.update(delta);
         camera.position.set(player.getCentreX(), player.getCentreY(), 0);
         batch.setProjectionMatrix(camera.combined);
+        Vector2 bottomLeftCorner = new Vector2(camera.position.x - camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2);
+        bottomLeftCorner.sub(16, 16);
+        float x = Math.round(bottomLeftCorner.x / 16) * 16;
+        float y = Math.round(bottomLeftCorner.y / 16) * 16;
+        int num_x = (int) Math.ceil(camera.viewportWidth / 16) + 2;
+        int num_y = (int) Math.ceil(camera.viewportHeight / 16) + 2;
+        batch.begin();
+        for (int i = 0; i < num_x; i++) {
+            for (int j = 0; j < num_y; j++) {
+                batch.draw(background, x + i * 16, y + j * 16);
+            }
+        }
+        batch.end();
         getStage().draw();
         gui.drawGUI(uiShapeRenderer, uiBatch);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
