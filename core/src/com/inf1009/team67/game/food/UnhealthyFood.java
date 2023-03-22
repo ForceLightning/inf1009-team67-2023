@@ -30,4 +30,18 @@ public class UnhealthyFood extends HealthPack {
         shapes.setColor(oldColor);
         shapes.set(oldType);
     }
+
+    @Override
+    public void init(int health, float movementSpeedAilment, float maxHealthAilment) {
+        super.init(health, movementSpeedAilment, maxHealthAilment);
+        String[] textures = {"textures/unhealthyFood/burger.png", "textures/unhealthyFood/doughnut.png", "textures/unhealthyFood/fried-chicken.png"};
+        this.setTexture(textures[(int) (Math.random() * textures.length)]);
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        String[] textures = {"textures/unhealthyFood/burger.png", "textures/unhealthyFood/doughnut.png", "textures/unhealthyFood/fried-chicken.png"};
+        this.setTexture(textures[(int) (Math.random() * textures.length)]);
+    }
 }

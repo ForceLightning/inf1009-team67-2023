@@ -22,9 +22,9 @@ public class HealthyFood extends HealthPack {
     public void handleInteraction(Interactable other) {
         if (other instanceof Player && isInteractable() && other.isInteractable()) {
             Player player = (Player) other;
-            player.setMaxHealthModifier(player.getMaxHealthModifier() < 1 ? 1.1f : getMaxHealthAilment());
+            player.setMaxHealthModifier(player.getMaxHealthModifier() < 1 ? Math.min(1.1f * getMaxHealthAilment(), 1f) : getMaxHealthAilment());
             player.modifyHealth(player.getHealth() + getHealth());
-            player.setMovementSpeedModifier(player.getMovementSpeedModifier() < 1 ? 1.1f : getMovementSpeedAilment());
+            player.setMovementSpeedModifier(player.getMovementSpeedModifier() < 1 ? Math.min(1.1f * getMovementSpeedAilment(), 1f) : getMovementSpeedAilment());
             setInteractable(false);
             setVisible(isInteractable());
         }
@@ -39,5 +39,18 @@ public class HealthyFood extends HealthPack {
         shapes.circle(this.getCentreX(), this.getCentreY(), this.getWidth() / 2);
         shapes.setColor(oldColor);
         shapes.set(oldType);
+    }
+    @Override
+    public void init(int health, float movementSpeedAilment, float maxHealthAilment) {
+        super.init(health, movementSpeedAilment, maxHealthAilment);
+        String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
+        this.setTexture(textures[(int) (Math.random() * textures.length)]);
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
+        this.setTexture(textures[(int) (Math.random() * textures.length)]);
     }
 }

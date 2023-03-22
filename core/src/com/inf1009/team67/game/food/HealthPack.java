@@ -67,7 +67,7 @@ public abstract class HealthPack extends EntityBase implements Interactable, Poo
             Player player = (Player) other;
             player.modifyHealth(player.getHealth() + health);
             player.setMovementSpeedModifier(player.getMovementSpeedModifier() <= 0.25 ? 0.25f : movementSpeedAilment);
-            player.setMaxHealthModifier(maxHealthAilment);
+            player.setMaxHealthModifier(player.getMaxHealthModifier() <= 0.25f ? 0.25f : Math.max(maxHealthAilment * player.getMaxHealthModifier(), 0.25f));
             isInteractable = false;
             setVisible(isInteractable);
             FoodFactory.freeFood(this);
