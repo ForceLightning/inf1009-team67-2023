@@ -67,6 +67,7 @@ public class MenuScreen extends ScreenBase {
         Gdx.input.setInputProcessor(getStage());
         playingMusic.play();
         playingMusic.setVolume(Settings.getMusicVolume() * Settings.getMasterVolume());
+        playingMusic.setLooping(true);
         // print music status
         Play.addListener(new ChangeListener() {
             @Override
