@@ -46,7 +46,7 @@ public class GameScreen extends ScreenBase {
     private Timer difficultyTimer = new Timer();
     private Timer spawnTimer = new Timer();
     private float spawnFrequency = 0.2f;
-    private int difficulty = 0; // goes from 0 - 9
+    private int difficulty = -1; // goes from 0 - 9
     private GUI gui;
     private TextureRegion background = new TextureRegion(new Texture(Gdx.files.internal("textures/grass.png")), 16, 16);
 
@@ -83,7 +83,8 @@ public class GameScreen extends ScreenBase {
         player.setColor(0xFFFFFFFF);
         entityCollection.insertEntity(player);
         gui = new GUI(this.game, this, camera);
-        // background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        FoodFactory.getInstance();
+        FoodFactory.allocatePools(100);
     }
 
     @Override
@@ -149,7 +150,7 @@ public class GameScreen extends ScreenBase {
                 offsetY += player.getCentreY();
                 spawnEnemy(offsetX, offsetY, difficulty * 8f);
             }
-        }, 0, spawnInterval);
+        }, 1, spawnInterval);
     }
 
     public void scheduleDifficulty() {
@@ -164,9 +165,18 @@ public class GameScreen extends ScreenBase {
                 }
                 Vector2 leftCorner = new Vector2(player.getX() - 1400, player.getY() - 1240);
                 Vector2 rightCorner = new Vector2(player.getX() + 1400, player.getY() + 1240);
-                spawnHealthPacks(difficulty, leftCorner, rightCorner, difficulty / 2 + 2, difficulty / 2 + 2);
+                spawnHealthPacks(difficulty, leftCorner, rightCorner, 2 * ((difficulty + 1) / 4) + 2, 2 * ((difficulty + 1) / 4) + 2);
             }
-        }, 6, 60);
+        }, 0, 45);
+    }
+
+    public void spawnHealthPacks(int difficulty, int rows, int columns) {
+        spawnHealthPacks(difficulty, new Vector2(
+                player.getX() - 1400, player.getY() - 1240
+            ), new Vector2(
+                player.getX() + 1400, player.getY() - 1240
+            ), rows, columns
+        );
     }
 
     public void spawnHealthPacks(int difficulty, Vector2 leftCorner, Vector2 rightCorner, int rows, int columns) {
@@ -176,17 +186,9 @@ public class GameScreen extends ScreenBase {
             for (int j = 0; j < columns; j++) {
                 Random rng = new Random((int) (System.currentTimeMillis() + i + j + difficulty));
                 HealthPack newFood = FoodFactory.createFood(rng.nextInt(columns + rows));
-                if (newFood == null) {
-                    continue;
-                } else if (newFood instanceof HealthyFood) {
-                    newFood.setColor(0x00FF00FF);
-                } else if (newFood instanceof UnhealthyFood) {
-                    newFood.setColor(0xFF0000FF);
-                }
                 newFood.setHealth(newFood.getHealth() + (difficulty + 1) * 10);
                 newFood.setPosition(leftCorner.x + xStep * j, leftCorner.y + yStep * i);
-                newFood.setColor(0x00FF00FF);
-                newFood.scaleFromCentre(difficulty / 5f + 1);
+                newFood.scaleFromCentre(difficulty / 2f + 2);
                 entityCollection.insertEntity(newFood);
             }
         }

@@ -1,5 +1,7 @@
 package com.inf1009.team67.game.food;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Pool.Poolable;
@@ -27,8 +29,13 @@ public abstract class HealthPack extends EntityBase implements Interactable, Poo
         this.maxHealthAilment = maxHealthAilment;
         this.setSize(10, 10);
         this.interactionCircle = new Circle(this.getX(), this.getY(), this.getWidth() / 2);
-        this.setColor(0xffffffff);
+        this.setColor(Color.WHITE);
         this.addRequiredHandle(HandleEnum.INTERACTION);
+    }
+
+    @Override
+    public void drawDebug(ShapeRenderer shapes) {
+        return;
     }
     
     @Override
@@ -67,7 +74,7 @@ public abstract class HealthPack extends EntityBase implements Interactable, Poo
             Player player = (Player) other;
             player.modifyHealth(player.getHealth() + health);
             player.setMovementSpeedModifier(player.getMovementSpeedModifier() <= 0.25 ? 0.25f : movementSpeedAilment);
-            player.setMaxHealthModifier(maxHealthAilment);
+            player.setMaxHealthModifier(player.getMaxHealthModifier() <= 0.25f ? 0.25f : Math.max(maxHealthAilment * player.getMaxHealthModifier(), 0.25f));
             isInteractable = false;
             setVisible(isInteractable);
             FoodFactory.freeFood(this);

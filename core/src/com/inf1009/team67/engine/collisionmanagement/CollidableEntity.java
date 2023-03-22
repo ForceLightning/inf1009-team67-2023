@@ -29,5 +29,4 @@ public class CollidableEntity extends DynamicBody {
         super.handleCollision(other);
         setColor(collidingColor);
     }
-
 }

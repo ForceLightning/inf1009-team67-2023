@@ -13,6 +13,13 @@ public class FoodFactory {
         instance = this;
     }
 
+    public static void allocatePools(int poolSize) {
+        for (int i = 0; i < poolSize; i++) {
+            healthyFoodPool.free(new HealthyFood());
+            unhealthyFoodPool.free(new UnhealthyFood());
+        }
+    }
+
     public static FoodFactory getInstance() {
         if (instance == null) {
             instance = new FoodFactory();
@@ -22,12 +29,10 @@ public class FoodFactory {
 
     public static HealthPack createFood(String type) {
         if (type.equals("healthy")) {
-            // return new HealthyFood();
             HealthyFood healthyFood = healthyFoodPool.obtain();
             healthyFood.init();
             return healthyFood;
         } else if (type.equals("unhealthy")) {
-            // return new UnhealthyFood();
             UnhealthyFood unhealthyFood = unhealthyFoodPool.obtain();
             unhealthyFood.init();
             return unhealthyFood;
@@ -43,7 +48,6 @@ public class FoodFactory {
             healthyFood.init(health, movementSpeedAilment, maxHealthAilment);
             return healthyFood;
         } else {
-            // return new UnhealthyFood(health, movementSpeedAilment, maxHealthAilment);
             UnhealthyFood unhealthyFood = unhealthyFoodPool.obtain();
             unhealthyFood.init(health, movementSpeedAilment, maxHealthAilment);
             return unhealthyFood;
@@ -52,12 +56,10 @@ public class FoodFactory {
 
     public static HealthPack createFood(int seed) {
         if (seed % 2 == 0) {
-            // return new HealthyFood();
             HealthyFood healthyFood = healthyFoodPool.obtain();
             healthyFood.init();
             return healthyFood;
         } else {
-            // return new UnhealthyFood();
             UnhealthyFood unhealthyFood = unhealthyFoodPool.obtain();
             unhealthyFood.init();
             return unhealthyFood;
