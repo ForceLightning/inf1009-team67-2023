@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -23,7 +22,7 @@ public class Player extends ControllableCharacter implements Interactable {
     // Constructor
     public Player() {
         super(true);
-        this.setTexture("textures/circle.png");
+        this.setTexture("textures/player.png");
         this.setSize(100, 100);
         this.stateManager = new StateManager();
         this.setBaseMovementSpeed(100);

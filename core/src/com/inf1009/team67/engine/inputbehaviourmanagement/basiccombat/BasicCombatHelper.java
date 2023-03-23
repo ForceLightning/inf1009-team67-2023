@@ -99,50 +99,6 @@ public class BasicCombatHelper extends HelperBase<ControllableCharacter> {
         }
     }
 
-    public void updateCombatStates(TreeMap<Integer, ArrayList<EntityBase>> entityCollection) {
-        // reset all combat accumulators
-        for (Integer Z : entityCollection.keySet()) {
-            for (EntityBase entity : entityCollection.get(Z)) {
-                if (entity instanceof ControllableCharacter) {
-                    ControllableCharacter combatant = (ControllableCharacter) entity;
-                    if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED && !combatant.isPlayer()) {
-                        game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
-                        combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
-                        // System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
-                    }
-                    combatant.getCombatAccumulator().reset();
-                }
-            }
-        }
-        // update combat states
-        for (Integer Z : entityCollection.keySet()) {
-            for (EntityBase entity : entityCollection.get(Z)) {
-                if (entity instanceof ControllableCharacter) {
-                    ControllableCharacter combatant = (ControllableCharacter) entity;
-                    for (EntityBase otherEntity: entityCollection.get(Z)) {
-                        if (otherEntity instanceof ControllableCharacter) {
-                            ControllableCharacter other = (ControllableCharacter) otherEntity;
-                            if (other != combatant && combatant.getCombatBehaviour() != BasicCombatBehaviour.DEAD && other.getCombatBehaviour() != BasicCombatBehaviour.DEAD && combatant.getCombatBehaviour() != BasicCombatBehaviour.KILLED && other.getCombatBehaviour() != BasicCombatBehaviour.KILLED) {
-                                if (other.isPlayer()) {
-                                    setInAggroRange(combatant, other);
-                                    setAggro(combatant, other);
-                                    handleAttack(combatant, other);
-                                    handleChase(combatant, other);
-                                }
-                                if (combatant.isPlayer() && combatant.getCombatStates().contains(BasicCombatState.ATTACKING)) {
-                                    setTarget(combatant, other);
-                                    if (combatant.getTarget() == other) {
-                                        handleAttack(combatant, other);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public <T extends ControllableCharacter, V extends ControllableCharacter> void handleAbstractInteraction(T a, V b) {
         if (b.isPlayer()) {

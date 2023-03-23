@@ -51,6 +51,12 @@ public class HealthBar {
     public void drawLabel(SpriteBatch batch, float health, float maxHealth, float baseLineMaxHealth) {
         String healthText = String.format("%d/%d HP", (int) health, (int) maxHealth);
         healthLabel.setText(healthText);
+        // create a black dropshadow
+        healthLabel.setColor(Color.BLACK);
+        healthLabel.setPosition(healthLabel.getX() - 1, healthLabel.getY() - 1);
+        healthLabel.draw(batch, 1f);
+        healthLabel.setColor(Color.WHITE);
+        healthLabel.setPosition(healthLabel.getX() + 1, healthLabel.getY() + 1);
         healthLabel.draw(batch, 1f);
     }
 }

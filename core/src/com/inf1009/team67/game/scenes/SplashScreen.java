@@ -12,21 +12,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 public class SplashScreen extends ScreenBase {
-
     private Sprite sprite;
-
     private SpriteBatch batch;
     private BitmapFont font;
-
-
-
     //constructor with Box2d
 
     public SplashScreen(MyGdxGame myGdxGame) {
 
         super(myGdxGame);
         //parent = myGdxGame;
-
         font = new BitmapFont();
     }
 
@@ -46,8 +40,6 @@ public class SplashScreen extends ScreenBase {
 
     @Override
     public void render(float delta) {
-
-
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

@@ -2,37 +2,16 @@ package com.inf1009.team67.engine.controllables;
 
 import java.util.EnumSet;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.inf1009.team67.engine.collisionmanagement.CollidableEntity;
 import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatAccumulator;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatBehaviour;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatState;
-import com.inf1009.team67.engine.scenemanagement.ScreenBase;
-import com.inf1009.team67.engine.util.AssetsManager;
-import com.inf1009.team67.game.scenes.ScreenEnum;
-
-
-
-
-
-
-
 public class ControllableCharacter extends CollidableEntity implements ControllableCombatant {
     private BasicCombatBehaviour combatBehaviour;
     private EnumSet<BasicCombatState> combatStates;
@@ -291,29 +270,9 @@ public class ControllableCharacter extends CollidableEntity implements Controlla
     public void drawDebug(ShapeRenderer shapes) {
         super.drawDebug(shapes);
         Color oldColor = shapes.getColor();
-        // if (shapes.isDrawing() && shapes.getCurrentType() != ShapeType.Filled) {
-        //     shapes.set(ShapeType.Filled);
-        // }
-        // float healthPercent = getHealth() / getMaxHealth();
-        // Color healthColor = new Color(1 - healthPercent, healthPercent, 0, 0.5f);
-        // shapes.setColor(healthColor);
-        // shapes.circle(getCentreX(), getCentreY(), getHitBox().radius);
         shapes.set(ShapeType.Line);
         shapes.setColor(oldColor);
-
-
-        // if (target == null) {
         shapes.circle(getCentreX(), getCentreY(), getAggroRange());
-        // } else {
-        //     shapes.set(ShapeType.Filled);
-        //     if (this.isPlayer) {
-        //         shapes.rectLine(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY(), 5f);
-        //     } else {
-        //         shapes.line(getCentreX(), getCentreY(), target.getCentreX(), target.getCentreY());
-        //     }
-        //     shapes.set(ShapeType.Line);
-        // }
-
         shapes.setColor(Color.RED);
         shapes.circle(getCentreX(), getCentreY(), getAttackRange());
         // define the hp bar size

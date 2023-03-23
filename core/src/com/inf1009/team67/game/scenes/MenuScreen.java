@@ -20,7 +20,7 @@ public class MenuScreen extends ScreenBase {
 
     private Skin skin;
 
-    private AssetsManager assetsManager = new AssetsManager();
+    private AssetsManager assetsManager = AssetsManager.getInstance();
     private SpriteBatch batch;
     private Sprite sprite;
     private Music playingMusic;
@@ -33,11 +33,9 @@ public class MenuScreen extends ScreenBase {
 
     public MenuScreen(MyGdxGame game) {
         super(game);
-        //parent = myGdxGame;
-        //Gdx.input.setInputProcessor(stage);
-        game.assetsManager.manager.finishLoading();
-        playingMusic = game.assetsManager.manager.get("music/loz_title.mp3");
-        skin = game.assetsManager.manager.get("skin/metal-ui.json");
+        assetsManager.getManager().finishLoading();
+        playingMusic = AssetsManager.getInstance().getMusic();
+        skin = AssetsManager.getInstance().getSkin();
 
         Table table = new Table();
 
@@ -69,6 +67,7 @@ public class MenuScreen extends ScreenBase {
         Gdx.input.setInputProcessor(getStage());
         playingMusic.play();
         playingMusic.setVolume(Settings.getMusicVolume() * Settings.getMasterVolume());
+        playingMusic.setLooping(true);
         // print music status
         Play.addListener(new ChangeListener() {
             @Override
@@ -159,7 +158,6 @@ public class MenuScreen extends ScreenBase {
 
     @Override
     public void dispose() {
-        assetsManager.manager.dispose();
         getStage().dispose();
         playingMusic.dispose();
         batch.dispose();

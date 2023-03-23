@@ -1,18 +1,21 @@
 package com.inf1009.team67.game.food;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.helpers.HandleEnum;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 
-public abstract class HealthPack extends EntityBase implements Interactable {
+public abstract class HealthPack extends EntityBase implements Interactable, Poolable {
     private int health;
     private float movementSpeedAilment;
     private float maxHealthAilment;
     private Circle interactionCircle;
-    private boolean isInteractable = true;
+    private boolean isInteractable = false;
 
     public HealthPack() {
         super();
@@ -26,8 +29,13 @@ public abstract class HealthPack extends EntityBase implements Interactable {
         this.maxHealthAilment = maxHealthAilment;
         this.setSize(10, 10);
         this.interactionCircle = new Circle(this.getX(), this.getY(), this.getWidth() / 2);
-        this.setColor(0xffffffff);
+        this.setColor(Color.WHITE);
         this.addRequiredHandle(HandleEnum.INTERACTION);
+    }
+
+    @Override
+    public void drawDebug(ShapeRenderer shapes) {
+        return;
     }
     
     @Override
@@ -66,9 +74,10 @@ public abstract class HealthPack extends EntityBase implements Interactable {
             Player player = (Player) other;
             player.modifyHealth(player.getHealth() + health);
             player.setMovementSpeedModifier(player.getMovementSpeedModifier() <= 0.25 ? 0.25f : movementSpeedAilment);
-            player.setMaxHealthModifier(maxHealthAilment);
+            player.setMaxHealthModifier(player.getMaxHealthModifier() <= 0.25f ? 0.25f : Math.max(maxHealthAilment * player.getMaxHealthModifier(), 0.25f));
             isInteractable = false;
             setVisible(isInteractable);
+            FoodFactory.freeFood(this);
         }
     }
 
@@ -116,5 +125,24 @@ public abstract class HealthPack extends EntityBase implements Interactable {
     @Override
     public void addReaction(Interactable other, Action reaction) {
         return;
+    }
+
+    @Override
+    public void reset() {
+        this.setInteractable(false);
+        this.setVisible(false);
+    }
+
+    public void init(int health, float movementSpeedAilment, float maxHealthAilment) {
+        this.setHealth(health);
+        this.setMovementSpeedAilment(movementSpeedAilment);
+        this.setMaxHealthAilment(maxHealthAilment);
+        this.setInteractable(true);
+        this.setVisible(true);
+    }
+
+    public void init() {
+        this.setInteractable(true);
+        this.setVisible(true);
     }
 }
