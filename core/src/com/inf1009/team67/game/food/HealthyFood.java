@@ -1,8 +1,6 @@
 package com.inf1009.team67.game.food;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 

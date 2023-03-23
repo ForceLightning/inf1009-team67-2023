@@ -1,6 +1,5 @@
 package com.inf1009.team67.game.scenes;
 
-import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -39,19 +38,10 @@ public class InstructionsScreen extends ScreenBase {
         skin = AssetsManager.getInstance().getSkin();
         FileHandle handle = Gdx.files.local("instructions.txt");
         String text = handle.readString();
-        // ArrayList<String> newItems = new ArrayList<String>();
-        // String wordArray[] = text.split("\\r?\\n");
-        // for(String word: wordArray){
-        //     newItems.add(word);
-        // }
         assetsManager.queueAddInstructions();
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture(Gdx.files.internal("instructions.jpg")));
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-
-
-
         backButton = new TextButton("Back", skin);
         instruction_box = new Label(text, skin);
         instruction_box.setWrap(true);

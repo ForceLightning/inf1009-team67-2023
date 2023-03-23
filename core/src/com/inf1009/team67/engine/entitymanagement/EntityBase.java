@@ -30,6 +30,8 @@ public abstract class EntityBase extends Actor implements RequiresHandler {
     private float baseMovementSpeed;
     private float movementSpeedModifier;
     private EnumSet<HandleEnum> requiredHandles = EnumSet.noneOf(HandleEnum.class);
+    private boolean flipX = false;
+    private boolean flipY = false;
 
     public EntityBase(float x, float y, int z, float width, float height, Color color, float rotation, String name, boolean visible, Touchable touchable, String texturePath, float alpha, float baseMovementSpeed) {
         super();
@@ -259,7 +261,7 @@ public abstract class EntityBase extends Actor implements RequiresHandler {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha * alpha);
         batch.draw(region, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 
@@ -376,4 +378,19 @@ public abstract class EntityBase extends Actor implements RequiresHandler {
         requiredHandles.remove(handle);
     }
 
+    public boolean isFlipX() {
+        return flipX;
+    }
+
+    public boolean isFlipY() {
+        return flipY;
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
+    }
 }

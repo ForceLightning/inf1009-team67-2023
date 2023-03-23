@@ -3,6 +3,7 @@ package com.inf1009.team67.game.controllables;
 import java.util.EnumSet;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -34,12 +35,10 @@ public class Player extends ControllableCharacter implements Interactable {
     }
 
     public void update(float delta) {
-        // super.update();
         this.stateManager.handleInput();
         handleMovementInput();
         super.update(delta);
         this.interactionCircle.setPosition(this.getCentreX(), this.getCentreY());
-        // this.applyFromAccumulator(delta);
     }
 
     @Override
@@ -120,6 +119,19 @@ public class Player extends ControllableCharacter implements Interactable {
     @Override
     public void addReaction(Interactable other, Action reaction) {
         return;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        // if moving to the right, flip texture
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        if (this.getVelocity().x > 0) {
+            this.setFlipX(true);
+        } else if (this.getVelocity().x < 0) {
+            this.setFlipX(false);
+        }
+        batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation(), 0, 0, getTexture().getWidth(), getTexture().getHeight(), isFlipX(), isFlipY());
     }
 
     @Override

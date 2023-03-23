@@ -47,11 +47,9 @@ public class BasicCombatHelper extends HelperBase<ControllableCharacter> {
 
     public void handleAttack(ControllableCharacter combatant, ControllableCharacter other) {
         if (combatant.getCombatStates().contains(BasicCombatState.ATTACKING) && combatant.getTarget() == other) {
-            // System.out.println(combatant.toString() + "Attack timer: " + combatant.getAttackTimer());
             if (combatant.getAttackTimer() >= 0) {
                 combatant.resetAttackTimer();
                 other.getCombatAccumulator().addToHealth(-1 * combatant.getDamage());
-                // System.out.println(combatant.toString() + " attacked " + other.toString() + " for " + combatant.getDamage() + " damage.");
             }
         }
     }
@@ -130,7 +128,7 @@ public class BasicCombatHelper extends HelperBase<ControllableCharacter> {
                     if (combatant.getCombatBehaviour() == BasicCombatBehaviour.KILLED && !combatant.isPlayer()) {
                         game.setScore(game.getScore() + 10 * (gameScreen.getDifficulty() + 1));
                         combatant.setCombatBehaviour(BasicCombatBehaviour.DEAD);
-                        // System.out.println(game.getScore() + ", " + gameScreen.getDifficulty());
+                        combatant.setAlpha(0.25f);
                     }
                     combatant.getCombatAccumulator().reset();
                 }
