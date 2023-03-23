@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,6 +26,10 @@ public class InstructionsScreen extends ScreenBase {
     private TextButton backButton;
     private Label instruction_box;
     private Music playingMusic;
+    private SpriteBatch batch;
+    private Sprite sprite;
+    private AssetsManager assetsManager = AssetsManager.getInstance();
+    private TextButton exit;
 
 
     public InstructionsScreen(MyGdxGame game) {
@@ -37,6 +44,12 @@ public class InstructionsScreen extends ScreenBase {
         // for(String word: wordArray){
         //     newItems.add(word);
         // }
+        assetsManager.queueAddInstructions();
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture(Gdx.files.internal("instructions.jpg")));
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
 
 
         backButton = new TextButton("Back", skin);
@@ -82,6 +95,13 @@ public class InstructionsScreen extends ScreenBase {
         // tell our getStage() to do actions and draw itself
         getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         getStage().draw();
+
+        batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
+        sprite.draw(batch);
+        batch.end();
+        getStage().act(Gdx.graphics.getDeltaTime());
+        getStage().draw(); // Drawing the level
+
 
     }
 

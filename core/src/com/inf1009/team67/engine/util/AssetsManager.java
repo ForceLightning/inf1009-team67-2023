@@ -14,9 +14,13 @@ public class AssetsManager {
     private final String skinFilePath = "skin/metal-ui.json";
     private final String playingMusicFilePath = "music/loz_title.mp3";
     private final String backgroundFilePath = "background.jpg";
+    private final String backgroundsubFilePath = "backgroundsub.jpg";
+    private final String instructionsFilePath = "instructions.jpg";
     private Skin skin;
     private Music music;
     private Sprite background;
+    private Sprite backgroundsub;
+    private Sprite instructions;
     private static AssetsManager instance = null;
 
     private AssetsManager() {
@@ -30,6 +34,8 @@ public class AssetsManager {
         queueAddSkin();
         queueAddMusic();
         queueAddBackground();
+        queueAddInstructions();
+        queueAddBackgroundsub();
     }
 
     public static AssetsManager getInstance() {
@@ -78,13 +84,28 @@ public class AssetsManager {
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public void queueAddGameOverScreen(){
-        //manager.load("gameover.jpg", Texture.class);
-
+    public void queueAddInstructions(){
+        // Update the asset manager to load the queued assets
         manager.update();
-        background = new Sprite(new Texture(Gdx.files.internal("gameover.png")));
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Wait for the asset to finish loading
+        //manager.finishLoading();
+
+        instructions = new Sprite(new Texture(Gdx.files.internal(instructionsFilePath)));
+        instructions.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+    public void queueAddBackgroundsub(){
+        // Update the asset manager to load the queued assets
+        manager.update();
+
+        // Wait for the asset to finish loading
+        //manager.finishLoading();
+
+        backgroundsub = new Sprite(new Texture(Gdx.files.internal(backgroundsubFilePath)));
+        backgroundsub.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+
 
     public Sprite getBackground() {
         if (background == null) {

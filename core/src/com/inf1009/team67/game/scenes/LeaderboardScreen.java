@@ -5,6 +5,9 @@ import java.util.Arrays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -19,6 +22,10 @@ public class LeaderboardScreen extends ScreenBase {
 
     private Skin skin;
     private TextButton backButton;
+    private SpriteBatch batch;
+    private Sprite sprite;
+    private AssetsManager assetsManager = AssetsManager.getInstance();
+
     public LeaderboardScreen(MyGdxGame game) {
         super(game);
         AssetsManager.getInstance().getManager().finishLoading();
@@ -72,6 +79,11 @@ public class LeaderboardScreen extends ScreenBase {
             table.add(score).width(scoreWidth).height(50).pad(10);
             count++;
         }
+        assetsManager.queueAddBackgroundsub();
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture(Gdx.files.internal("backgroundsub.jpg")));
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
     }
 
     @Override
@@ -92,6 +104,11 @@ public class LeaderboardScreen extends ScreenBase {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getStage().act(delta);
         getStage().draw();
+        batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
+        sprite.draw(batch);
+        batch.end();
+        getStage().act(Gdx.graphics.getDeltaTime());
+        getStage().draw(); // Drawing the level
     }
 
 
