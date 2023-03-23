@@ -24,9 +24,10 @@ public class HealthBar {
         Color oldColor = shapes.getColor();
         ShapeType oldShapeType = shapes.getCurrentType();
         shapes.set(ShapeType.Filled);
-        float currentHealthRatio = health > baseLineMaxHealth ? 1f : health / baseLineMaxHealth;
-        float maxHealthRatio = maxHealth > baseLineMaxHealth ? 1f : maxHealth / baseLineMaxHealth;
-        float bonusHealthRatio = maxHealthRatio > 1f ? maxHealthRatio - 1f : 0f;
+        float currentHealthRatio = health / baseLineMaxHealth;
+        float maxHealthRatio = (maxHealth / baseLineMaxHealth);
+        float bonusHealthRatio = currentHealthRatio > 1f ? currentHealthRatio - 1f : 0f;
+        currentHealthRatio = currentHealthRatio > 1f ? 1f : currentHealthRatio;
         float maxHealthPenaltyRatio = maxHealthRatio < 1f ? 1f - maxHealthRatio : 0f;
         shapes.setColor(Color.BLACK);
         shapes.rect(healthBarPos.x - 2f, healthBarPos.y - 2f, healthBarSize.x + 2f, healthBarPos.y + 2f);
