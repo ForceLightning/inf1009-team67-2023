@@ -74,7 +74,6 @@ public class Player extends ControllableCharacter implements Interactable {
             }
         }
         deltaPosition.nor().scl(getMovementSpeed());
-        // this.getAccumulator().addToPosition(deltaPosition);
         this.setVelocity(deltaPosition);
         this.setCombatStates(EnumSet.noneOf(BasicCombatState.class));
         this.setCombatBehaviour(BasicCombatBehaviour.IDLE);

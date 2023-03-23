@@ -78,7 +78,6 @@ public class AssetsManager {
         manager.update();
 
         // Wait for the asset to finish loading
-        //manager.finishLoading();
 
         background = new Sprite(new Texture(Gdx.files.internal(backgroundFilePath)));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -89,7 +88,6 @@ public class AssetsManager {
         manager.update();
 
         // Wait for the asset to finish loading
-        //manager.finishLoading();
 
         instructions = new Sprite(new Texture(Gdx.files.internal(instructionsFilePath)));
         instructions.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -99,7 +97,6 @@ public class AssetsManager {
         manager.update();
 
         // Wait for the asset to finish loading
-        //manager.finishLoading();
 
         backgroundsub = new Sprite(new Texture(Gdx.files.internal(backgroundsubFilePath)));
         backgroundsub.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

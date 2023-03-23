@@ -71,7 +71,6 @@ public class InstructionsScreen extends ScreenBase {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // screenManager.changeScreen(ScreenManager.MENU);
                 game.setScreen(ScreenEnum.MENU);
             }
         });}
