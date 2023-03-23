@@ -22,7 +22,7 @@ public class Player extends ControllableCharacter implements Interactable {
     // Constructor
     public Player() {
         super(true);
-        this.setTexture("textures/circle.png");
+        this.setTexture("textures/player.png");
         this.setSize(100, 100);
         this.stateManager = new StateManager();
         this.setBaseMovementSpeed(100);
