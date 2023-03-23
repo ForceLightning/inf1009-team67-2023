@@ -47,17 +47,4 @@ public class HealthyFood extends HealthPack {
         String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
         this.setTexture(textures[(int) (Math.random() * textures.length)]);
     }
-    @Override
-    public void init(int health, float movementSpeedAilment, float maxHealthAilment) {
-        super.init(health, movementSpeedAilment, maxHealthAilment);
-        String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
-        this.setTexture(textures[(int) (Math.random() * textures.length)]);
-    }
-
-    @Override
-    public void init() {
-        super.init();
-        String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
-        this.setTexture(textures[(int) (Math.random() * textures.length)]);
-    }
 }

@@ -26,8 +26,6 @@ import com.inf1009.team67.engine.scenemanagement.ScreenBase;
 import com.inf1009.team67.game.controllables.Player;
 import com.inf1009.team67.game.food.FoodFactory;
 import com.inf1009.team67.game.food.HealthPack;
-import com.inf1009.team67.game.food.HealthyFood;
-import com.inf1009.team67.game.food.UnhealthyFood;
 import com.inf1009.team67.game.controllables.HostileEntity;
 import com.inf1009.team67.game.main.MyGdxGame;
 import com.inf1009.team67.game.scenes.gui.GUI;
