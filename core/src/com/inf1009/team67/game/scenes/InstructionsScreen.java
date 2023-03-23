@@ -32,15 +32,15 @@ public class InstructionsScreen extends ScreenBase {
         skin = AssetsManager.getInstance().getSkin();
         FileHandle handle = Gdx.files.local("instructions.txt");
         String text = handle.readString();
-        ArrayList<String> newItems = new ArrayList<String>();
-        String wordArray[] = text.split("\\r?\\n");
-        for(String word: wordArray){
-            newItems.add(word);
-        }
+        // ArrayList<String> newItems = new ArrayList<String>();
+        // String wordArray[] = text.split("\\r?\\n");
+        // for(String word: wordArray){
+        //     newItems.add(word);
+        // }
 
 
         backButton = new TextButton("Back", skin);
-        instruction_box = new Label(newItems.get(0), skin);
+        instruction_box = new Label(text, skin);
         instruction_box.setWrap(true);
         instruction_box.setAlignment(Align.center);
 

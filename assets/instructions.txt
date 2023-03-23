@@ -1,5 +1,9 @@
-Although the Japanese enjoy eating ramen at ramen shops,  it is common for Japanese moms to make ramen at home. Making good ramen soup from scratch requires a lot of time and effort, so most households use packaged ramen which includes 2-3 servings of fresh noodles and a concentrated soup base. In this recipe, instead of spending many hours making the ramen soup base, I’ll show you how to make a delicious ramen soup that takes just 15 minutes. Best of all, it tastes much better than the soup base that comes with the package.In case you’re wondering, the soup for miso ramen is not the “miso soup” made from dashi and miso paste.
+Welcome to the exciting world of healthy eating! As you explore the map filled with delicious food,  you'll face waves of  monsters attacking you. Your objective is to defend yourself against the enemies and strategically choose health packs to boost your score as high as possible. But be careful! The game gets more challenging as time goes on, so you'll need to stay sharp and keep fighting until the end.
 
-Below, I explain the ingredients for Miso Ramen soup. I do not recommend skipping or substituting the following ingredients because each ingredient plays an important role. As a result, you get a rich and intensely savory bowl of miso ramen that will greatly satisfy your cravings.
+Controls: Use the W, A, S, and D keys to move your character, and the SPACE key to attack. Aim your attacks by hovering over the enemies with your mouse.
 
-5 Key Ing
+Scoring: Defeat the enemies to earn points and climb the leaderboard. The more enemies you defeat, the higher your score.
+
+Boosters: Keep an eye out for health packs that randomly appear throughout the map. Some will boost your health and speed, while others may hinder you. Choose wisely to gain an advantage over your enemies!
+
+Difficulty: As you progress through the game, it will become more challenging. Pay attention to the difficulty bar at the top of the screen to stay ahead of the game.
