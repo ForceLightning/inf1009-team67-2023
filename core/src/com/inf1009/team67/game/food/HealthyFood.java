@@ -1,8 +1,6 @@
 package com.inf1009.team67.game.food;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.inf1009.team67.engine.interactionmanagement.Interactable;
 import com.inf1009.team67.game.controllables.Player;
 
@@ -26,7 +24,7 @@ public class HealthyFood extends HealthPack {
     public void handleInteraction(Interactable other) {
         if (other instanceof Player && isInteractable() && other.isInteractable()) {
             Player player = (Player) other;
-            player.setMaxHealthModifier(player.getMaxHealthModifier() < 1 ? Math.min(1.1f * getMaxHealthAilment(), 1f) : getMaxHealthAilment());
+            player.setMaxHealthModifier(player.getMaxHealthModifier() < 2 ? Math.min(1.1f * getMaxHealthAilment(), 2f) : getMaxHealthAilment());
             player.modifyHealth(player.getHealth() + getHealth());
             player.setMovementSpeedModifier(player.getMovementSpeedModifier() < 1 ? Math.min(1.1f * getMovementSpeedAilment(), 1f) : getMovementSpeedAilment());
             setInteractable(false);

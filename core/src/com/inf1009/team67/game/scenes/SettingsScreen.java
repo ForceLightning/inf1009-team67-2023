@@ -4,6 +4,9 @@ import java.util.function.Consumer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,6 +27,9 @@ public class SettingsScreen extends ScreenBase {
     private Slider masterVolumeSlider;
     private Slider musicVolumeSlider;
     private Slider effectsVolumeSlider;
+    private SpriteBatch batch;
+    private Sprite sprite;
+    private AssetsManager assetsManager = AssetsManager.getInstance();
 
     public SettingsScreen(MyGdxGame game) {
         super(game);
@@ -54,6 +60,10 @@ public class SettingsScreen extends ScreenBase {
             table.add(pair.first).width(300).height(50).pad(10);
             table.add(pair.second).width(300).height(50).pad(10);
         }
+        assetsManager.queueAddBackgroundsub();
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture(Gdx.files.internal("backgroundsub.jpg")));
+        sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
@@ -102,6 +112,11 @@ public class SettingsScreen extends ScreenBase {
         // tell our getStage() to do actions and draw itself
         getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         getStage().draw();
+        batch.begin(); // Call the batch processing (Has to be called first for the sprite to be on top of UI)
+        sprite.draw(batch);
+        batch.end();
+        getStage().act(Gdx.graphics.getDeltaTime());
+        getStage().draw(); // Drawing the level
 
     }
 

@@ -1,9 +1,5 @@
 package com.inf1009.team67.game.food;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-
 public class UnhealthyFood extends HealthPack {
     public UnhealthyFood() {
         this(50, 0.5f, 0.5f);
