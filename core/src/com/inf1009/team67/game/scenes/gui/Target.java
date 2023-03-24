@@ -15,6 +15,7 @@ public class Target extends EntityBase {
     private ControllableCharacter target;
     private Camera camera;
     private Viewport viewport;
+    float viewportWidth, viewportHeight;
 
     public Target(Camera camera, Viewport viewport) {
         super();
@@ -24,6 +25,8 @@ public class Target extends EntityBase {
         this.setAlpha(0.0f);
         this.camera = camera;
         this.viewport = viewport;
+        viewportWidth = viewport.getScreenWidth();
+        viewportHeight = viewport.getScreenHeight();
     }
 
     public void updateTarget(Player player, Camera camera) {
@@ -41,13 +44,7 @@ public class Target extends EntityBase {
         if (target == null || target.isPlayer()) {
             return;
         }
-        // float aspectRatio = viewport.getScreenWidth() / viewport.getScreenHeight();
-        // float originalAspectRatio = 800f / 600f;
-        // float aspectScale = aspectRatio / originalAspectRatio;
-        // this.setScaleX(aspectScale);
-        Vector3 pos = camera.project(new Vector3(target.getCentreX(), target.getCentreY(), 0), viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-        Vector3 scaling = new Vector3(800f / viewport.getScreenWidth(), 600f / viewport.getScreenHeight(), 0);
-        pos = pos.scl(scaling);
+        Vector3 pos = camera.project(new Vector3(target.getCentreX(), target.getCentreY(), 0), viewport.getScreenX(), viewport.getScreenY(), viewportWidth, viewportHeight);
         this.setCentre(pos.x, pos.y);
         Color oldColor = batch.getColor();
         batch.setColor(this.getColor());
