@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.inf1009.team67.engine.controllables.ControllableCharacter;
 import com.inf1009.team67.engine.entitymanagement.EntityBase;
 import com.inf1009.team67.engine.inputbehaviourmanagement.basiccombat.BasicCombatHelper;
@@ -13,14 +14,19 @@ public class Target extends EntityBase {
 
     private ControllableCharacter target;
     private Camera camera;
+    private Viewport viewport;
+    float viewportWidth, viewportHeight;
 
-    public Target(Camera camera) {
+    public Target(Camera camera, Viewport viewport) {
         super();
         this.setTexture("textures/Crosshair.png");
         this.setSize(50, 50);
         this.setColor(Color.RED);
         this.setAlpha(0.0f);
         this.camera = camera;
+        this.viewport = viewport;
+        viewportWidth = viewport.getScreenWidth();
+        viewportHeight = viewport.getScreenHeight();
     }
 
     public void updateTarget(Player player, Camera camera) {
@@ -38,7 +44,7 @@ public class Target extends EntityBase {
         if (target == null || target.isPlayer()) {
             return;
         }
-        Vector3 pos = camera.project(new Vector3(target.getCentreX(), target.getCentreY(), 0));
+        Vector3 pos = camera.project(new Vector3(target.getCentreX(), target.getCentreY(), 0), viewport.getScreenX(), viewport.getScreenY(), viewportWidth, viewportHeight);
         this.setCentre(pos.x, pos.y);
         Color oldColor = batch.getColor();
         batch.setColor(this.getColor());
