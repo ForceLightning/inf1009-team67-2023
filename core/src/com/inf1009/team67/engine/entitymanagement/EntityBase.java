@@ -393,4 +393,10 @@ public abstract class EntityBase extends Actor implements RequiresHandler {
     public void setFlipY(boolean flipY) {
         this.flipY = flipY;
     }
+
+    @Override
+    public void setScaleX(float scaleX) {
+        super.setScaleX(scaleX);
+        this.boundingBox.setWidth(getWidth() * scaleX);
+    }
 }

@@ -1,6 +1,5 @@
 package com.inf1009.team67.game.scenes.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -13,7 +12,7 @@ public class DifficultyBar {
         shapes.set(ShapeType.Filled);
         // define the difficulty bar size
         Vector2 difficultyBarSize = new Vector2(300, 20);
-        Vector2 difficultyBarPos = new Vector2(Gdx.graphics.getWidth() / 2 - difficultyBarSize.x / 2, Gdx.graphics.getHeight() - difficultyBarSize.y * 2);
+        Vector2 difficultyBarPos = new Vector2(400 - difficultyBarSize.x / 2, 600 - difficultyBarSize.y * 2);
         shapes.setColor(Color.WHITE);
         shapes.rect(difficultyBarPos.x, difficultyBarPos.y, difficultyBarSize.x, difficultyBarSize.y);
         shapes.setColor(Color.RED);

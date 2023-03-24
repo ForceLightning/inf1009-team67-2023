@@ -2,6 +2,7 @@ package com.inf1009.team67.game.scenes;
 
 
 import java.util.Random;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
@@ -66,7 +67,7 @@ public class GameScreen extends ScreenBase {
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
         setStage(new Stage(new ScreenViewport(camera), batch));
         getStage().setDebugAll(true);
         entityCollection = new EntityCollection(getStage());
@@ -142,8 +143,8 @@ public class GameScreen extends ScreenBase {
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 800 + 400);
-                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) Math.random() * 480 + 240);
+                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * Gdx.graphics.getWidth()));
+                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * Gdx.graphics.getHeight()));
                 offsetX += player.getCentreX();
                 offsetY += player.getCentreY();
                 spawnEnemy(offsetX, offsetY, difficulty * 8f);
@@ -213,7 +214,10 @@ public class GameScreen extends ScreenBase {
 
     @Override
     public void resize(int width, int height) {
-
+        super.resize(width, height);
+        camera.setToOrtho(false, width, height);
+        camera.update();
+        gui.updateCamera(camera);
     }
 
     @Override
@@ -241,5 +245,9 @@ public class GameScreen extends ScreenBase {
         batch.dispose();
         entityCollection.dispose();
         getStage().dispose();
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }
