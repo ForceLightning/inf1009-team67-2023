@@ -143,8 +143,8 @@ public class GameScreen extends ScreenBase {
         spawnTimer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
-                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * Gdx.graphics.getWidth()));
-                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * Gdx.graphics.getHeight()));
+                float offsetX = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * getStage().getViewport().getScreenWidth()));
+                float offsetY = (float) (Math.random() > 0.5 ? 1 : -1) * ((float) (Math.random() * 1.5 * getStage().getViewport().getScreenWidth()));
                 offsetX += player.getCentreX();
                 offsetY += player.getCentreY();
                 spawnEnemy(offsetX, offsetY, difficulty * 8f);
