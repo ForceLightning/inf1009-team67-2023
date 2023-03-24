@@ -17,7 +17,6 @@ public class HealthyFood extends HealthPack {
         String[] textures = {"textures/healthyFood/apple.png", "textures/healthyFood/broccoli.png", "textures/healthyFood/carrot.png"};
         this.setTexture(textures[(int) (Math.random() * textures.length)]);
         this.setColor(Color.WHITE);
-        // this.setColor(Color.GREEN);
     }
 
     @Override

@@ -84,7 +84,6 @@ public class EndScreen extends ScreenBase {
         labelresponse.setX(580);
         labelresponse.setY(270);
         scoreTable.add(score).width(width).pad(padding);
-        // scoreTable.add(name).width(width).pad(padding);
         username = new TextField("Name", skin);
         scoreTable.add(username).width(width).pad(padding);
     }
@@ -120,10 +119,6 @@ public class EndScreen extends ScreenBase {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getStage().act(delta);
         getStage().draw();
-        // String name = listener.getName();
-        // if (name != null) {
-        //     this.name.setText(name);
-        // }
 
         username.setTextFieldFilter(new TextFieldFilter() {
             // Accepts all Characters except ',' so the it wouldnt affect csv file

@@ -1,5 +1,6 @@
 package com.inf1009.team67.game.scenes.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +15,7 @@ public class GUI {
     private MyGdxGame game;
     private GameScreen gameScreen;
     private Player player;
-    private DifficultyBar difficultyBar = new DifficultyBar();
+    private DifficultyBar difficultyBar;
     private HealthBar healthBar;
     private Score score;
     private Target target;
@@ -25,11 +26,11 @@ public class GUI {
         this.gameScreen = gameScreen;
         this.camera = camera;
         this.player = gameScreen.getPlayer();
-        // Skin skin = game.assetsManager.manager.get("skin/metal-ui.json");
         Skin skin = AssetsManager.getInstance().getSkin();
         this.healthBar = new HealthBar(skin);
+        this.difficultyBar = new DifficultyBar(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.score = new Score(skin);
-        this.target = new Target(camera);
+        this.target = new Target(camera, gameScreen.getStage().getViewport());
     }
 
     public void drawGUI(ShapeRenderer shapes, SpriteBatch batch) {
@@ -58,6 +59,10 @@ public class GUI {
 
     public void updateTarget() {
         target.updateTarget(player, camera);
+    }
+
+    public void updateCamera(Camera camera) {
+        this.camera = camera;
     }
 
 }

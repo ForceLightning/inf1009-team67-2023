@@ -14,13 +14,6 @@ public class ScreenManager {
     public ScreenManager(MyGdxGame game) {
         this.game = game;
         screenCollection = new HashMap<ScreenEnum, Class<? extends ScreenBase>>();
-        // screenCollection.put(ScreenEnum.SPLASHSCREEN, SplashScreen.class);
-        // screenCollection.put(ScreenEnum.MENU, MenuScreen.class);
-        // screenCollection.put(ScreenEnum.SETTINGS, SettingsScreen.class);
-        // screenCollection.put(ScreenEnum.GAME, GameScreen.class);
-        // screenCollection.put(ScreenEnum.END, EndScreen.class);
-        // screenCollection.put(ScreenEnum.INSTRUCTIONS, InstructionsScreen.class);
-        // screenCollection.put(ScreenEnum.LEADERBOARD, LeaderboardScreen.class);
     }
 
     public void addScreen(ScreenEnum screen, Class<? extends ScreenBase> screenClass) {

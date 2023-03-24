@@ -72,7 +72,6 @@ public class MenuScreen extends ScreenBase {
         Play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //screenManager.changeScreen(ScreenManager.APPLICATION);
                 game.setScreen(ScreenEnum.GAME);
             }
         });
@@ -80,7 +79,6 @@ public class MenuScreen extends ScreenBase {
         settings.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //screenManager.changeScreen(ScreenManager.PREFERENCES);
                 game.setScreen(ScreenEnum.SETTINGS);
             }
         });
@@ -117,7 +115,6 @@ public class MenuScreen extends ScreenBase {
     @Override
     public void render(float delta) {
         //clear screen and prep for next set of images to be drawn
-        //Gdx.gl.glClearColor(0f, 0.4f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //ask stage to do action and draw itself
         getStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
